@@ -1,0 +1,16 @@
+{
+  "name": "space",
+  "version": "1.0.0",
+  "description": "Space Wallpaper App",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win --x64"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^30.0.0"
+  }
+}
