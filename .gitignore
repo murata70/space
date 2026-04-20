@@ -39,3 +39,4 @@ out/
 /src/generated/prisma
 
 /src/generated/prisma
+node_modules
