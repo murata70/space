@@ -13,7 +13,8 @@ function createWindow() {
   });
 
   // 3. 表示する画面ファイル (index.html) を読み込む
-  win.loadFile('index.html');
+    win.loadFile('public/index.html');
+ 
 }
 
 // 4. アプリの準備ができたらウィンドウを表示する
