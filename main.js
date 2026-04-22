@@ -1,48 +1,46 @@
 // 1. 必要なライブラリのインポート
 const { app, BrowserWindow, screen } = require('electron');
 const path = require('path');
-// 壁紙化ライブラリ（事前に npm install electron-as-wallpaper が必要です）
+// 壁紙化ライブラリ
 const eaw = require('electron-as-wallpaper');
 
 let win;
 
 // 2. ウィンドウを作成する関数
 function createWindow() {
-    // メインディスプレイのサイズを取得（マルチディスプレイ対策）
+    // メインディスプレイのサイズを取得
     const primaryDisplay = screen.getPrimaryDisplay();
     const { width, height } = primaryDisplay.workAreaSize;
 
     win = new BrowserWindow({
-        width: width,              // 画面いっぱいの幅
-        height: height,            // 画面いっぱいの高さ
+        width: width,
+        height: height,
         x: 0,
         y: 0,
-        transparent: true,         // 背景を透明にする
-        frame: false,               // 枠や閉じるボタンを消す
-        type: 'desktop',           // Linuxなど一部OSで壁紙として扱うための設定
-        enableLargerThanScreen: true,
+        transparent: false,         // ★テストのため、一旦 false (透明にしない) にします
+        frame: true,                // ★テストのため、一旦 true (枠あり) にします
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
-            preload: path.join(__dirname, 'preload.js') // 必要に応じて使用
+            preload: path.join(__dirname, 'preload.js')
         }
     });
 
     // 3. 表示する画面を読み込む
-    // 開発中（Reactを起動している時）はこちら
     win.loadFile(path.join(__dirname, 'public/index.html'));
 
-    // もしindex.htmlを直接読み込む場合はこちらを使ってください
-    // win.loadFile(path.join(__dirname, 'public/index.html'));
+    // ★検証ツール（右側の英語の画面）を自動で開く
+    win.webContents.openDevTools();
 
-    // ★ 4. デスクトップの壁紙に貼り付ける（ここが心臓部！）
+    // ★ 4. 壁紙への貼り付け（テスト中は一旦コメントアウトして無効化します）
+    /*
     try {
         eaw.attach(win);
     } catch (err) {
         console.error("壁紙への貼り付けに失敗しました:", err);
     }
+    */
 
-    // ウィンドウが閉じられた時の処理
     win.on('closed', () => {
         win = null;
     });
