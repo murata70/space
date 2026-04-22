@@ -30,7 +30,7 @@ function createWindow() {
 
     // 3. 表示する画面を読み込む
     // 開発中（Reactを起動している時）はこちら
-    win.loadURL('http://localhost:3000');
+    win.loadFile(path.join(__dirname, 'public/index.html'));
 
     // もしindex.htmlを直接読み込む場合はこちらを使ってください
     // win.loadFile(path.join(__dirname, 'public/index.html'));
