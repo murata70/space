@@ -1,3 +1,4 @@
+# --- Java / Gradle (以前の設定) ---
 HELP.md
 .gradle
 build/
@@ -36,7 +37,29 @@ out/
 ### VS Code ###
 .vscode/
 
-/src/generated/prisma
+# --- 今回のプロジェクト (Electron / Node / Prisma / Visual Studio) ---
 
+# 依存ライブラリ
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Prisma (データベース関連)
 /src/generated/prisma
-node_modules
+.env
+
+# Visual Studio (2022) 設定ファイル
+.vs/
+*.user
+*.userossc
+*.sln.docstates
+*.suo
+
+# OS固有のゴミファイル
+Thumbs.db
+.DS_Store
+
+# ビルド成果物 (もしあれば)
+dist/
+release/
