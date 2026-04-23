@@ -7,43 +7,121 @@
         body {
             margin: 0;
             overflow: hidden;
+            /* 宇宙の背景 */
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             height: 100vh;
+            color: white;
         }
 
+        /* 弾幕メッセージ：最前面(z-index: 9999)に配置 */
+        .danmaku-text {
+            position: absolute;
+            white-space: nowrap;
+            color: #00ffcc !important; /* ネオンブルーを強制 */
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(0, 255, 204, 1);
+            z-index: 9999;
+            pointer-events: none;
+            animation: moveSide 15s linear infinite;
+        }
+
+        /* 流れる星（イラスト） */
+        .scrolling-asset {
+            position: absolute;
+            width: 33px;
+            z-index: 10;
+            animation: moveSide 30s linear forwards;
+        }
+
+        /* 星の点々 */
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
+            z-index: 1;
             animation: blink 2s infinite ease-in-out;
+        }
+
+        @keyframes moveSide {
+            from {
+                transform: translateX(100vw);
+            }
+
+            to {
+                transform: translateX(-200vw);
+            }
         }
 
         @keyframes blink {
             0%, 100% {
                 opacity: 0.3;
-                transform: scale(1);
             }
 
             50% {
                 opacity: 1;
-                transform: scale(1.2);
             }
         }
     </style>
 </head>
 <body>
+
     <script>
+        // --- 1. 星の点々を生成 ---
         for (let i = 0; i < 100; i++) {
             const star = document.createElement('div');
             star.className = 'star';
-            const size = Math.random() * 3;
+            const size = Math.random() * 2;
             star.style.width = size + 'px';
             star.style.height = size + 'px';
             star.style.top = Math.random() * 100 + 'vh';
             star.style.left = Math.random() * 100 + 'vw';
-            star.style.animationDelay = Math.random() * 2 + 's';
             document.body.appendChild(star);
         }
+
+        // --- 2. イラスト（星）を流す ---
+        const assetPath = "./assets/image/star_sample.svg";
+        function createStar() {
+            const img = document.createElement('img');
+            img.src = assetPath;
+            img.className = 'scrolling-asset';
+            img.style.top = (Math.random() * 90) + 'vh';
+            img.addEventListener('animationend', () => {
+                img.remove();
+                setTimeout(createStar, 1500);
+            });
+            document.body.appendChild(img);
+        }
+        createStar();
+
+        // --- 3. 【本番】メッセージを流す関数 ---
+        // 外部ファイルが読み込めなくても、この配列にある文字は必ず流れます！
+        const messages = [
+            "文字表示できました！ - by Murata",
+            "PROJECT: space 始動！",
+            "新しいパスで実行中..."
+        ];
+
+        function spawnDanmaku(text, delay) {
+            setTimeout(() => {
+                const span = document.createElement('span');
+                span.innerText = text;
+                span.className = 'danmaku-text';
+                span.style.top = (Math.random() * 60 + 20) + 'vh';
+                document.body.appendChild(span);
+
+                // 流れ終わったら消して、また流す（ループ）
+                span.addEventListener('animationiteration', () => {
+                    span.style.top = (Math.random() * 60 + 20) + 'vh';
+                });
+            }, delay);
+        }
+
+        // 全メッセージを時間差でスタート
+        messages.forEach((msg, index) => {
+            spawnDanmaku(msg, index * 5000); // 5秒おきに出現
+        });
+
     </script>
 </body>
 </html>
