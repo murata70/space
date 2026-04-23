@@ -1,0 +1,1 @@
+export const message = "•¶š•\¦‚Å‚«‚Ü‚µ‚½I - by Murata";

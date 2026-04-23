@@ -7,41 +7,50 @@
         body {
             margin: 0;
             overflow: hidden;
-            /* 深みのある宇宙の背景 */
+            /* 宇宙の背景 */
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             height: 100vh;
+            color: white;
         }
 
-        /* 流れるイラストのスタイル */
+        /* 弾幕メッセージ：最前面(z-index: 9999)に配置 */
+        .danmaku-text {
+            position: absolute;
+            white-space: nowrap;
+            color: #00ffcc !important; /* ネオンブルーを強制 */
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(0, 255, 204, 1);
+            z-index: 9999;
+            pointer-events: none;
+            animation: moveSide 15s linear infinite;
+        }
+
+        /* 流れる星（イラスト） */
         .scrolling-asset {
             position: absolute;
-            /* ★サイズは「いい感じ」だった33pxを維持 */
             width: 33px;
-            height: auto;
             z-index: 10;
-            /* ★速度を3倍ゆっくりに（10s → 30sに変更） */
-            /* forwardsを指定することで、アニメーション終了後も位置を保持（スクリプトで消すまで） */
             animation: moveSide 30s linear forwards;
         }
 
-        /* 右端(100vw)から左端の外(-100px)までゆっくり動かす */
-        @keyframes moveSide {
-            from {
-                transform: translateX(100vw);
-            }
-
-            to {
-                transform: translateX(-100px);
-            }
-        }
-
-        /* 背景の固定された小さな星 */
+        /* 星の点々 */
         .star {
             position: absolute;
             background: white;
             border-radius: 50%;
             z-index: 1;
             animation: blink 2s infinite ease-in-out;
+        }
+
+        @keyframes moveSide {
+            from {
+                transform: translateX(100vw);
+            }
+
+            to {
+                transform: translateX(-200vw);
+            }
         }
 
         @keyframes blink {
@@ -58,41 +67,7 @@
 <body>
 
     <script>
-        // 画像のパス（ファイル名はアンダーバー版にしています）
-        const assetPath = "./assets/image/star_sample.svg";
-
-        function createScrollingAsset() {
-            // 1. 前のイラストが画面外へ消えたら削除
-            const oldAsset = document.querySelector('.scrolling-asset');
-            if (oldAsset) {
-                oldAsset.remove();
-            }
-
-            // 2. 新しいイラストを作成
-            const img = document.createElement('img');
-            img.src = assetPath;
-            img.className = 'scrolling-asset';
-
-            // ★出現する場所（高さ）を0%〜90%の間でランダムに決定
-            // これにより、毎回違う高さから流れてきます
-            const randomY = Math.random() * 90;
-            img.style.top = randomY + 'vh';
-
-            // 3. アニメーション終了（画面左端へ到達）を検知
-            img.addEventListener('animationend', () => {
-                // 次のイラストが出るまでの「間」を少し置く（1.5秒）
-                setTimeout(createScrollingAsset, 1500);
-            });
-
-            // 4. 画面に追加
-            document.body.appendChild(img);
-        }
-
-        // 最初の一個目をスタート
-        createScrollingAsset();
-
-
-        // --- 背景の星100個（チカチカ用） ---
+        // --- 1. 星の点々を生成 ---
         for (let i = 0; i < 100; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -101,9 +76,52 @@
             star.style.height = size + 'px';
             star.style.top = Math.random() * 100 + 'vh';
             star.style.left = Math.random() * 100 + 'vw';
-            star.style.animationDelay = Math.random() * 2 + 's';
             document.body.appendChild(star);
         }
+
+        // --- 2. イラスト（星）を流す ---
+        const assetPath = "./assets/image/star_sample.svg";
+        function createStar() {
+            const img = document.createElement('img');
+            img.src = assetPath;
+            img.className = 'scrolling-asset';
+            img.style.top = (Math.random() * 90) + 'vh';
+            img.addEventListener('animationend', () => {
+                img.remove();
+                setTimeout(createStar, 1500);
+            });
+            document.body.appendChild(img);
+        }
+        createStar();
+
+        // --- 3. 【本番】メッセージを流す関数 ---
+        // 外部ファイルが読み込めなくても、この配列にある文字は必ず流れます！
+        const messages = [
+            "文字表示できました！ - by Murata",
+            "PROJECT: space 始動！",
+            "新しいパスで実行中..."
+        ];
+
+        function spawnDanmaku(text, delay) {
+            setTimeout(() => {
+                const span = document.createElement('span');
+                span.innerText = text;
+                span.className = 'danmaku-text';
+                span.style.top = (Math.random() * 60 + 20) + 'vh';
+                document.body.appendChild(span);
+
+                // 流れ終わったら消して、また流す（ループ）
+                span.addEventListener('animationiteration', () => {
+                    span.style.top = (Math.random() * 60 + 20) + 'vh';
+                });
+            }, delay);
+        }
+
+        // 全メッセージを時間差でスタート
+        messages.forEach((msg, index) => {
+            spawnDanmaku(msg, index * 5000); // 5秒おきに出現
+        });
+
     </script>
 </body>
 </html>
