@@ -7,26 +7,25 @@
         body {
             margin: 0;
             overflow: hidden;
-            /* 宇宙の背景 */
             background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
             height: 100vh;
             color: white;
+            font-family: 'sans-serif';
         }
 
-        /* 弾幕メッセージ：最前面(z-index: 9999)に配置 */
+        /* 弾幕メッセージの設定 */
         .danmaku-text {
             position: absolute;
             white-space: nowrap;
-            color: #00ffcc !important; /* ネオンブルーを強制 */
-            font-size: 3rem;
+            /* サイズを少し小さく修正 (3rem -> 2rem) */
+            font-size: 2rem;
             font-weight: bold;
-            text-shadow: 0 0 20px rgba(0, 255, 204, 1);
             z-index: 9999;
             pointer-events: none;
             animation: moveSide 15s linear infinite;
         }
 
-        /* 流れる星（イラスト） */
+        /* 星やアニメーションの設定（変更なし） */
         .scrolling-asset {
             position: absolute;
             width: 33px;
@@ -34,7 +33,6 @@
             animation: moveSide 30s linear forwards;
         }
 
-        /* 星の点々 */
         .star {
             position: absolute;
             background: white;
@@ -66,8 +64,13 @@
 </head>
 <body>
 
+    <div id="member-scripts"></div>
+
     <script>
-        // --- 1. 星の点々を生成 ---
+        // --- 1. 設定：参加メンバーの名前をここに追加 ---
+        const members = ['murata'];
+
+        // --- 2. 星の点々生成（省略せずそのまま残してください） ---
         for (let i = 0; i < 100; i++) {
             const star = document.createElement('div');
             star.className = 'star';
@@ -79,49 +82,90 @@
             document.body.appendChild(star);
         }
 
-        // --- 2. イラスト（星）を流す ---
+        // --- 3. イラスト（星）を流す ---
         const assetPath = "./assets/image/star_sample.svg";
         function createStar() {
             const img = document.createElement('img');
             img.src = assetPath;
             img.className = 'scrolling-asset';
             img.style.top = (Math.random() * 90) + 'vh';
-            img.addEventListener('animationend', () => {
-                img.remove();
-                setTimeout(createStar, 1500);
-            });
+            img.addEventListener('animationend', () => { img.remove(); setTimeout(createStar, 1500); });
             document.body.appendChild(img);
         }
         createStar();
 
-        // --- 3. 【本番】メッセージを流す関数 ---
-        // 外部ファイルが読み込めなくても、この配列にある文字は必ず流れます！
-        const messages = [
-            "文字表示できました！ - by Murata",
-            "PROJECT: space 始動！",
-            "新しいパスで実行中..."
-        ];
+        // --- 4. 弾幕生成システム（レーン制御版） ---
+        const laneCount = 10; // 画面を10個のレーンに分ける
+        const lanes = new Array(laneCount).fill(false); // レーンが使用中かどうかのフラグ
 
-        function spawnDanmaku(text, delay) {
+        function spawnDanmaku(text, color, delay) {
             setTimeout(() => {
+                // 空いているレーンをランダムに探す
+                let laneIndex;
+                let attempts = 0;
+                do {
+                    laneIndex = Math.floor(Math.random() * laneCount);
+                    attempts++;
+                } while (lanes[laneIndex] && attempts < 20); // 使用中なら別のレーンを探す
+
+                // レーンを「使用中」にする
+                lanes[laneIndex] = true;
+
                 const span = document.createElement('span');
                 span.innerText = text;
                 span.className = 'danmaku-text';
-                span.style.top = (Math.random() * 60 + 20) + 'vh';
+
+                // レーンの高さ計算 (上から 10% ～ 90% の間に配置)
+                const topPosition = 10 + (laneIndex * (80 / laneCount));
+                span.style.top = topPosition + 'vh';
+                span.style.color = color;
+                span.style.textShadow = `0 0 15px ${color}`;
+
                 document.body.appendChild(span);
 
-                // 流れ終わったら消して、また流す（ループ）
+                // 15秒（アニメーション時間）経ったらレーンを解放する
+                setTimeout(() => {
+                    lanes[laneIndex] = false;
+                }, 15000);
+
+                // 次のループの時も新しいレーンを再計算する
                 span.addEventListener('animationiteration', () => {
-                    span.style.top = (Math.random() * 60 + 20) + 'vh';
+                    lanes[laneIndex] = false; // 前のレーンを空ける
+
+                    let newLane;
+                    do {
+                        newLane = Math.floor(Math.random() * laneCount);
+                    } while (lanes[newLane]);
+
+                    laneIndex = newLane;
+                    lanes[laneIndex] = true;
+                    span.style.top = (10 + (laneIndex * (80 / laneCount))) + 'vh';
                 });
             }, delay);
         }
 
-        // 全メッセージを時間差でスタート
-        messages.forEach((msg, index) => {
-            spawnDanmaku(msg, index * 5000); // 5秒おきに出現
-        });
+        // --- 5. 各メンバーの設定を読み込んで実行 ---
+        window.addEventListener('DOMContentLoaded', () => {
+            let totalMessageCount = 0;
 
+            members.forEach((name) => {
+                const script = document.createElement('script');
+                script.src = `../src/main/messages/${name}.js`;
+
+                script.onload = () => {
+                    const config = window[`${name}Config`];
+                    if (config && config.messages) {
+                        config.messages.forEach((msg) => {
+                            const myColor = config.color || '#00ffcc';
+                            // 出現タイミングを少しバラけさせる（3秒間隔）
+                            spawnDanmaku(msg, myColor, totalMessageCount * 3000);
+                            totalMessageCount++;
+                        });
+                    }
+                };
+                document.getElementById('member-scripts').appendChild(script);
+            });
+        });
     </script>
 </body>
 </html>
