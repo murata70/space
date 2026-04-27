@@ -68,7 +68,7 @@
 
     <script>
         // --- 1. 設定：参加メンバーの名前をここに追加 ---
-        const members = ['murata'];
+        const members = ['murata', 'ikemoto', 'koba', 'toshikuni', 'nakahara','okumura'];
 
         // --- 2. 星の点々生成（省略せずそのまま残してください） ---
         for (let i = 0; i < 100; i++) {
@@ -82,20 +82,66 @@
             document.body.appendChild(star);
         }
 
-        // --- 3. イラスト（星）を流す ---
-        const assetPath = "./assets/image/star_sample.svg";
-        function createStar() {
+        // --- 3. イラスト（星や惑星）を流す ---
+        const assetPaths = [
+            "./assets/image/star_sample.svg",
+            "./assets/image/260424_Sample2.svg" // これが大きい惑星
+        ];
+
+        function createScrollingAsset() {
             const img = document.createElement('img');
-            img.src = assetPath;
+
+            const randomIndex = Math.floor(Math.random() * assetPaths.length);
+            const selectedPath = assetPaths[randomIndex];
+            img.src = selectedPath;
             img.className = 'scrolling-asset';
-            img.style.top = (Math.random() * 90) + 'vh';
-            img.addEventListener('animationend', () => { img.remove(); setTimeout(createStar, 1500); });
+
+            // ★大きい惑星（Sample2）用の特別ルール
+            if (selectedPath.includes('260424_Sample2.svg')) {
+                // サイズを大きくする（例：横幅150px、縦幅は自動）
+                img.style.width = '150px';
+                img.style.height = 'auto';
+
+                // スピードを遅くする（例：60秒かけてゆっくり移動）
+                img.style.animationDuration = '60s';
+
+                // 弾幕（z-index: 9999）より奥、普通の星（z-index: 10）より手前に（例：z-index: 50）
+                img.style.zIndex = '50';
+
+                // 出現する高さを少し限定する（真ん中あたり 20% ～ 70%）
+                img.style.top = (20 + Math.random() * 50) + 'vh';
+
+                // 少し透明にして、弾幕の邪魔をしないようにする（お好みで）
+                // img.style.opacity = '0.8'; 
+            } else {
+                // 通常の星（star_sample）はそのままの設定
+                img.style.width = '33px';
+                img.style.height = 'auto';
+                img.style.animationDuration = '30s';
+                img.style.zIndex = '10';
+                img.style.top = (Math.random() * 90) + 'vh';
+            }
+
+            img.addEventListener('animationend', () => {
+                img.remove();
+
+                // 惑星が出た後は、次のイラストまで少し間隔を空ける（5秒〜10秒）
+                const isPlanet = selectedPath.includes('260424_Sample2.svg');
+                const nextDelay = isPlanet ? (5000 + Math.random() * 5000) : (1000 + Math.random() * 2000);
+                setTimeout(createScrollingAsset, nextDelay);
+            });
+
             document.body.appendChild(img);
         }
-        createStar();
+
+        // 最初の一歩（星をいくつか先に流しておく）
+        createScrollingAsset();
+        setTimeout(createScrollingAsset, 2000);
+        // 惑星を早めに1つ流してみる
+        setTimeout(createScrollingAsset, 5000);
 
         // --- 4. 弾幕生成システム（レーン制御版） ---
-        const laneCount = 10; // 画面を10個のレーンに分ける
+        const laneCount = 18;// 画面を10個のレーンに分ける
         const lanes = new Array(laneCount).fill(false); // レーンが使用中かどうかのフラグ
 
         function spawnDanmaku(text, color, delay) {
