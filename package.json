@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
+    "dev": "react-scripts start",
     "start": "electron .",
     "build": "react-scripts build",
     "test": "echo \"Error: no test specified\" && exit 1"
