@@ -1,86 +1,119 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>設定画面</title>
-  <body>
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-<div class="container">
+const Wallpaper = () => {
+    const navigate = useNavigate();
 
-    <!-- 🔊 音量（volume + muted） -->
-    <div class="row">
-        <span>🔊</span>
-        <input type="range" id="volume" min="0" max="100">
-    </div>
+    // settings
+    const [muted, setMuted] = useState(false);
+    const [sec, setSec] = useState(true);
+    const [is24h, setIs24h] = useState(false);
+    const [tz, setTz] = useState("Asia/Tokyo");
+    const [themeId, setThemeId] = useState("theme1");
+    const [rocketColor, setRocketColor] = useState(0);
 
-    <div class="row">
-        <label>
-            <input type="checkbox" id="muted">
-            ミュート
-        </label>
-    </div>
+    // 保存処理
+    const handleSave = () => {
+        const settings = {
+            muted,
+            sec,
+            is24h,
+            tz,
+            themeId,
+            rocketColor,
+        };
 
-    <!-- ⏱ 秒表示（sec） -->
-    <div class="row">
-        <span>秒表示</span>
-        <div class="switch-group">
-            <input type="radio" id="sec_on" name="sec" value="true" checked>
-            <label for="sec_on">ON</label>
+        localStorage.setItem("user_settings", JSON.stringify(settings));
 
-            <input type="radio" id="sec_off" name="sec" value="false">
-            <label for="sec_off">OFF</label>
+        // 保存後：壁紙 or 設定どちらでもOK
+        navigate("/wallpaper");
+    };
+
+    // 戻る（ホームなど）
+    const handleBack = () => {
+        navigate("/");
+    };
+
+    return (
+        <div className="container">
+
+            {/* 音量 */}
+            <div className="row">
+                <span>🔊</span>
+                <input type="range" min="0" max="100" />
+            </div>
+
+            {/* ミュート */}
+            <div className="row">
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={muted}
+                        onChange={(e) => setMuted(e.target.checked)}
+                    />
+                    ミュート
+                </label>
+            </div>
+
+            {/* 秒表示 */}
+            <div className="row">
+                <span>秒表示</span>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="sec"
+                        checked={sec === true}
+                        onChange={() => setSec(true)}
+                    />
+                    ON
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="sec"
+                        checked={sec === false}
+                        onChange={() => setSec(false)}
+                    />
+                    OFF
+                </label>
+            </div>
+
+            {/* タイムゾーン */}
+            <select value={tz} onChange={(e) => setTz(e.target.value)}>
+                <option value="Asia/Tokyo">Asia/Tokyo</option>
+                <option value="UTC">UTC</option>
+                <option value="America/New_York">America/New_York</option>
+                <option value="Europe/London">Europe/London</option>
+            </select>
+
+            {/* ロケット色 */}
+            <select
+                value={rocketColor}
+                onChange={(e) => setRocketColor(Number(e.target.value))}
+            >
+                <option value={0}>赤</option>
+                <option value={1}>青</option>
+                <option value={2}>緑</option>
+            </select>
+
+            {/* 🟢 登録ボタン */}
+            <div className="row">
+                <button className="primaryBtn" onClick={handleSave}>
+                    登録（保存）
+                </button>
+            </div>
+
+            {/* 🔙 戻るボタン */}
+            <div className="row">
+                <button className="backBtn" onClick={handleBack}>
+                    戻る
+                </button>
+            </div>
+
         </div>
-    </div>
+    );
+};
 
-    <!-- 🕒 12h / 24h（is24h） -->
-    <div class="row">
-        <span>時間形式</span>
-        <div class="switch-group">
-            <input type="radio" id="time_12" name="is24h" value="false" checked>
-            <label for="time_12">6時</label>
-
-            <input type="radio" id="time_24" name="is24h" value="true">
-            <label for="time_24">18時</label>
-        </div>
-    </div>
-
-    <!-- 🌍 タイムゾーン（tz） -->
-    <div class="row">
-        <span>タイムゾーン</span>
-    </div>
-    <select id="tz">
-        <option value="Asia/Tokyo">Asia/Tokyo</option>
-        <option value="UTC">UTC</option>
-        <option value="America/New_York">America/New_York</option>
-        <option value="Europe/London">Europe/London</option>
-    </select>
-
-    <!-- 🎨 テーマ（themeId）※仮 -->
-    <div class="row">
-        <span>テーマ</span>
-    </div>
-    <select id="themeId">
-        <option value="theme1">テーマ1</option>
-        <option value="theme2">テーマ2</option>
-    </select>
-
-    <!-- 🚀 ロケット色（rocketColor） -->
-    <div class="row">
-        <span>ロケット色</span>
-    </div>
-    <select id="rocketColor">
-        <option value="0">赤</option>
-        <option value="1">青</option>
-        <option value="2">緑</option>
-    </select>
-
-    <!-- 🏠 ホーム -->
-    <div class="row">
-        <button id="homeBtn">ホームへ戻る</button>
-    </div>
-
-</div>
-
-</body>
-</html>
-   
+export default Wallpaper;
