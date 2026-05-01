@@ -1,0 +1,117 @@
+.collection-wrap {
+    display: flex;
+    height: 100vh;
+    background: black;
+    color: white;
+    overflow: hidden;
+}
+
+/* 左メイン */
+.collection-main {
+    flex: 1;
+    padding: 20px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 3px;
+}
+
+/* 図鑑グリッド */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+/* カード */
+.card {
+    height: 120px;
+    border: 1px solid #555;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+/* 未解放 */
+.locked {
+    background: black;
+}
+
+/* ブラックアウト */
+.lock {
+    color: gray;
+    text-align: center;
+}
+
+/* 名前 */
+.name {
+    font-size: 14px;
+}
+
+/* NEW */
+.new {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: yellow;
+    font-size: 11px;
+}
+
+/* プレビュー */
+.preview {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    font-size: 12px;
+    background: rgba(0,0,0,0.7);
+    text-align: center;
+}
+
+/* 右側タブ */
+.theme-area {
+    width: 60px;
+    position: relative;
+}
+
+.theme-tab {
+    writing-mode: vertical-rl;
+    background: #111;
+    padding: 10px;
+    cursor: pointer;
+    border-left: 1px solid #333;
+}
+
+/* スライドパネル */
+.theme-panel {
+    position: absolute;
+    right: -200px;
+    top: 0;
+    width: 200px;
+    height: 100%;
+    background: #111;
+    transition: 0.3s;
+    padding: 10px;
+}
+
+    .theme-panel.open {
+        right: 60px;
+    }
+
+/* テーマ */
+.theme-item {
+    padding: 10px;
+    border-bottom: 1px solid #333;
+}
+
+.locked {
+    opacity: 0.3;
+}
