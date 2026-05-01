@@ -105,11 +105,12 @@ button {
     padding: 10px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(90deg, #00c3ff, #3a7bd5);
-    color: white;
     font-weight: bold;
     cursor: pointer;
     transition: 0.2s;
+    color: white;
+    position: relative;
+    overflow: hidden;
 }
 
     button:hover {
@@ -123,7 +124,7 @@ button {
     box-shadow: 0 0 12px rgba(0, 150, 255, 0.15);
 }
 /* ===== 共通ベース（少し調整） ===== */
-button {
+/*button {
     width: 100%;
     padding: 10px;
     border: none;
@@ -134,7 +135,7 @@ button {
     color: white;
     position: relative;
     overflow: hidden;
-}
+}*/
 
 /* ===== 登録ボタン（メインアクション） ===== */
 .primaryBtn {

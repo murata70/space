@@ -29,8 +29,16 @@ const Wallpaper = () => {
         navigate("/wallpaper");
     };
 
-    // 戻る（ホームなど）
+    // 戻る（壁紙へ）
     const handleBack = () => {
+        const ok = window.confirm("保存せずに壁紙へ戻りますか？");
+        if (ok) {
+            navigate("/wallpaper");
+        }
+    };
+
+    // ホームへ
+    const handleGoHome = () => {
         navigate("/");
     };
 
@@ -108,7 +116,13 @@ const Wallpaper = () => {
             {/* 🔙 戻るボタン */}
             <div className="row">
                 <button className="backBtn" onClick={handleBack}>
-                    戻る
+                    ← 壁紙へ戻る
+                </button>
+            </div>
+
+            <div className="row">
+                <button className="homeBtn" onClick={handleGoHome}>
+                    🏠 ホームへ
                 </button>
             </div>
 
