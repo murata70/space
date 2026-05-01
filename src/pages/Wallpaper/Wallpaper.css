@@ -1,14 +1,66 @@
-.wallpaper {
-    margin: 0;
-    overflow: hidden;
-    background: url("space-bg.jpg") no-repeat center center / cover;
-    font-family: Arial, sans-serif;
-    color: white;
+﻿.wallpaper {
     width: 100vw;
     height: 100vh;
+    background: radial-gradient(#020111, #000000);
+    overflow: hidden;
+    position: relative;
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
-/* �E��UI */
+/* ⭐ 星 */
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    opacity: 0.8;
+    border-radius: 50%;
+    animation: blink 2s infinite alternate;
+}
+
+    /* ランダム配置 */
+    .star:nth-child(odd) {
+        animation-duration: 1.5s;
+    }
+
+    .star:nth-child(even) {
+        animation-duration: 2.5s;
+    }
+
+/* ランダム位置（雑でOK） */
+.star {
+    top: calc(100% * var(--y, 0.5));
+    left: calc(100% * var(--x, 0.5));
+}
+
+/* 光る */
+@keyframes blink {
+    from {
+        opacity: 0.2;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* 🚀 ロケット */
+.rocket {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+}
+
+/* 右下UI */
 .bottom-ui {
     position: fixed;
     bottom: 20px;
@@ -22,13 +74,12 @@
     backdrop-filter: blur(5px);
 }
 
-/* ���v */
-#clock {
+/* 時計 */
+.clock {
     font-size: 18px;
-    letter-spacing: 1px;
 }
 
-/* �A�C�R���{�^�� */
+/* ボタン */
 .icon-btn {
     width: 36px;
     height: 36px;
@@ -37,11 +88,24 @@
     background: rgba(255, 255, 255, 0.2);
     color: white;
     cursor: pointer;
-    font-size: 18px;
-    transition: 0.2s;
 }
 
     .icon-btn:hover {
         background: rgba(255, 255, 255, 0.4);
-        transform: scale(1.1);
     }
+
+/* モーダル */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-modal {
+    background: #111;
+    padding: 20px;
+    border-radius: 12px;
+}
