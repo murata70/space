@@ -1,6 +1,8 @@
 ﻿import React, { useEffect, useState } from "react";
 import "./Wallpaper.css";
 
+//テストです
+
 const Wallpaper = () => {
     const [time, setTime] = useState("");
     const [showSettings, setShowSettings] = useState(false);
