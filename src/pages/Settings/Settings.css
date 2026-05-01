@@ -1,0 +1,177 @@
+/* ===== 全体背景（宇宙空間） ===== */
+body {
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    color: #ffffff;
+    background: radial-gradient(ellipse at bottom, #0b0f2a 0%, #000000 100%);
+    overflow-x: hidden;
+}
+
+    /* 星の粒（疑似背景） */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        background-image: radial-gradient(white 1px, transparent 1px);
+        background-size: 2px 2px;
+        opacity: 0.15;
+        animation: starMove 120s linear infinite;
+        pointer-events: none;
+    }
+
+/* 星がゆっくり流れる */
+@keyframes starMove {
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(-50px, -50px);
+    }
+}
+
+/* ===== コンテナ ===== */
+.container {
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(10, 15, 40, 0.6);
+    border: 1px solid rgba(120, 180, 255, 0.2);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0, 150, 255, 0.15);
+}
+
+/* ===== 行レイアウト ===== */
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 14px 0;
+    padding: 10px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* ===== ラベル ===== */
+span,
+label {
+    font-size: 14px;
+    color: #cfe8ff;
+}
+
+/* ===== スイッチ系 ===== */
+.switch-group {
+    display: flex;
+    gap: 10px;
+}
+
+/* ラジオボタンを宇宙風に */
+input[type="radio"],
+input[type="checkbox"] {
+    accent-color: #4fc3ff;
+    transform: scale(1.1);
+}
+
+/* ===== スライダー（音量） ===== */
+input[type="range"] {
+    width: 140px;
+    accent-color: #00c3ff;
+}
+
+/* ===== セレクトボックス ===== */
+select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 6px;
+    background: rgba(0, 10, 30, 0.8);
+    color: #fff;
+    border: 1px solid rgba(100, 180, 255, 0.3);
+    border-radius: 8px;
+    outline: none;
+}
+
+    /* ホバーで光る */
+    select:hover {
+        box-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
+    }
+
+/* ===== ボタン（ホーム） ===== */
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #00c3ff, #3a7bd5);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+    button:hover {
+        transform: scale(1.02);
+        box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
+    }
+
+/* ===== アクセント（宇宙ネオン） ===== */
+.row:hover {
+    background: rgba(0, 150, 255, 0.08);
+    box-shadow: 0 0 12px rgba(0, 150, 255, 0.15);
+}
+/* ===== 共通ベース（少し調整） ===== */
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== 登録ボタン（メインアクション） ===== */
+.primaryBtn {
+    background: linear-gradient(90deg, #00c3ff, #3a7bd5);
+    box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+}
+
+    .primaryBtn:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 25px rgba(0, 200, 255, 0.7);
+    }
+
+    /* 光の流れエフェクト */
+    .primaryBtn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -120%;
+        width: 120%;
+        height: 100%;
+        background: linear-gradient( 120deg, transparent, rgba(255, 255, 255, 0.35), transparent );
+        transition: 0.5s;
+    }
+
+    .primaryBtn:hover::before {
+        left: 120%;
+    }
+
+/* ===== 戻るボタン（サブアクション） ===== */
+.backBtn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(120, 180, 255, 0.3);
+    color: #cfe8ff;
+}
+
+    .backBtn:hover {
+        background: rgba(0, 150, 255, 0.15);
+        box-shadow: 0 0 12px rgba(0, 150, 255, 0.3);
+        transform: scale(1.02);
+    }
