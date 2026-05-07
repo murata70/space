@@ -1,37 +1,37 @@
-import "./Collection.css";
+ï»¿import "./Collection.css";
 import { useState } from "react";
 
 /**
- * ƒRƒŒƒNƒVƒ‡ƒ“ƒ}ƒXƒ^iDB‘z’èj
+ * ã‚³ãƒ¬ã‚¯ã‚·ãƒ§ãƒ³ãƒžã‚¹ã‚¿ï¼ˆDBæƒ³å®šï¼‰
  */
 const COLLECTIONS = [
-  { id: "ufo", name: "UFO", unlockCond: "ƒ‰ƒ“ƒ_ƒ€oŒ»" },
-  { id: "end_credit", name: "ƒGƒ“ƒhƒNƒŒƒWƒbƒg", unlockCond: "HHH" },
-  { id: "satellite", name: "lH‰q¯", unlockCond: "ˆê’èŽžŠÔŒo‰ß" },
-  { id: "superman", name: "ƒX[ƒp[ƒ}ƒ“", unlockCond: "‚‘¬ƒCƒxƒ“ƒg" },
-  { id: "black_hole", name: "ƒuƒ‰ƒbƒNƒz[ƒ‹", unlockCond: "’áŠm—¦" },
-  { id: "meteor_shower", name: "—¬¯ŒQ", unlockCond: "ˆê’èŠm—¦" },
-  { id: "meteor", name: "è¦Î", unlockCond: "‰Šú‰ð•ú" },
-  { id: "glowing_cat", name: "‚Ð‚©‚é‚Ë‚±", unlockCond: "HHH" },
-  { id: "lost_astronaut", name: "•‚©‚ç‚È‚¢‰F’ˆ”òsŽm", unlockCond: "’áŠm—¦" },
-  { id: "constellation_animal", name: "¯À‚Ì“®•¨", unlockCond: "–éŠÔ" },
-  { id: "giant_ship", name: "‹‘å‰F’ˆ‘D", unlockCond: "“Á’èðŒ" },
+  { id: "ufo", name: "UFO", unlockCond: "ãƒ©ãƒ³ãƒ€ãƒ å‡ºç¾" },
+  { id: "end_credit", name: "ã‚¨ãƒ³ãƒ‰ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ", unlockCond: "ï¼Ÿï¼Ÿï¼Ÿ" },
+  { id: "satellite", name: "äººå·¥è¡›æ˜Ÿ", unlockCond: "ä¸€å®šæ™‚é–“çµŒéŽ" },
+  { id: "superman", name: "ã‚¹ãƒ¼ãƒ‘ãƒ¼ãƒžãƒ³", unlockCond: "é«˜é€Ÿã‚¤ãƒ™ãƒ³ãƒˆ" },
+  { id: "black_hole", name: "ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«", unlockCond: "ä½Žç¢ºçŽ‡" },
+  { id: "meteor_shower", name: "æµæ˜Ÿç¾¤", unlockCond: "ä¸€å®šç¢ºçŽ‡" },
+  { id: "meteor", name: "éš•çŸ³", unlockCond: "åˆæœŸè§£æ”¾" },
+  { id: "glowing_cat", name: "ã²ã‹ã‚‹ã­ã“", unlockCond: "ï¼Ÿï¼Ÿï¼Ÿ" },
+  { id: "lost_astronaut", name: "åŠ©ã‹ã‚‰ãªã„å®‡å®™é£›è¡Œå£«", unlockCond: "ä½Žç¢ºçŽ‡" },
+  { id: "constellation_animal", name: "æ˜Ÿåº§ã®å‹•ç‰©", unlockCond: "å¤œé–“" },
+  { id: "giant_ship", name: "å·¨å¤§å®‡å®™èˆ¹", unlockCond: "ç‰¹å®šæ¡ä»¶" },
 ];
 
 /**
- * DB‘z’èF‰ð•úÏ‚Ý
+ * DBæƒ³å®šï¼šè§£æ”¾æ¸ˆã¿
  */
 const unlocked = ["meteor", "ufo", "satellite"];
 
 /**
- * –¢“ÇŠÇ—
+ * æœªèª­ç®¡ç†
  */
 const eventLog = ["ufo"];
 
 const THEMES = [
-  { id: "space", name: "‰F’ˆ" },
-  { id: "ocean", name: "ŠCicoming soonj", locked: true },
-  { id: "forest", name: "Xicoming soonj", locked: true },
+  { id: "space", name: "å®‡å®™" },
+  { id: "ocean", name: "æµ·ï¼ˆcoming soonï¼‰", locked: true },
+  { id: "forest", name: "æ£®ï¼ˆcoming soonï¼‰", locked: true },
 ];
 
 const Collection = () => {
@@ -41,7 +41,7 @@ const Collection = () => {
   return (
     <div className="collection-wrap">
 
-      {/* ¶ƒƒCƒ“}ŠÓ */}
+      {/* å·¦ãƒ¡ã‚¤ãƒ³å›³é‘‘ */}
       <div className="collection-main">
         <h1 className="title">COLLECTION</h1>
 
@@ -81,7 +81,7 @@ const Collection = () => {
         </div>
       </div>
 
-      {/* ‰Eƒ^ƒu */}
+      {/* å³ã‚¿ãƒ– */}
       <div className="theme-area">
         <div
           className="theme-tab"
