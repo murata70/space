@@ -1,11 +1,13 @@
 ﻿// 修正中
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom"; // (追加しました。村田)
 import "./Wallpaper.css";
 
 //テストです
 
 const Wallpaper = () => {
     const [time, setTime] = useState("");
+    const navigate = useNavigate();　// (追加しました。村田)
     const [showSettings, setShowSettings] = useState(false);
 
     // 時計（モックでも動かすと雰囲気出る）
@@ -46,26 +48,34 @@ const Wallpaper = () => {
             <div className="bottom-ui">
                 <div className="clock">{time}</div>
 
-                <button className="icon-btn">📁</button>
-
                 <button
                     className="icon-btn"
-                    onClick={() => setShowSettings(true)}
+                    onClick={() => navigate("/collection")} // (追加しました。村田 /collectionに接続するための変更)
+                >
+                    📁
+                </button>
+
+       
+                <button
+                    className="icon-btn"
+                    onClick={() => navigate("/settings")} // (追加しました。村田 /settingsに接続するための変更)
                 >
                     ⚙️
                 </button>
+
             </div>
 
-            {/* 設定モーダル（仮） */}
-            {showSettings && (
-                <div className="overlay">
-                    <div className="settings-modal">
-                        <h3>設定</h3>
-                        <p>ここに設定UIが入る</p>
-                        <button onClick={() => setShowSettings(false)}>閉じる</button>
-                    </div>
-                </div>
-            )}
+            {/*↓（非表示にしました。村田）*/}
+            {/* 設定モーダル（仮）*/}
+            {/*{showSettings && (*/}
+            {/*    <div className="overlay">*/}
+            {/*        <div className="settings-modal">*/}
+            {/*            <h3>設定</h3>*/}
+            {/*            <p>ここに設定UIが入る</p>*/}
+            {/*            <button onClick={() => setShowSettings(false)}>閉じる</button>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*)}*/}
         </div>
     );
 };

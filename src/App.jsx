@@ -21,8 +21,8 @@ function App() {
                 {/* http://localhost:5173/settings ÇÃéû */}
                 <Route path="/settings" element={<Settings />} />
 
-                 http://localhost:5173/collection ÇÃéû 
-                {/*<Route path="/collection" element={<Collection />} /> */}
+                {/* http://localhost:5173/collection ÇÃéû */}
+                <Route path="/collection" element={<Collection />} />
 
                 {/* ë∂ç›ÇµÇ»Ç¢URLÇ™ë≈ÇΩÇÍÇΩéûÇÕHomeÇ÷ */}
                 <Route path="*" element={<Home />} />
