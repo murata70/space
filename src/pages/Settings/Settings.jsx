@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Settings.css"; // ← これが必要です！
 
 const Wallpaper = () => {
     const navigate = useNavigate();
@@ -10,7 +11,7 @@ const Wallpaper = () => {
     const [is24h, setIs24h] = useState(false);
     const [tz, setTz] = useState("Asia/Tokyo");
     const [themeId, setThemeId] = useState("theme1");
-    const [rocketColor, setRocketColor] = useState(0);
+    //const [rocketColor, setRocketColor] = useState(0);
 
     // 保存処理
     const handleSave = () => {
@@ -43,11 +44,16 @@ const Wallpaper = () => {
     };
 
     return (
-        <div className="container">
+    /* <> はフラグメントといって、複数の要素をまとめる透明な袋のようなものです */
+    <>
+            {/* 流れ星はコンテナの外（背景レイヤー）に置く */}
+            < div className = "shooting-star" >
+            </div >
 
-            {/* 音量 */}
-            <div className="row">
-                <span>🔊</span>
+            <div className="container">
+                {/* 音量 */}
+                <div className="row">
+                    <span>🔊</span>
                 <input type="range" min="0" max="100" />
             </div>
 
@@ -97,14 +103,14 @@ const Wallpaper = () => {
             </select>
 
             {/* ロケット色 */}
-            <select
-                value={rocketColor}
-                onChange={(e) => setRocketColor(Number(e.target.value))}
-            >
-                <option value={0}>赤</option>
-                <option value={1}>青</option>
-                <option value={2}>緑</option>
-            </select>
+            {/*<select*/}
+            {/*    value={rocketColor}*/}
+            {/*    onChange={(e) => setRocketColor(Number(e.target.value))}*/}
+            {/*>*/}
+            {/*    <option value={0}>赤</option>*/}
+            {/*    <option value={1}>青</option>*/}
+            {/*    <option value={2}>緑</option>*/}
+            {/*</select>*/}
 
             {/* 🟢 登録ボタン */}
             <div className="row">
@@ -126,7 +132,8 @@ const Wallpaper = () => {
                 </button>
             </div>
 
-        </div>
+    </div>
+        </>
     );
 };
 
