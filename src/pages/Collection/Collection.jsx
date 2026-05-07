@@ -1,32 +1,13 @@
 ﻿import "./Collection.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 /**
- * コレクションマスタ（DB想定）
+ * 仮データ（未確定状態）
  */
-const COLLECTIONS = [
-  { id: "ufo", name: "UFO", unlockCond: "ランダム出現" },
-  { id: "end_credit", name: "エンドクレジット", unlockCond: "？？？" },
-  { id: "satellite", name: "人工衛星", unlockCond: "一定時間経過" },
-  { id: "superman", name: "スーパーマン", unlockCond: "高速イベント" },
-  { id: "black_hole", name: "ブラックホール", unlockCond: "低確率" },
-  { id: "meteor_shower", name: "流星群", unlockCond: "一定確率" },
-  { id: "meteor", name: "隕石", unlockCond: "初期解放" },
-  { id: "glowing_cat", name: "ひかるねこ", unlockCond: "？？？" },
-  { id: "lost_astronaut", name: "助からない宇宙飛行士", unlockCond: "低確率" },
-  { id: "constellation_animal", name: "星座の動物", unlockCond: "夜間" },
-  { id: "giant_ship", name: "巨大宇宙船", unlockCond: "特定条件" },
-];
-
-/**
- * DB想定：解放済み
- */
-const unlocked = ["meteor", "ufo", "satellite"];
-
-/**
- * 未読管理
- */
-const eventLog = ["ufo"];
+const COLLECTIONS = Array.from({ length: 11 }).map((_, i) => ({
+  id: i,
+}));
 
 const THEMES = [
   { id: "space", name: "宇宙" },
@@ -38,60 +19,57 @@ const Collection = () => {
   const [hovered, setHovered] = useState(null);
   const [themeOpen, setThemeOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   return (
     <div className="collection-wrap">
 
-      {/* 左メイン図鑑 */}
+      {/* メイン */}
       <div className="collection-main">
         <h1 className="title">COLLECTION</h1>
 
         <div className="grid">
-          {COLLECTIONS.map((item) => {
-            const isUnlocked = unlocked.includes(item.id);
-            const isNew = eventLog.includes(item.id);
+          {COLLECTIONS.map((item) => (
+            <div
+              key={item.id}
+              className="card"
+              onMouseEnter={() => setHovered(item.id)}
+              onMouseLeave={() => setHovered(null)}
+            >
+              <div className="unknown">???</div>
 
-            return (
-              <div
-                key={item.id}
-                className={`card ${!isUnlocked ? "locked" : ""}`}
-                onMouseEnter={() => setHovered(item.id)}
-                onMouseLeave={() => setHovered(null)}
-              >
-                {!isUnlocked ? (
-                  <div className="lock">
-                    <p>???</p>
-                    <span>{item.unlockCond}</span>
-                  </div>
-                ) : (
-                  <>
-                    <div className="name">{item.name}</div>
-
-                    {isNew && <div className="new">NEW</div>}
-
-                    {hovered === item.id && (
-                      <div className="preview">
-                        ? preview anim
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            );
-          })}
+              {hovered === item.id && (
+                <div className="preview" />
+              )}
+            </div>
+          ))}
         </div>
+
+        {/* 戻るボタン */}
+        <button
+          className="back-btn"
+          onClick={() => navigate("/wallpaper")}
+        >
+          ← 壁紙に戻る
+        </button>
       </div>
 
-      {/* 右タブ */}
-      <div className="theme-area">
-        <div
-          className="theme-tab"
-          onMouseEnter={() => setThemeOpen(true)}
-          onMouseLeave={() => setThemeOpen(false)}
-        >
+      {/* テーマエリア */}
+      <div
+        className="theme-area"
+        onMouseEnter={() => setThemeOpen(true)}
+        onMouseLeave={() => setThemeOpen(false)}
+      >
+
+        {/* タブ */}
+        <div className="theme-tab">
           THEMES
         </div>
 
+        {/* パネル */}
         <div className={`theme-panel ${themeOpen ? "open" : ""}`}>
+          <h2 className="theme-title">THEMES</h2>
+
           {THEMES.map((t) => (
             <div
               key={t.id}
@@ -101,6 +79,7 @@ const Collection = () => {
             </div>
           ))}
         </div>
+
       </div>
 
     </div>
