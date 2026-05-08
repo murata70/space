@@ -2,8 +2,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import Slide from "../../components/ui/Slide/Slide";
+import StarField from "../../components/ui/StarField/StarField";
+
 /**
- * 仮データ（未確定状態）
+ * 仮データ
  */
 const COLLECTIONS = Array.from({ length: 11 }).map((_, i) => ({
   id: i,
@@ -16,8 +19,8 @@ const THEMES = [
 ];
 
 const Collection = () => {
+
   const [hovered, setHovered] = useState(null);
-  const [themeOpen, setThemeOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,61 +29,54 @@ const Collection = () => {
 
       {/* メイン */}
       <div className="collection-main">
-        <h1 className="title">COLLECTION</h1>
+
+        {/* 星背景 */}
+        <StarField />
+
+        <h1 className="title">
+          COLLECTION
+        </h1>
 
         <div className="grid">
+
           {COLLECTIONS.map((item) => (
+
             <div
               key={item.id}
               className="card"
               onMouseEnter={() => setHovered(item.id)}
               onMouseLeave={() => setHovered(null)}
             >
-              <div className="unknown">???</div>
+
+              <div className="unknown">
+                ???
+              </div>
 
               {hovered === item.id && (
                 <div className="preview" />
               )}
+
             </div>
+
           ))}
+
         </div>
 
-        {/* 戻るボタン */}
+        {/* 戻る */}
         <button
           className="back-btn"
           onClick={() => navigate("/wallpaper")}
         >
           ← 壁紙に戻る
         </button>
-      </div>
-
-      {/* テーマエリア */}
-      <div
-        className="theme-area"
-        onMouseEnter={() => setThemeOpen(true)}
-        onMouseLeave={() => setThemeOpen(false)}
-      >
-
-        {/* タブ */}
-        <div className="theme-tab">
-          THEMES
-        </div>
-
-        {/* パネル */}
-        <div className={`theme-panel ${themeOpen ? "open" : ""}`}>
-          <h2 className="theme-title">THEMES</h2>
-
-          {THEMES.map((t) => (
-            <div
-              key={t.id}
-              className={`theme-item ${t.locked ? "locked" : ""}`}
-            >
-              {t.name}
-            </div>
-          ))}
-        </div>
 
       </div>
+
+      {/* スライド */}
+      <Slide
+        title="THEMES"
+        items={THEMES}
+      />
 
     </div>
   );
