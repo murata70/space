@@ -1,0 +1,241 @@
+/* Home.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body,
+#root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: "Segoe UI", sans-serif;
+    background: #050816;
+}
+
+/* =========================
+   背景
+========================= */
+
+.home-bg {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 0;
+    background: radial-gradient(circle at top, #182445 0%, #070b17 45%, #02040b 100%);
+}
+
+    /* 星 */
+    .home-bg::before,
+    .home-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(white 1px, transparent 1px), radial-gradient(white 1px, transparent 1px), radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px);
+        background-size: 120px 120px, 180px 180px, 260px 260px;
+        animation: starsMove 80s linear infinite;
+        opacity: 0.6;
+    }
+
+    .home-bg::after {
+        animation-duration: 140s;
+        opacity: 0.3;
+    }
+
+@keyframes starsMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-500px);
+    }
+}
+
+/* =========================
+   コンテナ
+========================= */
+
+.home-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    color: white;
+    z-index: 1;
+}
+
+/* =========================
+   中央UI
+========================= */
+
+.home-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* タイトル */
+
+.home-title {
+    font-size: 42px;
+    letter-spacing: 6px;
+    margin-bottom: 40px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255,255,255,0.7), 0 0 20px rgba(0,170,255,0.5), 0 0 40px rgba(0,170,255,0.3);
+}
+
+/* =========================
+   設定BOX
+========================= */
+
+.settings-box {
+    width: 360px;
+    padding: 28px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.5), 0 0 10px rgba(0,170,255,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* =========================
+   行
+========================= */
+
+.icon-row,
+.toggle-row,
+.select-row {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.icon-row {
+    justify-content: center;
+    font-size: 28px;
+}
+
+/* =========================
+   トグル
+========================= */
+
+.toggle-row {
+    justify-content: space-between;
+    gap: 12px;
+}
+
+    .toggle-row span {
+        font-size: 15px;
+        letter-spacing: 1px;
+        opacity: 0.9;
+    }
+
+    /* ボタン */
+
+    .toggle-row button,
+    .select-row select,
+    .ok-button {
+        transition: 0.25s ease;
+    }
+
+    .toggle-row button {
+        min-width: 72px;
+        padding: 10px 0;
+        border: none;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.08);
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .toggle-row button:hover {
+            background: rgba(0,170,255,0.4);
+            box-shadow: 0 0 10px rgba(0,170,255,0.5);
+        }
+
+/* =========================
+   Select
+========================= */
+
+.select-row select {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    outline: none;
+    cursor: pointer;
+}
+
+    .select-row select option {
+        background: #0b1020;
+        color: white;
+    }
+
+/* =========================
+   OKボタン
+========================= */
+
+.ok-button {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient( 135deg, #2ea7ff, #4f7cff );
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(46,167,255,0.4);
+}
+
+    .ok-button:hover {
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 0 28px rgba(46,167,255,0.7);
+    }
+
+/* =========================
+   レスポンシブ
+========================= */
+
+@media (max-width: 480px) {
+
+    .home-title {
+        font-size: 28px;
+        letter-spacing: 3px;
+    }
+
+    .settings-box {
+        width: 90%;
+        padding: 22px;
+    }
+
+    .toggle-row {
+        flex-wrap: wrap;
+    }
+
+        .toggle-row button {
+            flex: 1;
+        }
+
+    .ok-button {
+        right: 20px;
+        bottom: 20px;
+    }
+}
