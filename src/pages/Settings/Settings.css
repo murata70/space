@@ -1,4 +1,3 @@
-/* ===== 全体背景（宇宙空間） ===== */
 /* ===== 全体背景（宇宙空間：星雲・グロー・瞬き 統合版） ===== */
 body {
     margin: 0;
@@ -8,7 +7,7 @@ body {
     background: radial-gradient(circle at 20% 20%, rgba(0, 150, 255, 0.25) 0%, transparent 50%), radial-gradient(circle at 80% 30%, rgba(150, 0, 255, 0.2) 0%, transparent 50%), radial-gradient(circle at 50% 80%, rgba(0, 255, 255, 0.15) 0%, transparent 60%), radial-gradient(ellipse at bottom, #0b0f2a 0%, #000000 100%);
     background-attachment: fixed;
     overflow-x: hidden;
-    min-height: 100vh; /* 画面全体を覆うように */
+    min-height: 100vh;
 }
 
     /* 星の粒（グロー効果付き） */
@@ -21,13 +20,13 @@ body {
         height: 200%;
         background-image: radial-gradient(white 1px, transparent 1px), radial-gradient(rgba(255, 255, 255, 0.4) 2px, transparent 3px);
         background-size: 180px 180px, 350px 350px;
-        opacity: 0.5; /* 少し透明度を上げて見やすく */
+        opacity: 0.5;
         animation: starMove 150s linear infinite, twinkle 4s ease-in-out infinite alternate;
         pointer-events: none;
-        z-index: -1; /* 背面に配置 */
+        z-index: -1;
     }
 
-/* 星のアニメーション（これらは1回だけ書けばOK） */
+/* アニメーション定義 */
 @keyframes twinkle {
     from {
         opacity: 0.3;
@@ -48,10 +47,8 @@ body {
     }
 }
 
-/* --- この下の .container 以降は今のままでOKです --- */
-
-/* ===== コンテナ ===== */
-.container {
+/* ===== コンテナ（ここを .container から変更） ===== */
+.settings-page-container {
     max-width: 420px;
     margin: 40px auto;
     padding: 20px;
@@ -71,35 +68,31 @@ body {
     padding: 10px;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.03);
+    transition: 0.2s;
 }
 
-/* ===== ラベル ===== */
-span,
-label {
+    .row:hover {
+        background: rgba(0, 150, 255, 0.08);
+        box-shadow: 0 0 12px rgba(0, 150, 255, 0.15);
+    }
+
+/* ===== ラベル & テキスト ===== */
+span, label {
     font-size: 14px;
     color: #cfe8ff;
 }
 
-/* ===== スイッチ系 ===== */
-.switch-group {
-    display: flex;
-    gap: 10px;
-}
-
-/* ラジオボタンを宇宙風に */
-input[type="radio"],
-input[type="checkbox"] {
+/* ===== 入力フォーム（宇宙風） ===== */
+input[type="radio"], input[type="checkbox"] {
     accent-color: #4fc3ff;
     transform: scale(1.1);
 }
 
-/* ===== スライダー（音量） ===== */
 input[type="range"] {
     width: 140px;
     accent-color: #00c3ff;
 }
 
-/* ===== セレクトボックス ===== */
 select {
     width: 100%;
     padding: 8px;
@@ -109,17 +102,17 @@ select {
     border: 1px solid rgba(100, 180, 255, 0.3);
     border-radius: 8px;
     outline: none;
+    transition: 0.2s;
 }
 
-    /* ホバーで光る */
     select:hover {
         box-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
     }
 
-/* ===== ボタン（ホーム） ===== */
+/* ===== ボタン共通 ===== */
 button {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     border: none;
     border-radius: 10px;
     font-weight: bold;
@@ -132,101 +125,54 @@ button {
 
     button:hover {
         transform: scale(1.02);
-        box-shadow: 0 0 15px rgba(0, 200, 255, 0.5);
     }
 
-/* ===== アクセント（宇宙ネオン） ===== */
-.row:hover {
-    background: rgba(0, 150, 255, 0.08);
-    box-shadow: 0 0 12px rgba(0, 150, 255, 0.15);
-}
-/* ===== 共通ベース（少し調整） ===== */
-/*button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.2s;
-    color: white;
-    position: relative;
-    overflow: hidden;
-}*/
-
-/* ===== 登録ボタン（メインアクション） ===== */
+/* 登録ボタン */
 .primaryBtn {
     background: linear-gradient(90deg, #00c3ff, #3a7bd5);
     box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
 }
 
     .primaryBtn:hover {
-        transform: scale(1.03);
         box-shadow: 0 0 25px rgba(0, 200, 255, 0.7);
     }
 
-    /* 光の流れエフェクト */
-    .primaryBtn::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: -120%;
-        width: 120%;
-        height: 100%;
-        background: linear-gradient( 120deg, transparent, rgba(255, 255, 255, 0.35), transparent );
-        transition: 0.5s;
-    }
-
-    .primaryBtn:hover::before {
-        left: 120%;
-    }
-
-/* ===== 戻るボタン（サブアクション） ===== */
+/* 戻るボタン */
 .backBtn {
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(120, 180, 255, 0.3);
     color: #cfe8ff;
+    margin-top: 5px;
 }
 
-    .backBtn:hover {
-        background: rgba(0, 150, 255, 0.15);
-        box-shadow: 0 0 12px rgba(0, 150, 255, 0.3);
-        transform: scale(1.02);
-    }
-
-/* ===== ホームへボタン（背景は白、文字を黒く！） ===== */
+/* ホームへボタン */
 .homeBtn {
-    background: #ffffff; /* 背景は真っ白 */
-    color: #1a1a1a; /* 文字色を濃いグレー（ほぼ黒）に */
-    border: 1px solid #ccc; /* 縁取りも少し付けてくっきりさせる */
-    margin-top: 10px;
+    background: #ffffff;
+    color: #1a1a1a;
+    border: 1px solid #ccc;
+    margin-top: 5px;
 }
 
     .homeBtn:hover {
-        background: #f0f0f0; /* ホバーした時に少しだけグレーに */
-        color: #000000; /* ホバー時は真っ黒に */
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        background: #f0f0f0;
+        color: #000000;
     }
 
-/* ===== 流れ星の本体 ===== */
+/* ===== 流れ星 ===== */
 .shooting-star {
     position: fixed;
-    top: 50%; /* 出現する高さ（後で調整可） */
-    left: -10%; /* 画面の外からスタート */
+    top: 50%;
+    left: -10%;
     width: 100px;
     height: 2px;
-    /* 流れ星の「尾」をグラデーションで表現 */
     background: linear-gradient(90deg, rgba(255,255,255,1) 0%, transparent 100%);
     opacity: 0;
-    z-index: -1; /* 背景に配置 */
-    /* 17秒ごとに、4秒かけて流れる設定（きまぐれ感を出すために秒数を長く） */
+    z-index: -1;
     animation: shooting 17s ease-in infinite;
 }
 
-/* 流れ星のアニメーション */
 @keyframes shooting {
     0% {
-        /* スタート：右上（画面外） */
         transform: translateX(100vw) translateY(-10vh) rotate(225deg);
         opacity: 0;
     }
@@ -236,8 +182,6 @@ button {
     }
 
     30% {
-        /* ゴール：左下（画面外） */
-        /* 角度 225deg は、左下を指し示す角度です */
         transform: translateX(-20vw) translateY(110vh) rotate(225deg);
         opacity: 0;
     }

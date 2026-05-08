@@ -1,138 +1,101 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Settings.css"; // ← これが必要です！
+import "./Settings.css";
 
 const Settings = () => {
     const navigate = useNavigate();
 
-    // settings
+    // 不要な変数は削除し、使うものだけに整理
     const [muted, setMuted] = useState(false);
     const [sec, setSec] = useState(true);
-    const [is24h, setIs24h] = useState(false);
     const [tz, setTz] = useState("Asia/Tokyo");
-    const [themeId, setThemeId] = useState("theme1");
-    //const [rocketColor, setRocketColor] = useState(0);
 
-    // 保存処理
     const handleSave = () => {
-        const settings = {
-            muted,
-            sec,
-            is24h,
-            tz,
-            themeId,
-            rocketColor,
-        };
-
+        const settings = { muted, sec, tz };
         localStorage.setItem("user_settings", JSON.stringify(settings));
-
-        // 保存後：壁紙 or 設定どちらでもOK
+        alert("設定を保存しました！");
         navigate("/wallpaper");
     };
 
-    // 戻る（壁紙へ）
     const handleBack = () => {
-        const ok = window.confirm("保存せずに壁紙へ戻りますか？");
-        if (ok) {
+        if (window.confirm("保存せずに戻りますか？")) {
             navigate("/wallpaper");
         }
     };
 
-    // ホームへ
     const handleGoHome = () => {
         navigate("/");
     };
 
     return (
-    /* <> はフラグメントといって、複数の要素をまとめる透明な袋のようなものです */
-    <>
-            {/* 流れ星はコンテナの外（背景レイヤー）に置く */}
-            < div className = "shooting-star" >
-            </div >
+        <>
+            <div className="shooting-star"></div>
 
-            <div className="container">
-                {/* 音量 */}
+            {/* 【修正箇所】CSSと名前を統一 */}
+            <div className="settings-page-container">
+                <h2 style={{ textAlign: "center", color: "#4fc3ff", marginBottom: "20px" }}>SETTINGS</h2>
+
                 <div className="row">
-                    <span>🔊</span>
-                <input type="range" min="0" max="100" />
+                    <span>🔊 </span>
+                    <input type="range" min="0" max="100" />
+                </div>
+
+                <div className="row">
+                    <label style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                        <input
+                            type="checkbox"
+                            checked={muted}
+                            onChange={(e) => setMuted(e.target.checked)}
+                        />
+                        ミュート
+                    </label>
+                </div>
+
+                <div className="row">
+                    <span>sec</span>
+                    <div className="switch-group">
+                        <label>
+                            <input
+                                type="radio"
+                                name="sec"
+                                checked={sec === true}
+                                onChange={() => setSec(true)}
+                            /> ON
+                        </label>
+                        <label style={{ marginLeft: "10px" }}>
+                            <input
+                                type="radio"
+                                name="sec"
+                                checked={sec === false}
+                                onChange={() => setSec(false)}
+                            /> OFF
+                        </label>
+                    </div>
+                </div>
+
+                <div className="row" style={{ display: "block" }}>
+                    <span style={{ display: "block", marginBottom: "5px" }}>タイムゾーン</span>
+                    <select value={tz} onChange={(e) => setTz(e.target.value)}>
+                        <option value="Asia/Tokyo">Asia/Tokyo</option>
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">New York</option>
+                        <option value="Europe/London">London</option>
+                    </select>
+                </div>
+
+                {/* ボタン群の配置を整理 */}
+                <div style={{ marginTop: "25px", display: "flex", flexDirection: "column", gap: "10px" }}>
+                    <button className="primaryBtn" onClick={handleSave}>
+                        登録（保存）
+                    </button>
+                    <button className="backBtn" onClick={handleBack}>
+                        ← 壁紙へ戻る
+                    </button>
+                    <button className="homeBtn" onClick={handleGoHome}>
+                        🏠 ホームへ
+                    </button>
+                </div>
             </div>
-
-            {/* ミュート */}
-            <div className="row">
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={muted}
-                        onChange={(e) => setMuted(e.target.checked)}
-                    />
-                    ミュート
-                </label>
-            </div>
-
-            {/* 秒表示 */}
-            <div className="row">
-                <span>秒表示</span>
-
-                <label>
-                    <input
-                        type="radio"
-                        name="sec"
-                        checked={sec === true}
-                        onChange={() => setSec(true)}
-                    />
-                    ON
-                </label>
-
-                <label>
-                    <input
-                        type="radio"
-                        name="sec"
-                        checked={sec === false}
-                        onChange={() => setSec(false)}
-                    />
-                    OFF
-                </label>
-            </div>
-
-            {/* タイムゾーン */}
-            <select value={tz} onChange={(e) => setTz(e.target.value)}>
-                <option value="Asia/Tokyo">Asia/Tokyo</option>
-                <option value="UTC">UTC</option>
-                <option value="America/New_York">America/New_York</option>
-                <option value="Europe/London">Europe/London</option>
-            </select>
-
-            {/* ロケット色 */}
-            {/*<select*/}
-            {/*    value={rocketColor}*/}
-            {/*    onChange={(e) => setRocketColor(Number(e.target.value))}*/}
-            {/*>*/}
-            {/*    <option value={0}>赤</option>*/}
-            {/*    <option value={1}>青</option>*/}
-            {/*    <option value={2}>緑</option>*/}
-            {/*</select>*/}
-
-            {/* 🟢 登録ボタン */}
-            <div className="row">
-                <button className="primaryBtn" onClick={handleSave}>
-                    登録（保存）
-                </button>
-            </div>
-
-            {/* 🔙 戻るボタン */}
-            <div className="row">
-                <button className="backBtn" onClick={handleBack}>
-                    ← 壁紙へ戻る
-                </button>
-            </div>
-
-            <div className="row">
-                <button className="homeBtn" onClick={handleGoHome}>
-                    🏠 ホームへ
-                </button>
-            </div>
-
-    </div>
         </>
     );
 };
