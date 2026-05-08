@@ -17,7 +17,7 @@ body,
 }
 
 /* =========================
-   背景
+   背景（宇宙空間アニメーション）
 ========================= */
 
 .home-bg {
@@ -28,7 +28,7 @@ body,
     background: radial-gradient(circle at top, #182445 0%, #070b17 45%, #02040b 100%);
 }
 
-    /* 星 */
+    /* 星の粒 */
     .home-bg::before,
     .home-bg::after {
         content: "";
@@ -56,7 +56,7 @@ body,
 }
 
 /* =========================
-   コンテナ
+   メインコンテナ
 ========================= */
 
 .home-container {
@@ -65,23 +65,13 @@ body,
     position: relative;
     color: white;
     z-index: 1;
-}
-
-/* =========================
-   中央UI
-========================= */
-
-.home-content {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-/* タイトル */
-
+/* タイトル：ネオンエフェクト */
 .home-title {
     font-size: 42px;
     letter-spacing: 6px;
@@ -92,7 +82,7 @@ body,
 }
 
 /* =========================
-   設定BOX
+   設定BOX（グラスモーフィズム）
 ========================= */
 
 .settings-box {
@@ -109,10 +99,7 @@ body,
     gap: 22px;
 }
 
-/* =========================
-   行
-========================= */
-
+/* 行のレイアウト */
 .icon-row,
 .toggle-row,
 .select-row {
@@ -126,10 +113,6 @@ body,
     font-size: 28px;
 }
 
-/* =========================
-   トグル
-========================= */
-
 .toggle-row {
     justify-content: space-between;
     gap: 12px;
@@ -141,13 +124,9 @@ body,
         opacity: 0.9;
     }
 
-    /* ボタン */
-
-    .toggle-row button,
-    .select-row select,
-    .ok-button {
-        transition: 0.25s ease;
-    }
+    /* =========================
+   ボタン & フォーム要素
+========================= */
 
     .toggle-row button {
         min-width: 72px;
@@ -159,16 +138,13 @@ body,
         cursor: pointer;
         font-size: 14px;
         font-weight: 600;
+        transition: 0.25s ease;
     }
 
         .toggle-row button:hover {
             background: rgba(0,170,255,0.4);
             box-shadow: 0 0 10px rgba(0,170,255,0.5);
         }
-
-/* =========================
-   Select
-========================= */
 
 .select-row select {
     width: 100%;
@@ -179,6 +155,7 @@ body,
     color: white;
     outline: none;
     cursor: pointer;
+    transition: 0.25s ease;
 }
 
     .select-row select option {
@@ -187,7 +164,7 @@ body,
     }
 
 /* =========================
-   OKボタン
+   OKボタン（右下固定）
 ========================= */
 
 .ok-button {
@@ -197,12 +174,13 @@ body,
     padding: 14px 30px;
     border: none;
     border-radius: 14px;
-    background: linear-gradient( 135deg, #2ea7ff, #4f7cff );
+    background: linear-gradient(135deg, #2ea7ff, #4f7cff);
     color: white;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 0 20px rgba(46,167,255,0.4);
+    transition: 0.25s ease;
 }
 
     .ok-button:hover {
@@ -215,7 +193,6 @@ body,
 ========================= */
 
 @media (max-width: 480px) {
-
     .home-title {
         font-size: 28px;
         letter-spacing: 3px;
@@ -225,14 +202,6 @@ body,
         width: 90%;
         padding: 22px;
     }
-
-    .toggle-row {
-        flex-wrap: wrap;
-    }
-
-        .toggle-row button {
-            flex: 1;
-        }
 
     .ok-button {
         right: 20px;
