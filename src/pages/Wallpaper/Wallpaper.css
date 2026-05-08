@@ -1,66 +1,26 @@
 ﻿.wallpaper {
     width: 100vw;
     height: 100vh;
-    background: radial-gradient(#020111, #000000);
+    background: radial-gradient( circle at center, #020111 0%, #000000 100% );
     overflow: hidden;
     position: relative;
     color: white;
     font-family: Arial, sans-serif;
 }
 
-/* ⭐ 星 */
-.stars {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
+/* ロケット */
 
-.star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    opacity: 0.8;
-    border-radius: 50%;
-    animation: blink 2s infinite alternate;
-}
-
-    /* ランダム配置 */
-    .star:nth-child(odd) {
-        animation-duration: 1.5s;
-    }
-
-    .star:nth-child(even) {
-        animation-duration: 2.5s;
-    }
-
-/* ランダム位置（雑でOK） */
-.star {
-    top: calc(100% * var(--y, 0.5));
-    left: calc(100% * var(--x, 0.5));
-}
-
-/* 光る */
-@keyframes blink {
-    from {
-        opacity: 0.2;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-/* 🚀 ロケット */
 .rocket {
     position: absolute;
-    top: 40%;
+    top: 45%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 50px;
+    font-size: 54px;
+    z-index: 5;
 }
 
-/* 右下UI */
+/* UI */
+
 .bottom-ui {
     position: fixed;
     bottom: 20px;
@@ -68,44 +28,26 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.35);
     padding: 10px 15px;
     border-radius: 12px;
-    backdrop-filter: blur(5px);
-}
-
-/* 時計 */
-.clock {
-    font-size: 18px;
+    backdrop-filter: blur(6px);
+    z-index: 10;
 }
 
 /* ボタン */
+
 .icon-btn {
     width: 36px;
     height: 36px;
     border: none;
     border-radius: 8px;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
     color: white;
     cursor: pointer;
+    transition: 0.2s;
 }
 
     .icon-btn:hover {
-        background: rgba(255, 255, 255, 0.4);
+        background: rgba(255, 255, 255, 0.35);
     }
-
-/* モーダル */
-.overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.settings-modal {
-    background: #111;
-    padding: 20px;
-    border-radius: 12px;
-}
