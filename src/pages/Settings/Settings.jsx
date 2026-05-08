@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Settings.css"; // ← これが必要です！
 
-const Wallpaper = () => {
+const Settings = () => {
     const navigate = useNavigate();
 
     // settings
@@ -137,4 +137,4 @@ const Wallpaper = () => {
     );
 };
 
-export default Wallpaper;
+export default Settings;
