@@ -4,29 +4,38 @@
     background: black;
     color: white;
     overflow: hidden;
+    /* ★重要：重なり制御の基準を作る */
+    position: relative;
+    /* ★重要：内部のz-indexを独立させる */
+    isolation: isolate;
 }
 
-/* 左 */
+/* =========================
+   メインエリア
+========================= */
+
 .collection-main {
     flex: 1;
     padding: 20px;
     position: relative;
+    overflow: hidden;
+    /* Slideより下に固定 */
+    z-index: 1;
 }
 
+/* 星・UIは通常レイヤー */
 .title {
     text-align: center;
     margin-bottom: 30px;
     letter-spacing: 3px;
 }
 
-/* グリッド（配置改善） */
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
 
-/* カード大きめ */
 .card {
     height: 160px;
     border: 1px solid #555;
@@ -44,22 +53,24 @@
         border-color: #999;
     }
 
-/* ??? */
 .unknown {
     font-size: 26px;
     color: #aaa;
     letter-spacing: 2px;
 }
 
-/* preview仮 */
 .preview {
     position: absolute;
     bottom: 0;
     width: 100%;
     height: 20px;
+    background: linear-gradient( 90deg, transparent, rgba(255,255,255,0.5), transparent );
 }
 
-/* 戻るボタン */
+/* =========================
+   戻るボタン
+========================= */
+
 .back-btn {
     position: absolute;
     bottom: 20px;
@@ -69,70 +80,18 @@
     border: 1px solid #555;
     color: white;
     cursor: pointer;
+    transition: 0.2s;
 }
 
     .back-btn:hover {
         background: #222;
     }
 
-/* ===================== */
-/* テーマエリア（重要修正） */
-/* ===================== */
+/* =========================
+   ★ Slideを最前面にする（重要）
+========================= */
 
-.theme-area {
-    width: 60px;
+.collection-wrap > *:last-child {
     position: relative;
-}
-
-/* タブ */
-.theme-tab {
-    writing-mode: vertical-rl;
-    background: #111;
-    height: 100%;
-    padding: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-left: 1px solid #333;
-    letter-spacing: 2px;
-}
-
-/* パネル（完全安定版） */
-.theme-panel {
-    position: absolute;
-    top: 0;
-    right: -260px;
-    width: 260px;
-    height: 100%;
-    background: #111;
-    border-left: 1px solid #333;
-    transition: right 0.25s ease;
-    padding: 20px;
-    box-sizing: border-box;
-}
-
-    /* open時 */
-    .theme-panel.open {
-        right: 60px;
-    }
-
-.theme-title {
-    margin-bottom: 20px;
-    font-size: 18px;
-}
-
-/* テーマ */
-.theme-item {
-    padding: 12px;
-    border-bottom: 1px solid #333;
-}
-
-    .theme-item:hover {
-        background: #1a1a1a;
-    }
-
-/* ロック */
-.locked {
-    opacity: 0.4;
+    z-index: 9999;
 }
