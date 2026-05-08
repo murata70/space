@@ -1,50 +1,53 @@
-﻿import './Home.css';
-import React from "react";
+﻿import React from "react";
+import { useNavigate } from "react-router-dom"; // navigateを使うために追加推奨
+import './Home.css';
 
 const Home = () => {
-    const handleStart = () => {
-        // 画面遷移（シンプル版）
-        window.location.href = "/wallpaper";
+    const navigate = useNavigate();
 
-        // React Router使う場合は↓に差し替え
-        // navigate("/wallpaper");
+    const handleStart = () => {
+        // 壁紙画面へ遷移
+        navigate("/wallpaper");
     };
 
     return (
-        <div style={styles.container}>
-            {/* メインUI */}
-            <div style={styles.content}>
+        <>
+            {/* 背景レイヤーを追加 */}
+            <div className="home-bg"></div>
 
-                {/* タイトル的なもの（任意） */}
-                <div style={styles.title}>
-                    SPACE WALLPAPER
-                </div>
+            <div className="home-container">
+                {/* タイトル */}
+                <h1 className="home-title">SPACE WALLPAPER</h1>
 
-                {/* 設定っぽいUI（仮） */}
-                <div style={styles.settingsBox}>
+                {/* 設定BOX */}
+                <div className="settings-box">
 
-                    {/* 音量（アイコン想定） */}
-                    <div style={styles.iconRow}>
+                    {/* 音量アイコン */}
+                    <div className="icon-row">
                         🔊
                     </div>
 
-                    {/* 秒表示ON/OFF */}
-                    <div style={styles.toggleRow}>
+                    {/* 秒表示切り替え */}
+                    <div className="toggle-row">
                         <span>sec</span>
-                        <button>ON</button>
-                        <button>OFF</button>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <button>ON</button>
+                            <button>OFF</button>
+                        </div>
                     </div>
 
-                    {/* 24h / 12h */}
-                    <div style={styles.toggleRow}>
+                    {/* 24時間表示切り替え */}
+                    <div className="toggle-row">
                         <span>24h</span>
-                        <button>ON</button>
-                        <button>OFF</button>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                            <button>ON</button>
+                            <button>OFF</button>
+                        </div>
                     </div>
 
-                    {/* タイムゾーン */}
-                    <div style={styles.selectRow}>
-                        <select>
+                    {/* タイムゾーン選択 */}
+                    <div className="select-row">
+                        <select defaultValue="Asia/Tokyo">
                             <option value="Asia/Tokyo">Asia/Tokyo</option>
                             <option value="UTC">UTC</option>
                             <option value="America/New_York">New York</option>
@@ -52,80 +55,14 @@ const Home = () => {
                     </div>
 
                 </div>
-            </div>
 
-            {/* 右下OKボタン */}
-            <button style={styles.okButton} onClick={handleStart}>
-                OK
-            </button>
-        </div>
+                {/* 右下OKボタン */}
+                <button className="ok-button" onClick={handleStart}>
+                    OK
+                </button>
+            </div>
+        </>
     );
 };
 
 export default Home;
-
-/* スタイル */
-const styles = {
-    container: {
-        width: "100vw",
-        height: "100vh",
-        backgroundColor: "#0b0f1a",
-        color: "#fff",
-        position: "relative",
-        fontFamily: "sans-serif",
-    },
-
-    content: {
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-    },
-
-    title: {
-        fontSize: "24px",
-        marginBottom: "30px",
-        letterSpacing: "2px",
-    },
-
-    settingsBox: {
-        background: "rgba(255,255,255,0.05)",
-        padding: "20px",
-        borderRadius: "10px",
-        backdropFilter: "blur(10px)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "15px",
-    },
-
-    iconRow: {
-        fontSize: "24px",
-        textAlign: "center",
-    },
-
-    toggleRow: {
-        display: "flex",
-        gap: "10px",
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-
-    selectRow: {
-        display: "flex",
-        justifyContent: "center",
-    },
-
-    okButton: {
-        position: "absolute",
-        bottom: "20px",
-        right: "20px",
-        padding: "12px 24px",
-        fontSize: "16px",
-        backgroundColor: "#4cafef",
-        border: "none",
-        borderRadius: "8px",
-        color: "#fff",
-        cursor: "pointer",
-    },
-};
