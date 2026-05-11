@@ -1,0 +1,28 @@
+.planet-layer {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.planet-object {
+    position: absolute;
+    opacity: 0.95;
+    user-select: none;
+    will-change: transform;
+    animation-name: flowPlanet;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+}
+
+@keyframes flowPlanet {
+
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX( calc(-100vw - var(--planet-size)) );
+    }
+}
