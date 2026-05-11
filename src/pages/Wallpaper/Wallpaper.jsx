@@ -5,8 +5,8 @@ import "./Wallpaper.css";
 
 import Clock from "../../components/ui/Clock/Clock";
 import StarField from "../../components/ui/StarField/StarField";
-import collectionData from "../../data/collection.json";
-import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
+//import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
+//import collectionData from "../../data/collection.json";
 
 const Wallpaper = () => {
 
@@ -17,7 +17,7 @@ const Wallpaper = () => {
 
             {/* 星背景 */}
             <StarField />
-            <FlowingAssets />
+            {/*<FlowingAssets />*/}
 
             {/* ロケット */}
             <div className="rocket">
