@@ -1,0 +1,81 @@
+/* space/src/components/ui/Rocket/Rocket.css */
+
+.rocket-position {
+    position: fixed;
+    top: 70%;
+    left: 13%;
+    transform: translateY(-50%);
+    z-index: 5;
+}
+
+.engine-box {
+    width: 170px;
+    height: 170px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.rocket-wrapper {
+    display: flex;
+    align-items: flex-end;
+    animation: rocketFloat 3s ease-in-out infinite;
+    user-select: none;
+}
+
+/* ロケット */
+
+.rocket-image {
+    width: 120px;
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+
+
+ /* ターボ中 */
+
+    .rocket-wrapper.boosting
+
+{
+    transform: translateX(25px);
+}
+}
+
+/* 炎 */
+
+.engine-effect {
+    width: 120px;
+    margin-right: -15px;
+    opacity: 0.95;
+    z-index: 1;
+    transition: 0.05s;
+    transform: translateY(29px);
+}
+
+    /* ブースト中 */
+
+    .engine-effect.turbo {
+        width: 170px;
+        margin-right: -35px;
+        filter: brightness(1.3);
+        transform: translateY(25px);
+    }
+
+/* 上下にふわふわ */
+
+@keyframes rocketFloat {
+
+    0% {
+        transform: translateY(-50%) translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-50%) translateY(-12px);
+    }
+
+    100% {
+        transform: translateY(-50%) translateY(0px);
+    }
+}

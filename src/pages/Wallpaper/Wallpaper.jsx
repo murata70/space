@@ -5,8 +5,13 @@ import "./Wallpaper.css";
 
 import Clock from "../../components/ui/Clock/Clock";
 import StarField from "../../components/ui/StarField/StarField";
-//import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets"; 修正中
-//import collectionData from "../../data/collection.json";
+
+//惑星インポート
+import Planets from "../../components/ui/Planets/Planets";
+
+//ロケットインポート
+import Rocket from "../../components/ui/Rocket/Rocket";
+
 
 const Wallpaper = () => {
 
@@ -17,12 +22,12 @@ const Wallpaper = () => {
 
             {/* 星背景 */}
             <StarField />
-            {/*<FlowingAssets />*/}
+
+            {/* 惑星 */}
+            <Planets />
 
             {/* ロケット */}
-            <div className="rocket">
-                🚀
-            </div>
+            <Rocket />
 
             {/* UI */}
             <div className="bottom-ui">
