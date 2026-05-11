@@ -5,7 +5,7 @@ import "./Wallpaper.css";
 
 import Clock from "../../components/ui/Clock/Clock";
 import StarField from "../../components/ui/StarField/StarField";
-//import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
+//import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets"; 修正中
 //import collectionData from "../../data/collection.json";
 
 const Wallpaper = () => {
