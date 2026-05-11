@@ -1,4 +1,4 @@
-// 1. 必要なライブラリのインポート
+// 1. 必要なライブラリのインポート 修正中
 const { app, BrowserWindow, screen } = require('electron');
 const path = require('path');
 // 壁紙化ライブラリ
