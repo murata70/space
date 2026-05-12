@@ -5,7 +5,7 @@ const fs = require('fs');
 
 let win;
 let eaw;
-let db; // DBインスタンスをグローバルで保持
+let db; // DBインスタンスをグローバルで保持 修正中
 
 try { eaw = require('electron-as-wallpaper'); } catch (e) { console.error(e); }
 
