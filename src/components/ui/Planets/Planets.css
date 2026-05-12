@@ -1,3 +1,8 @@
+/* =========================
+   Planet Layer
+   レスポンシブ対応版
+========================= */
+
 .planet-layer {
     position: fixed;
     inset: 0;
@@ -6,16 +11,23 @@
     z-index: 2;
 }
 
+/* 惑星本体 */
 .planet-object {
     position: absolute;
+    /* 画面サイズに応じて自動調整 */
+    width: clamp(60px, 10vw, 220px);
+    height: auto;
     opacity: 0.95;
     user-select: none;
     will-change: transform;
     animation-name: flowPlanet;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
+    /* JS側から duration を渡せるように */
+    animation-duration: var(--planet-duration, 40s);
 }
 
+/* 左へ流れる */
 @keyframes flowPlanet {
 
     from {
@@ -23,6 +35,42 @@
     }
 
     to {
-        transform: translateX( calc(-100vw - var(--planet-size)) );
+        transform: translateX( calc( -100vw - var(--planet-size, 200px) ) );
+    }
+}
+
+/* =========================
+   タブレット
+========================= */
+
+@media (max-width: 1024px) {
+
+    .planet-object {
+        width: clamp(50px, 14vw, 180px);
+    }
+}
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 768px) {
+
+    .planet-object {
+        /* 小さめに */
+        width: clamp(40px, 18vw, 140px);
+        /* 少し軽量化 */
+        opacity: 0.9;
+    }
+}
+
+/* =========================
+   超小型スマホ
+========================= */
+
+@media (max-width: 480px) {
+
+    .planet-object {
+        width: clamp(32px, 22vw, 100px);
     }
 }
