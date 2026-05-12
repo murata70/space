@@ -1,0 +1,30 @@
+[
+  {
+    "id": "ufo",
+    "name": "UFO",
+    "type": "single",
+    "images": [ "/assets/image/collections/ufo.png" ],
+    "speed": 2
+  },
+  {
+    "id": "meteor",
+    "name": "Ë¶êŒ",
+    "type": "cycle",
+    "images": [
+      "/assets/image/collections/meteor1.png",
+      "/assets/image/collections/meteor2.png"
+    ],
+    "speed": 1.2
+  },
+  {
+    "id": "twink_cat",
+    "name": "Ç–Ç©ÇÈÇÀÇ±",
+    "type": "cycle",
+    "images": [
+      "/assets/image/collections/twink_cat1.png",
+      "/assets/image/collections/twink_cat2.png",
+      "/assets/image/collections/twink_cat3.png"
+    ],
+    "speed": 0.8
+  }
+]
