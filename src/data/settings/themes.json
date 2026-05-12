@@ -1,0 +1,14 @@
+{
+  "themes": [
+    {
+      "id": "t_01",
+      "name": "Standard",
+      "path": "/assets/image/themes/default.jpg"
+    },
+    {
+      "id": "t_02",
+      "name": "Neon",
+      "path": "/assets/image/themes/neon.jpg"
+    }
+  ]
+}
