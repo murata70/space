@@ -32,18 +32,33 @@ const Settings = () => {
         navigate("/");
     };
 
+    /* 遊び部分 */
+    const [isWarping, setIsWarping] = useState(false);
+
+    const handleTitleClick = () => {
+        setIsWarping(true);
+        // 1秒後にアニメーション状態を解除
+        setTimeout(() => setIsWarping(false), 1000);
+    };
+
     return (
         <>
-
             <StarField />
-
             <div className="shooting-star"></div>
 
+            /* 遊び部分 */
             {/* 【修正箇所】CSSと名前を統一 */}
             <div className="settings-page-container">
-                <h2 className="settings-title">SETTINGS</h2>
-                <div className="row">
+                <h2
+                    className={`settings-title ${isWarping ? "warp-mode" : ""}`}
+                    onClick={handleTitleClick}
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                >
+                    SETTINGS
+                </h2>
 
+                {/* 各行設定 */}
+                <div className="row">
                     <button
                         className="muteBtn"
                         onClick={() => setMuted(!muted)}
@@ -52,7 +67,6 @@ const Settings = () => {
                     </button>
                     <input type="range" min="0" max="100" />
                 </div>
-
 
                 <div className="row">
                     <span>sec</span>
@@ -73,8 +87,7 @@ const Settings = () => {
                         </button>
                     </div>
                 </div>
-
-                {/* 24時間表示 */}
+              {/* 24時間表示 */}
                 <div className="row">
                     <span>24h</span>
 
@@ -94,7 +107,6 @@ const Settings = () => {
                         </button>
                     </div>
                 </div>
-
                 <div className="row" style={{ display: "block" }}>
                     <span style={{ display: "block", marginBottom: "5px" }}>タイムゾーン</span>
                     <select value={tz} onChange={(e) => setTz(e.target.value)}>
@@ -105,18 +117,22 @@ const Settings = () => {
                     </select>
                 </div>
 
+                
+
+
+
                 {/* ボタン群の配置を整理 */}
-                <div style={{ marginTop: "25px", display: "flex", flexDirection: "column", gap: "10px" }}>
-                    <button className="primaryBtn" onClick={handleSave}>
-                        登録（保存）
-                    </button>
-                    <button className="backBtn" onClick={handleBack}>
-                        ← 壁紙へ戻る
-                    </button>
-                    <button className="homeBtn" onClick={handleGoHome}>
-                        🏠 ホームへ
-                    </button>
-                </div>
+                <div className = "button-group">
+                <button className="primaryBtn" onClick={handleSave}>
+                    登録（保存）
+                </button>
+                <button className="backBtn" onClick={handleBack}>
+                    ← 壁紙へ戻る
+                </button>
+                <button className="homeBtn" onClick={handleGoHome}>
+                    🏠 ホームへ
+                </button>
+            </div>
             </div>
         </>
     );
