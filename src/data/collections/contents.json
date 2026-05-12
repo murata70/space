@@ -1,0 +1,34 @@
+{
+  "contents": [
+    {
+      "id": "c_01",
+      "name": "Satellite",
+      "path": "/assets/image/contents/contents_artificial_satellite.svg"
+    },
+    {
+      "id": "c_02",
+      "name": "Astronaut",
+      "path": "/assets/image/contents/contents_astronaut.svg"
+    },
+    {
+      "id": "c_03",
+      "name": "Cruiser",
+      "path": "/assets/image/contents/contents_giant_spasce_cruiser.svg"
+    },
+    {
+      "id": "c_04",
+      "name": "Meteors",
+      "path": "/assets/image/contents/contents_meteor_shower.svg"
+    },
+    {
+      "id": "c_05",
+      "name": "Superman",
+      "path": "/assets/image/contents/contents_superman.svg"
+    },
+    {
+      "id": "c_06",
+      "name": "UFO",
+      "path": "/assets/image/contents/contents_ufo.svg"
+    }
+  ]
+}
