@@ -1,65 +1,122 @@
-// 1. 必要なライブラリのインポート 修正中
-const { app, BrowserWindow, screen } = require('electron');
+const { app, BrowserWindow, screen, ipcMain } = require('electron');
 const path = require('path');
-// 壁紙化ライブラリ
-const eaw = require('electron-as-wallpaper');
+const sqlite3 = require('sqlite3').verbose();
+const fs = require('fs');
 
 let win;
+let eaw;
+let db; // DBインスタンスをグローバルで保持
 
-// 2. ウィンドウを作成する関数
-function createWindow() {
-    // メインディスプレイのサイズを取得
-    const primaryDisplay = screen.getPrimaryDisplay();
-    const { width, height } = primaryDisplay.workAreaSize;
+try { eaw = require('electron-as-wallpaper'); } catch (e) { console.error(e); }
 
-    win = new BrowserWindow({
-        width: width,
-        height: height,
-        x: 0,
-        y: 0,
-        transparent: false,         // ★テストのため、一旦 false (透明にしない) にします
-        frame: true,                // ★テストのため、一旦 true (枠あり) にします
-        webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false,
-            preload: path.join(__dirname, 'preload.js')
+const userDataPath = app.getPath('userData');
+const dbPath = path.join(userDataPath, 'project_space.db');
+
+// --- データベース初期化 ---
+function initDatabase() {
+    return new Promise((resolve, reject) => {
+        // フォルダがない場合は作成
+        if (!fs.existsSync(userDataPath)) {
+            fs.mkdirSync(userDataPath, { recursive: true });
         }
-    });
 
-    // 3. 表示する画面を読み込む
-    win.loadFile(path.join(__dirname, 'public/index.html'));
+        db = new sqlite3.Database(dbPath, (err) => {
+            if (err) {
+                console.error('DB接続エラー:', err);
+                return reject(err);
+            }
 
-    // ★検証ツール（右側の英語の画面）を自動で開く
-    win.webContents.openDevTools();
+            db.serialize(() => {
+                db.run(`CREATE TABLE IF NOT EXISTS user_settings (
+                    id INTEGER PRIMARY KEY DEFAULT 1,
+                    current_theme_id TEXT,
+                    volume_level INTEGER DEFAULT 50,
+                    show_seconds INTEGER DEFAULT 1,
+                    time_format_24h INTEGER DEFAULT 1,
+                    timezone TEXT DEFAULT 'Asia/Tokyo',
+                    rocket_color_idx INTEGER DEFAULT 0
+                )`);
 
-    // ★ 4. 壁紙への貼り付け（テスト中は一旦コメントアウトして無効化します）
-    /*
-    try {
-        eaw.attach(win);
-    } catch (err) {
-        console.error("壁紙への貼り付けに失敗しました:", err);
-    }
-    */
+                db.run(`CREATE TABLE IF NOT EXISTS discovery_logs (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    item_id TEXT,
+                    discovered_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )`);
 
-    win.on('closed', () => {
-        win = null;
+                db.get('SELECT id FROM user_settings WHERE id = 1', (err, row) => {
+                    if (!row) {
+                        db.run('INSERT INTO user_settings (id, current_theme_id) VALUES (1, "default")');
+                    }
+                });
+
+                console.log("DB初期化完了: ", dbPath);
+                resolve();
+            });
+        });
     });
 }
 
-// 5. アプリの準備ができたらウィンドウを表示する
-app.whenReady().then(() => {
-    createWindow();
-
-    app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
+// --- ウィンドウ作成 ---
+function createWindow() {
+    const { width, height } = screen.getPrimaryDisplay().size;
+    win = new BrowserWindow({
+        width, height, x: 0, y: 0,
+        transparent: true, frame: false, hasShadow: false,
+        skipTaskbar: true, show: false,
+        webPreferences: {
+            preload: path.join(__dirname, 'preload.js'),
+            contextIsolation: true,
+            nodeIntegration: false
         }
+    });
+
+    const startUrl = process.env.NODE_ENV === 'development'
+        ? 'http://localhost:3000'
+        : `file://${path.join(__dirname, 'build/index.html')}`;
+
+    win.loadURL(startUrl);
+    win.once('ready-to-show', () => {
+        win.show();
+        if (eaw) {
+            try { eaw.attach(win); } catch (e) { console.error(e); }
+        }
+        win.setIgnoreMouseEvents(true, { forward: true });
+    });
+}
+
+// --- IPC通信 (既存のdbを使い回す) ---
+ipcMain.handle('get-db-data', (event, query, params = []) => {
+    return new Promise((resolve, reject) => {
+        db.all(query, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve(rows);
+        });
     });
 });
 
-// 6. すべてのウィンドウが閉じられたらアプリを終了する
+ipcMain.on('save-discovery', (event, itemId) => {
+    db.run('INSERT INTO discovery_logs (item_id) VALUES (?)', [itemId], (err) => {
+        if (err) console.error("保存エラー:", err);
+    });
+});
+
+ipcMain.on('set-ignore-mouse', (event, ignore) => {
+    if (win) win.setIgnoreMouseEvents(ignore, { forward: true });
+});
+
+ipcMain.on('quit-app', () => app.quit());
+
+// --- アプリのライフサイクル ---
+app.whenReady().then(async () => {
+    await initDatabase();
+    createWindow();
+});
+
+// アプリ終了時にDBを閉じる
+app.on('will-quit', () => {
+    if (db) db.close();
+});
+
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
-    }
+    if (process.platform !== 'darwin') app.quit();
 });

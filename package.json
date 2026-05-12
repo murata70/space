@@ -2,18 +2,22 @@
   "name": "space",
   "version": "1.0.0",
   "main": "main.js",
+  "homepage": ".",
   "scripts": {
     "dev": "react-scripts start",
     "start": "electron .",
     "build": "react-scripts build",
+    "dist": "npm run build && electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Your Name",
   "license": "ISC",
-  "description": "",
+  "description": "PROJECT: space - Interactive Wallpaper Platform",
   "devDependencies": {
-    "electron": "latest"
+    "electron": "latest",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
     "electron-as-wallpaper": "^2.0.3",
@@ -22,9 +26,33 @@
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "^6.30.3",
-    "react-scripts": "latest"
+    "react-scripts": "latest",
+    "sqlite3": "^5.1.7"
   },
-  "homepage": ".",
+  "build": {
+    "appId": "com.space.wallpaper",
+    "productName": "PROJECT_space",
+    "copyright": "Copyright © 2024",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "requestedExecutionLevel": "highestAvailable"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "PROJECT_space"
+    },
+    "files": [
+      "build/**/*",
+      "main.js",
+      "preload.js",
+      "node_modules/**/*"
+    ],
+    "extends": null
+  },
   "browserslist": {
     "production": [
       ">0.2%",
