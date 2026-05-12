@@ -1,16 +1,30 @@
-/* space/src/components/ui/Rocket/Rocket.css */
+/* ========================================
+   Rocket
+   レスポンシブ対応版
+======================================== */
+
+/* =========================
+   ロケット全体位置
+========================= */
 
 .rocket-position {
     position: fixed;
+    /* 画面サイズに応じて配置 */
     top: 70%;
-    left: 13%;
+    left: clamp(12px, 8vw, 140px);
     transform: translateY(-50%);
     z-index: 5;
+    /* はみ出し防止 */
+    max-width: 100vw;
 }
 
+/* =========================
+   エンジン領域
+========================= */
+
 .engine-box {
-    width: 170px;
-    height: 170px;
+    width: clamp(90px, 14vw, 170px);
+    height: clamp(90px, 14vw, 170px);
     position: relative;
     display: flex;
     align-items: center;
@@ -18,64 +32,121 @@
     flex-shrink: 0;
 }
 
+/* =========================
+   ロケット全体
+========================= */
+
 .rocket-wrapper {
     display: flex;
     align-items: flex-end;
     animation: rocketFloat 3s ease-in-out infinite;
     user-select: none;
-}
-
-/* ロケット */
-
-.rocket-image {
-    width: 120px;
-    position: relative;
-    z-index: 2;
-    pointer-events: auto;
-
-
- /* ターボ中 */
-
-    .rocket-wrapper.boosting
-
-{
-    transform: translateX(25px);
-}
-}
-
-/* 炎 */
-
-.engine-effect {
-    width: 120px;
-    margin-right: -15px;
-    opacity: 0.95;
-    z-index: 1;
-    transition: 0.05s;
-    transform: translateY(29px);
+    will-change: transform;
 }
 
     /* ブースト中 */
 
-    .engine-effect.turbo {
-        width: 170px;
-        margin-right: -35px;
-        filter: brightness(1.3);
-        transform: translateY(25px);
+    .rocket-wrapper.boosting {
+        transform: translateX(clamp(10px, 2vw, 25px));
     }
 
-/* 上下にふわふわ */
+/* =========================
+   ロケット画像
+========================= */
+
+.rocket-image {
+    width: clamp(70px, 9vw, 120px);
+    position: relative;
+    z-index: 2;
+    pointer-events: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* =========================
+   炎
+========================= */
+
+.engine-effect {
+    width: clamp(70px, 9vw, 120px);
+    margin-right: clamp(-10px, -1vw, -15px);
+    opacity: 0.95;
+    z-index: 1;
+    transition: 0.05s;
+    transform: translateY(clamp(16px, 2vw, 29px));
+    height: auto;
+    object-fit: contain;
+}
+
+    /* =========================
+   ブースト中の炎
+========================= */
+
+    .engine-effect.turbo {
+        width: clamp(100px, 13vw, 170px);
+        margin-right: clamp(-18px, -2vw, -35px);
+        filter: brightness(1.3);
+        transform: translateY(clamp(14px, 1.8vw, 25px));
+    }
+
+/* =========================
+   上下ふわふわ
+========================= */
 
 @keyframes rocketFloat {
 
     0% {
-        transform: translateY(-50%) translateY(0px);
+        transform: translateY(0px);
     }
 
     50% {
-        transform: translateY(-50%) translateY(-12px);
+        transform: translateY(clamp(-4px, -1vw, -12px));
     }
 
     100% {
-        transform: translateY(-50%) translateY(0px);
+        transform: translateY(0px);
+    }
+}
+
+/* ========================================
+   タブレット
+======================================== */
+
+@media (max-width: 1024px) {
+
+    .rocket-position {
+        top: 72%;
+    }
+}
+
+/* ========================================
+   スマホ
+======================================== */
+
+@media (max-width: 768px) {
+
+    .rocket-position {
+        left: 4vw;
+        top: 78%;
+    }
+
+    .rocket-wrapper {
+        animation-duration: 2.6s;
+    }
+}
+
+/* ========================================
+   超小型スマホ
+======================================== */
+
+@media (max-width: 480px) {
+
+    .rocket-position {
+        left: 2vw;
+        top: 82%;
+    }
+
+    .rocket-wrapper.boosting {
+        transform: translateX(12px);
     }
 }
