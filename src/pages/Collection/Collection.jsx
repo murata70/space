@@ -4,65 +4,74 @@ import { useNavigate } from "react-router-dom";
 
 import Slide from "../../components/ui/Slide/Slide";
 import StarField from "../../components/ui/StarField/StarField";
+import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
 
-/**
- * 仮データ
- */
-const COLLECTIONS = Array.from({ length: 11 }).map((_, i) => ({
-  id: i,
-}));
+import data from "../../data/collections/collections.json";
 
 const THEMES = [
   { id: "space", name: "宇宙" },
   { id: "ocean", name: "海（coming soon）", locked: true },
-  { id: "forest", name: "森（coming soon）", locked: true },
+  { id: "forest", name: "森（coming soon）", locked: true }
 ];
 
-const Collection = () => {
-
-  const [hovered, setHovered] = useState(null);
+export default function Collection() {
 
   const navigate = useNavigate();
+
+  const [hovered, setHovered] = useState(null);
+  const [unlocked, setUnlocked] = useState({});
+
+  const COLLECTIONS = data;
+
+  const unlock = (id) => {
+    setUnlocked(prev => ({
+      ...prev,
+      [id]: true
+    }));
+  };
 
   return (
     <div className="collection-wrap">
 
-      {/* メイン */}
+      {/* 背景流れ */}
+      <FlowingAssets />
+
       <div className="collection-main">
 
-        {/* 星背景 */}
         <StarField />
 
-        <h1 className="title">
-          COLLECTION
-        </h1>
+        <h1 className="title">COLLECTION</h1>
 
         <div className="grid">
 
-          {COLLECTIONS.map((item) => (
+          {COLLECTIONS.map(item => {
 
-            <div
-              key={item.id}
-              className="card"
-              onMouseEnter={() => setHovered(item.id)}
-              onMouseLeave={() => setHovered(null)}
-            >
+            const isOpen = unlocked[item.id];
 
-              <div className="unknown">
-                ???
+            return (
+              <div
+                key={item.id}
+                className="card"
+                onClick={() => unlock(item.id)}
+                onMouseEnter={() => setHovered(item.id)}
+                onMouseLeave={() => setHovered(null)}
+              >
+
+                <div className="unknown">
+                  {isOpen ? item.name : "???"}
+                </div>
+
+                {hovered === item.id && !isOpen && (
+                  <div className="preview" />
+                )}
+
               </div>
+            );
 
-              {hovered === item.id && (
-                <div className="preview" />
-              )}
-
-            </div>
-
-          ))}
+          })}
 
         </div>
 
-        {/* 戻る */}
         <button
           className="back-btn"
           onClick={() => navigate("/wallpaper")}
@@ -72,14 +81,8 @@ const Collection = () => {
 
       </div>
 
-      {/* スライド */}
-      <Slide
-        title="THEMES"
-        items={THEMES}
-      />
+      <Slide title="THEMES" items={THEMES} />
 
     </div>
   );
-};
-
-export default Collection;
+}
