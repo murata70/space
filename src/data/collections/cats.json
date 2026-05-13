@@ -1,19 +1,11 @@
 {
-  "cats": [
-    {
-      "id": "cat_01",
-      "name": "Twinkling Cat Frame 1",
-      "path": "/assets/image/collections/twinkling_cat1.png"
-    },
-    {
-      "id": "cat_02",
-      "name": "Twinkling Cat Frame 2",
-      "path": "/assets/image/collections/twinkling_cat2.png"
-    },
-    {
-      "id": "cat_03",
-      "name": "Twinkling Cat Frame 3",
-      "path": "/assets/image/collections/twinkling_cat3.png"
-    }
-  ]
+  "cat": {
+    "id": "cat",
+    "name": "ひかるねこ",
+    "frames": [
+      "/assets/image/collections/twinkling_cat1.png",
+      "/assets/image/collections/twinkling_cat2.png",
+      "/assets/image/collections/twinkling_cat3.png"
+    ]
+  }
 }

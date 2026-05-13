@@ -1,0 +1,50 @@
+/* CatFlow.css */
+
+.cat-position-container {
+    position: absolute;
+    top: 40%;
+    /* デバッグ用：最初から画面内に配置 */
+    right: 20%;
+    z-index: 9999; /* 確実に最前面へ */
+    pointer-events: auto;
+    /* デバッグ用：2秒で移動し、最後で停止(forwards) */
+    animation: catMoveLeftDebug 2s ease-out forwards;
+}
+
+.cat-wrapper {
+    width: 150px; /* 少し大きくして見やすく */
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: catSlowRotate 4s linear infinite;
+}
+
+.cat-image {
+    width: 100%;
+    height: auto;
+    /* 強めの発光で見つけやすく */
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 1)) drop-shadow(0 0 25px rgba(0, 200, 255, 0.8));
+    user-select: none;
+}
+
+/* デバッグ用移動アニメーション：中央付近で止まる */
+@keyframes catMoveLeftDebug {
+    from {
+        transform: translateX(200px);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes catSlowRotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
