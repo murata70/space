@@ -6,15 +6,37 @@
 .wallpaper {
     width: 100vw;
     height: 100vh;
-    /* モバイルブラウザ対策 */
     min-height: 100dvh;
-    background: radial-gradient( circle at center, #020111 0%, #000000 100% );
     overflow: hidden;
     position: relative;
     color: white;
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
     /* ノッチ対策 */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    /* ========================================
+       背景画像
+    ======================================== */
+    /* デフォルトは16:9 */
+    background-image: var(--bg-16x9);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    /* iOSチラつき軽減 */
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+/* ========================================
+   4:3寄り画面
+   タブレット・縦画面向け
+======================================== */
+
+@media (max-aspect-ratio: 4/3) {
+
+    .wallpaper {
+        background-image: var(--bg-4x3);
+    }
 }
 
 /* ========================================
@@ -102,7 +124,7 @@
 @media (max-width: 768px) {
 
     .bottom-ui {
-        bottom: max(10px, env(safe-area-inset-bottom));
+        bottom: max( 10px, env(safe-area-inset-bottom) );
         right: 10px;
         padding: 8px 10px;
         border-radius: 10px;
