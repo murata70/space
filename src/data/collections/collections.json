@@ -1,61 +1,33 @@
-<<<<<<< Updated upstream
-{
-  "contents": [
-    {
-      "id": "c_01",
-      "name": "UFO",
-      "path": "/assets/image/collections/ufo.png"
-    },
-    {
-      "id": "c_02",
-      "name": "Astronaut",
-      "path": "/assets/image/collections/astronaut.png"
-    },
-    {
-      "id": "c_03",
-      "name": "Black Hole",
-      "path": "/assets/image/collections/blackhole.png"
-    },
-    {
-      "id": "c_04",
-      "name": "Meteor Shower",
-      "path": "/assets/image/collections/ryuseigun.png"
-    },
-    {
-      "id": "c_05",
-      "name": "Flag",
-      "path": "/assets/image/collections/flag.png"
-    },
-    {
-      "id": "c_06",
-      "name": "Giant Spaceship",
-      "path": "/assets/image/collections/giant_spaceship.png"
-    },
-    {
-      "id": "c_07",
-      "name": "Orbital",
-      "path": "/assets/image/collections/orbital.png"
-    },
-    {
-      "id": "c_08",
-      "name": "Superman",
-      "path": "/assets/image/collections/superman.png"
-    }
-  ]
-}
-=======
 [
   {
     "id": "ufo",
     "name": "UFO",
     "type": "single",
+    "rarity": "common",
     "images": [ "/assets/image/collections/ufo.png" ],
-    "speed": 2
+    "speed": 2.0
   },
   {
-    "id": "meteor",
-    "name": "覐�",
+    "id": "astronaut",
+    "name": "宇宙飛行士",
+    "type": "single",
+    "rarity": "rare",
+    "images": [ "/assets/image/collections/astronaut.png" ],
+    "speed": 1.5
+  },
+  {
+    "id": "blackhole",
+    "name": "ブラックホール",
+    "type": "single",
+    "rarity": "rare",
+    "images": [ "/assets/image/collections/blackhole.png" ],
+    "speed": 1.2
+  },
+  {
+    "id": "meteor_shower",
+    "name": "流星群",
     "type": "cycle",
+    "rarity": "rare",
     "images": [
       "/assets/image/collections/meteor1.png",
       "/assets/image/collections/meteor2.png"
@@ -63,15 +35,57 @@
     "speed": 1.2
   },
   {
-    "id": "twink_cat",
-    "name": "�Ђ���˂�",
-    "type": "cycle",
+    "id": "meteor",
+    "name": "隕石",
+    "type": "single",
+    "rarity": "common",
     "images": [
-      "/assets/image/collections/twink_cat1.png",
-      "/assets/image/collections/twink_cat2.png",
-      "/assets/image/collections/twink_cat3.png"
+      "/assets/image/collections/meteor1.png"
     ],
+    "speed": 1.0
+  },
+  {
+    "id": "flag",
+    "name": "エンドクレジット",
+    "type": "single",
+    "rarity": "legendary",
+    "images": [ "/assets/image/collections/flag.png" ],
     "speed": 0.8
+  },
+  {
+    "id": "orbital",
+    "name": "人工衛星",
+    "type": "single",
+    "rarity": "rare",
+    "images": [ "/assets/image/collections/orbital.png" ],
+    "speed": 1.3
+  },
+  {
+    "id": "superman",
+    "name": "スーパーマン",
+    "type": "single",
+    "rarity": "rare",
+    "images": [ "/assets/image/collections/superman.png" ],
+    "speed": 2.5
+  },
+  {
+    "id": "twink_cat",
+    "name": "ひかるねこ",
+    "type": "cycle",
+    "rarity": "common",
+    "images": [
+      "/assets/image/collections/twinkling_cat1.png",
+      "/assets/image/collections/twinkling_cat2.png",
+      "/assets/image/collections/twinkling_cat3.png"
+    ],
+    "speed": 0.9
+  },
+  {
+    "id": "giant_spaceship",
+    "name": "巨大宇宙船",
+    "type": "single",
+    "rarity": "legendary",
+    "images": [ "/assets/image/collections/giant_spaceship.png" ],
+    "speed": 0.6
   }
 ]
->>>>>>> Stashed changes
