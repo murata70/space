@@ -43,35 +43,19 @@
     }
 
 /* ===== 行レイアウト ===== */
-    .row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        padding: 4px 6px; /* 余白を追加 */
-        border-radius: 8px;
-        transition: 0.3s;
-        margin: 0px;
-        flex-wrap: wrap;
-        min-width: 0;
-    }
     .row:hover {
         background: rgba(0, 150, 255, 0.08);
         box-shadow: none;
     }
 
    /* ===== テキスト ===== */
-    .row span {
-        font-size: 16px;
+    .settings-row span {
+        font-size: 22px;
         font-weight: 700;
         color: #cfe8ff;
     }
 
 /* ===== 入力フォーム（宇宙風） ===== */
-/*    input[type="radio"], input[type="checkbox"] {
-        accent-color: #4fc3ff;
-        transform: scale(1.1);
-    }*/
 
     input[type="range"] {
         width: 100%;
@@ -101,18 +85,6 @@
 
 
 /* ===== ボタン ===== */
-    button {
-        width: min(100%, 320px);
-        padding: 6px 10px;
-        border-radius: 10px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.2s;
-        color: white;
-        position: relative;
-        overflow: hidden;
-        font-size: 16px;
-    }
 /* ===== 大きいボタンだけ指定 ===== */
     .primaryBtn,
     .backBtn,
@@ -132,14 +104,14 @@
         display: flex;
         flex-direction: column; /* 縦並び */
         align-items: center; /* 中央ぞろえ */
-        gap: 6px;
+        gap: 9px;
     }
 
 
 /* ===== text toggle ===== */
     .text-toggle {
         display: flex;
-        gap: 12px;
+        gap: 15px;
     }
 
     /* hover */
@@ -148,7 +120,7 @@
     border: none;
     color: white;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 18px;
     cursor: pointer;
     padding: 4px 8px;
 }
@@ -163,7 +135,7 @@
     .settings-title {
         text-align: center;
         color: #4fc3ff;
-        font-size: 25px;
+        font-size: 30px;
         margin-bottom: 6px;
         text-shadow: 0 0 10px rgba(79,195,255,0.6);
     }
@@ -208,21 +180,22 @@
     }
 
 /* ホームへボタン */
-    .homeBtn {
-        background: #ffffff;
-        color: #1a1a1a;
-        border: 1px solid #ccc;
-        margin-top: 5px;
-    }
+
+.homeBtn {
+    background: #ffffff;
+    color: #1a1a1a !important;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+}
 
     .homeBtn:hover {
-        background: #f0f0f0;
-        color: #000000;
+        background: rgba(255, 255, 255, 0.85);
+        color: #000000 !important;
     }
 
     /* 遊び部分 */
     .settings-title {
-        font-size: 28px;
+        font-size: 30px;
         transition: transform 0.3s ease,text-shadow 0.3s ease;
         cursor: pointer;
         user-select: none;
@@ -260,6 +233,52 @@
         text-shadow: 0 0 15px rgba(79,195,255,0.8);
     }
 
+/* ===== row 統一用 ===== */
+        .settings-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 4px 6px;
+            border-radius: 8px;
+            transition: 0.3s;
+            margin: 0px;
+/*            flex-wrap: nowrap;*/
+            min-width: 0;
+            width: 100%;
+        }
+
+        .settings-row span {
+            flex-shrink: 0;
+        }
+
+            .settings-row:hover {
+                background: rgba(0, 150, 255, 0.08);
+            }
+
+            .text-toggle {
+                display: flex;
+                gap: 15px;
+                margin-left: auto;
+            }
+
+       /* ===== botton 統一用 ===== */
+        .settings-btn {
+            width: min(100%, 390px);
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            font-size: 17px;
+        }
+
+            .settings-btn:hover {
+                transform: scale(1.02);
+            }
 
     /* ===== responsive（1個だけに統一） ===== */
     @media (max-width: 600px) {
@@ -277,4 +296,5 @@
         .text-toggle {
             gap: 8px;
         }
+
     }
