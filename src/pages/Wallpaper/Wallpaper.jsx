@@ -5,53 +5,54 @@ import "./Wallpaper.css";
 
 import Clock from "../../components/ui/Clock/Clock";
 import StarField from "../../components/ui/StarField/StarField";
-
-//惑星インポート
 import Planets from "../../components/ui/Planets/Planets";
-
-//ロケットインポート
 import Rocket from "../../components/ui/Rocket/Rocket";
 
+// ★これを追加
+import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
 
 const Wallpaper = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    return (
-        <div className="wallpaper">
+  return (
+    <div className="wallpaper">
 
-            {/* 星背景 */}
-            <StarField />
+      {/* 星背景 */}
+      <StarField />
 
-            {/* 惑星 */}
-            <Planets />
+      {/* 惑星 */}
+      <Planets />
 
-            {/* ロケット */}
-            <Rocket />
+      {/* ★ここが重要（コレクション流す本体） */}
+      <FlowingAssets />
 
-            {/* UI */}
-            <div className="bottom-ui">
+      {/* ロケット */}
+      <Rocket />
 
-                <Clock />
+      {/* UI */}
+      <div className="bottom-ui">
 
-                <button
-                    className="icon-btn"
-                    onClick={() => navigate("/collection")}
-                >
-                    📁
-                </button>
+        <Clock />
 
-                <button
-                    className="icon-btn"
-                    onClick={() => navigate("/settings")}
-                >
-                    ⚙️
-                </button>
+        <button
+          className="icon-btn"
+          onClick={() => navigate("/collection")}
+        >
+          📁
+        </button>
 
-            </div>
+        <button
+          className="icon-btn"
+          onClick={() => navigate("/settings")}
+        >
+          ⚙️
+        </button>
 
-        </div>
-    );
+      </div>
+
+    </div>
+  );
 };
 
 export default Wallpaper;

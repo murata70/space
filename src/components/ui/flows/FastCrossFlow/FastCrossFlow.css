@@ -1,0 +1,16 @@
+.fast {
+    position: absolute;
+    width: 160px;
+    transform: scaleX(-1);
+    animation: fastMove 2.5s linear infinite;
+}
+
+@keyframes fastMove {
+    0% {
+        transform: translateX(120vw) scaleX(-1);
+    }
+
+    100% {
+        transform: translateX(-120vw) scaleX(-1);
+    }
+}

@@ -1,0 +1,30 @@
+.rotate-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+.astronaut {
+    position: absolute;
+    width: 140px;
+    left: 70%;
+    top: 20%;
+    animation: spinFade 5s linear forwards;
+}
+
+@keyframes spinFade {
+    0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+
+    70% {
+        transform: scale(0.7) rotate(720deg);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(0) rotate(1080deg);
+        opacity: 0;
+    }
+}

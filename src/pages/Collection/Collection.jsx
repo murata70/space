@@ -1,87 +1,110 @@
-﻿import "./Collection.css";
-import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import Slide from "../../components/ui/Slide/Slide";
-import StarField from "../../components/ui/StarField/StarField";
-import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
+import "./Collection.css";
 
-import data from "../../data/collections/collections.json";
+import StarField from "../../components/ui/StarField/StarField";
+import Slide from "../../components/ui/Slide/Slide";
+
+import { getCollections } from "../../utils/collectionStorage";
+
+import { COLLECTION_MASTER } from "../../data/collectionMaster";
 
 const THEMES = [
   { id: "space", name: "宇宙" },
-  { id: "ocean", name: "海（coming soon）", locked: true },
-  { id: "forest", name: "森（coming soon）", locked: true }
+  { id: "ocean", name: "海", locked: true },
+  { id: "forest", name: "森", locked: true },
 ];
 
 export default function Collection() {
 
   const navigate = useNavigate();
 
-  const [hovered, setHovered] = useState(null);
-  const [unlocked, setUnlocked] = useState({});
+  const [owned, setOwned] = useState([]);
 
-  const COLLECTIONS = data;
+  useEffect(() => {
 
-  const unlock = (id) => {
-    setUnlocked(prev => ({
-      ...prev,
-      [id]: true
-    }));
-  };
+    const saved = getCollections();
+
+    setOwned(saved);
+
+  }, []);
 
   return (
     <div className="collection-wrap">
-
-      {/* 背景流れ */}
-      <FlowingAssets />
 
       <div className="collection-main">
 
         <StarField />
 
-        <h1 className="title">COLLECTION</h1>
+        <h1 className="title">
+          COLLECTION
+        </h1>
 
+        {/* =========================
+            グリッド
+        ========================= */}
         <div className="grid">
 
-          {COLLECTIONS.map(item => {
+          {COLLECTION_MASTER.map((item) => {
 
-            const isOpen = unlocked[item.id];
+            const unlocked =
+              owned.find((o) => o.id === item.id);
 
             return (
+
               <div
                 key={item.id}
-                className="card"
-                onClick={() => unlock(item.id)}
-                onMouseEnter={() => setHovered(item.id)}
-                onMouseLeave={() => setHovered(null)}
+                className={`card ${
+                  unlocked ? "unlocked" : "locked"
+                }`}
               >
 
-                <div className="unknown">
-                  {isOpen ? item.name : "???"}
-                </div>
+                {unlocked ? (
+                  <>
 
-                {hovered === item.id && !isOpen && (
-                  <div className="preview" />
+                    <img
+                      src={`/assets/image/collections/${item.image}`}
+                      alt={item.name}
+                      className="collection-image"
+                    />
+
+                    <div className="collection-name">
+                      {item.name}
+                    </div>
+
+                  </>
+                ) : (
+
+                  <div className="unknown">
+                    ?
+                  </div>
+
                 )}
 
               </div>
-            );
 
+            );
           })}
 
         </div>
 
+        {/* =========================
+            戻るボタン
+        ========================= */}
         <button
           className="back-btn"
           onClick={() => navigate("/wallpaper")}
         >
-          ← 壁紙に戻る
+          ← WALLPAPER
         </button>
 
       </div>
 
-      <Slide title="THEMES" items={THEMES} />
+      <Slide
+        title="THEMES"
+        items={THEMES}
+      />
 
     </div>
   );

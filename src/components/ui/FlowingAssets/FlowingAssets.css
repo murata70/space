@@ -1,19 +1,21 @@
-.flow-layer {
+.flowing-layer {
     position: fixed;
     inset: 0;
-    pointer-events: none;
     overflow: hidden;
+    pointer-events: none;
+    z-index: 2;
 }
 
-.flow-item {
+.flowing-object {
     position: absolute;
-    top: 50%;
-    right: -200px;
-    width: 200px;
-    animation: flow linear forwards;
+    user-select: none;
+    will-change: transform;
+    animation: flowLeft linear forwards;
+    opacity: 0.95;
 }
 
-@keyframes flow {
+/* ===== 共通流れ ===== */
+@keyframes flowLeft {
     from {
         transform: translateX(0);
     }
@@ -21,4 +23,42 @@
     to {
         transform: translateX(-120vw);
     }
+}
+
+/* ===== 種類別演出 ===== */
+
+/* collection（普通） */
+.flowing-object.collection {
+    filter: none;
+}
+
+/* event（隕石：速い＆少しブラー） */
+.flowing-object.event {
+    filter: blur(1px) brightness(1.2);
+    transform: rotate(10deg);
+}
+
+/* cat（アニメ風チカチカ） */
+.flowing-object.cat {
+    animation: flowLeft 25s linear forwards, flicker 0.3s infinite;
+}
+
+@keyframes flicker {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* zodiac（ゆっくり＆幻想） */
+.flowing-object.zodiac {
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.4));
+    opacity: 0.9;
 }
