@@ -1,0 +1,64 @@
+{
+  "zodiac": [
+    {
+      "id": "z_01",
+      "name": "Aquarius",
+      "path": "/assets/image/collections/Aquarius.png"
+    },
+    {
+      "id": "z_02",
+      "name": "Cancer",
+      "path": "/assets/image/collections/Cancer.png"
+    },
+    {
+      "id": "z_03",
+      "name": "Capricorn",
+      "path": "/assets/image/collections/Capricorn.png"
+    },
+    {
+      "id": "z_04",
+      "name": "Gemini",
+      "path": "/assets/image/collections/Gemini.png"
+    },
+    {
+      "id": "z_05",
+      "name": "Leo",
+      "path": "/assets/image/collections/Leo.png"
+    },
+    {
+      "id": "z_06",
+      "name": "Libra",
+      "path": "/assets/image/collections/Libra.png"
+    },
+    {
+      "id": "z_07",
+      "name": "Sagittarius",
+      "path": "/assets/image/collections/Sagittarius.png"
+    },
+    {
+      "id": "z_08",
+      "name": "Pisces",
+      "path": "/assets/image/collections/pisces.png"
+    },
+    {
+      "id": "z_09",
+      "name": "Scorpio",
+      "path": "/assets/image/collections/Scorpio.png"
+    },
+    {
+      "id": "z_10",
+      "name": "Virgo",
+      "path": "/assets/image/collections/Virgo.png"
+    },
+    {
+      "id": "z_11",
+      "name": "Taurus",
+      "path": "/assets/image/collections/Taurus.png"
+    },
+    {
+      "id": "z_12",
+      "name": "Aries",
+      "path": "/assets/image/collections/Aries.png"
+    }
+  ]
+}

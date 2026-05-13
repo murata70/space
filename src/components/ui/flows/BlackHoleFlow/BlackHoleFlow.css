@@ -1,0 +1,47 @@
+.blackhole-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+.blackhole {
+    position: absolute;
+    width: 250px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 3s infinite;
+}
+
+.star {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    left: calc(50% + var(--i) * 20px);
+    top: calc(50% + var(--i) * 10px);
+    animation: suck 3s infinite;
+}
+
+@keyframes suck {
+    0% {
+        transform: scale(1) translate(0, 0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0) translate(-200px, -200px);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}

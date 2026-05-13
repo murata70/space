@@ -1,81 +1,157 @@
-import { useEffect, useState, useRef } from "react";
-import data from "../../../data/collections/collections.json";
+ï»¿import { useEffect, useRef, useState } from "react";
 import "./FlowingAssets.css";
+
+import { saveCollection } from "../../../utils/collectionStorage";
+import { COLLECTION_MASTER } from "../../../data/collectionMaster";
+
+// JSON
+import collections from "../../../data/collections/collections.json";
+import events from "../../../data/collections/events.json";
+import cats from "../../../data/collections/cats.json";
+import zodiac from "../../../data/collections/zodiac.json";
+
+const FLOW_TIME = 25;
+const WAIT_TIME = 3000;
 
 export default function FlowingAssets() {
 
-  const [items, setItems] = useState([]);
+  const [item, setItem] = useState(null);
+
   const historyRef = useRef([]);
+
+  // =========================
+  // å›³é‘‘IDã¸å¤‰æ›
+  // =========================
+  const normalize = (path) => {
+
+    if (!path) return null;
+
+    const file = path.split("/").pop().toLowerCase();
+
+    let targetFile = file;
+
+    // =========================
+    // æµæ˜Ÿç¾¤ã ã‘ç‰¹æ®Šå¤‰æ›
+    // =========================
+    if (file === "ryuseigun.png") {
+      targetFile = "meteor_shower.png";
+    }
+
+    const hit = COLLECTION_MASTER.find((c) =>
+      targetFile === c.image.toLowerCase()
+    );
+
+    if (!hit) {
+      console.log("âŒ æœªä¸€è‡´:", targetFile);
+      return null;
+    }
+
+    return {
+      id: hit.id,
+      name: hit.name,
+      path: `/assets/image/collections/${hit.image}`,
+    };
+  };
 
   useEffect(() => {
 
-    const spawn = () => {
+    let timer;
 
-      // ƒ‰ƒ“ƒ_ƒ€‘I‘ð
-      const pool = data;
+    // =========================
+    // å…¨ãƒ‡ãƒ¼ã‚¿çµ±åˆ
+    // =========================
+    const pools = [
 
-      const target =
-        pool[Math.floor(Math.random() * pool.length)];
+      ...(collections.contents || []),
 
-      // constellation‚Í‰æ‘œƒ‰ƒ“ƒ_ƒ€
-      let image;
+      ...(events.events || []),
 
-      if (target.type === "random") {
-        image =
-          target.images[
-            Math.floor(Math.random() * target.images.length)
-          ];
-      }
+      ...(cats.cats || []),
 
-      // cycleŒn‚Í‰Šú‰æ‘œ
-      else if (target.type === "cycle") {
-        image = target.images[0];
-      }
+      ...(zodiac.zodiac || [])
 
-      else {
-        image = target.images[0];
-      }
+    ].map((item) => {
 
-      const newItem = {
-        id: Date.now(),
-        metaId: target.id,
-        name: target.name,
-        speed: target.speed,
-        type: target.type,
-        images: target.images,
-        imageIndex: 0,
-        image
+      return {
+        ...item,
+        path: item.path || item.image_path,
       };
 
-      setItems(prev => [...prev, newItem]);
+    });
 
-      // —š—ð•Û‘¶i}ŠÓ—pj
-      if (!historyRef.current.includes(target.id)) {
-        historyRef.current.push(target.id);
+    // =========================
+    // å‡ºç¾
+    // =========================
+    const spawn = () => {
+
+      // é‡è¤‡é˜²æ­¢
+      const available = pools.filter(
+        (i) => !historyRef.current.includes(i.path)
+      );
+
+      const target =
+        available.length > 0
+          ? available
+          : pools;
+
+      const random =
+        target[Math.floor(Math.random() * target.length)];
+
+      // å±¥æ­´æ›´æ–°
+      historyRef.current = [
+        ...historyRef.current,
+        random.path
+      ].slice(-5);
+
+      // =========================
+      // è¡¨ç¤º
+      // =========================
+      setItem({
+        id: Date.now(),
+        path: random.path,
+        size: Math.random() * 120 + 120,
+        top: Math.random() * 80 - 10,
+        speed: 25,
+      });
+
+      // =========================
+      // ä¿å­˜
+      // =========================
+      const normalized = normalize(random.path);
+
+      if (normalized) {
+        saveCollection(normalized);
       }
+
+      timer = setTimeout(() => {
+        spawn();
+      }, WAIT_TIME + FLOW_TIME * 1000);
+
     };
 
-    const interval = setInterval(spawn, 3000);
+    spawn();
 
-    return () => clearInterval(interval);
+    return () => clearTimeout(timer);
 
   }, []);
 
+  if (!item) return null;
+
   return (
-    <div className="flow-layer">
+    <div className="flowing-layer">
 
-      {items.map(item => (
-
-        <img
-          key={item.id}
-          src={item.image}
-          className="flow-item"
-          style={{
-            animationDuration: `${item.speed * 10}s`
-          }}
-        />
-
-      ))}
+      <img
+        key={item.id}
+        src={item.path}
+        alt="asset"
+        className="flowing-object"
+        style={{
+          top: `${item.top}%`,
+          width: `${item.size}px`,
+          left: "100vw",
+          animationDuration: `${item.speed}s`,
+        }}
+      />
 
     </div>
   );

@@ -1,3 +1,49 @@
+<<<<<<< Updated upstream
+{
+  "contents": [
+    {
+      "id": "c_01",
+      "name": "UFO",
+      "path": "/assets/image/collections/ufo.png"
+    },
+    {
+      "id": "c_02",
+      "name": "Astronaut",
+      "path": "/assets/image/collections/astronaut.png"
+    },
+    {
+      "id": "c_03",
+      "name": "Black Hole",
+      "path": "/assets/image/collections/blackhole.png"
+    },
+    {
+      "id": "c_04",
+      "name": "Meteor Shower",
+      "path": "/assets/image/collections/ryuseigun.png"
+    },
+    {
+      "id": "c_05",
+      "name": "Flag",
+      "path": "/assets/image/collections/flag.png"
+    },
+    {
+      "id": "c_06",
+      "name": "Giant Spaceship",
+      "path": "/assets/image/collections/giant_spaceship.png"
+    },
+    {
+      "id": "c_07",
+      "name": "Orbital",
+      "path": "/assets/image/collections/orbital.png"
+    },
+    {
+      "id": "c_08",
+      "name": "Superman",
+      "path": "/assets/image/collections/superman.png"
+    }
+  ]
+}
+=======
 [
   {
     "id": "ufo",
@@ -8,7 +54,7 @@
   },
   {
     "id": "meteor",
-    "name": "è¦Î",
+    "name": "è¦ï¿½",
     "type": "cycle",
     "images": [
       "/assets/image/collections/meteor1.png",
@@ -18,7 +64,7 @@
   },
   {
     "id": "twink_cat",
-    "name": "‚Ğ‚©‚é‚Ë‚±",
+    "name": "ï¿½Ğ‚ï¿½ï¿½ï¿½Ë‚ï¿½",
     "type": "cycle",
     "images": [
       "/assets/image/collections/twink_cat1.png",
@@ -28,3 +74,4 @@
     "speed": 0.8
   }
 ]
+>>>>>>> Stashed changes
