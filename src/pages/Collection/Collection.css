@@ -4,14 +4,12 @@
     background: black;
     color: white;
     overflow: hidden;
-    /* ★重要：重なり制御の基準を作る */
     position: relative;
-    /* ★重要：内部のz-indexを独立させる */
     isolation: isolate;
 }
 
 /* =========================
-   メインエリア
+   メイン
 ========================= */
 
 .collection-main {
@@ -19,56 +17,93 @@
     padding: 20px;
     position: relative;
     overflow: hidden;
-    /* Slideより下に固定 */
     z-index: 1;
-}
-
-/* 星・UIは通常レイヤー */
-.title {
-    text-align: center;
-    margin-bottom: 30px;
-    letter-spacing: 3px;
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-}
-
-.card {
-    height: 160px;
-    border: 1px solid #555;
-    background: #111;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-    .card:hover {
-        transform: scale(1.05);
-        border-color: #999;
-    }
-
-.unknown {
-    font-size: 26px;
-    color: #aaa;
-    letter-spacing: 2px;
-}
-
-.preview {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 20px;
-    background: linear-gradient( 90deg, transparent, rgba(255,255,255,0.5), transparent );
+    flex-direction: column;
 }
 
 /* =========================
-   戻るボタン
+   タイトル
+========================= */
+
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+/* =========================
+   グリッド
+========================= */
+
+.grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 18px;
+    align-content: center;
+    padding-right: 280px;
+}
+
+/* =========================
+   カード
+========================= */
+
+.card {
+    height: 180px;
+    border: 1px solid #444;
+    background: rgba(15,15,15,0.92);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: 0.25s;
+}
+
+    .card:hover {
+        transform: scale(1.03);
+        border-color: #999;
+    }
+
+/* =========================
+   画像
+========================= */
+
+.collection-image {
+    width: 80%;
+    height: 110px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+/* =========================
+   名前
+========================= */
+
+.collection-name {
+    margin-top: 10px;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    letter-spacing: 1px;
+}
+
+/* =========================
+   未発見
+========================= */
+
+.unknown {
+    font-size: 46px;
+    color: #666;
+}
+
+/* =========================
+   戻る
 ========================= */
 
 .back-btn {
@@ -80,7 +115,7 @@
     border: 1px solid #555;
     color: white;
     cursor: pointer;
-    transition: 0.2s;
+    z-index: 100;
 }
 
     .back-btn:hover {
@@ -88,10 +123,48 @@
     }
 
 /* =========================
-   ★ Slideを最前面にする（重要）
+   Slide
 ========================= */
 
 .collection-wrap > *:last-child {
     position: relative;
     z-index: 9999;
+}
+
+/* =========================
+   タブレット
+========================= */
+
+@media (max-width: 1200px) {
+
+    .card {
+        height: 160px;
+    }
+
+    .collection-image {
+        height: 90px;
+    }
+}
+
+/* =========================
+   スマホ
+========================= */
+
+@media (max-width: 900px) {
+
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        padding-right: 0;
+    }
+}
+
+@media (max-width: 700px) {
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .card {
+        height: 140px;
+    }
 }
