@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-// 作成した各ページをインポート 修正中
+// 作成した各ページをインポート 
 
 import Home from './pages/Home/Home';
 import Wallpaper from './pages/Wallpaper/Wallpaper';
