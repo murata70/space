@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from "react";
+﻿import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./Wallpaper.css";
@@ -7,12 +7,8 @@ import Clock from "../../components/ui/Clock/Clock";
 import StarField from "../../components/ui/StarField/StarField";
 import Planets from "../../components/ui/Planets/Planets";
 import Rocket from "../../components/ui/Rocket/Rocket";
-import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
-
+import FlowController from "../../components/ui/flows/FlowController";
 import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
-
-
-
 
 const Wallpaper = () => {
 
@@ -33,7 +29,8 @@ const Wallpaper = () => {
 
             <SpaceDust />
 
-            <FlowingAssets />
+            {/* ここが差し替え */}
+            <FlowController />
 
             <Rocket />
 

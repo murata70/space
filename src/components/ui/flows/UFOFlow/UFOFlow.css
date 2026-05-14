@@ -1,0 +1,24 @@
+.ufo-flow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ufo-image {
+    position: absolute;
+    top: 20%;
+    left: 100vw;
+    width: 120px;
+    animation: ufoMove 5s linear forwards;
+}
+
+@keyframes ufoMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-140vw);
+    }
+}

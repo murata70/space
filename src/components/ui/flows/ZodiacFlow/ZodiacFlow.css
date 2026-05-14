@@ -1,0 +1,28 @@
+.zodiac-flow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+    .zodiac-flow img {
+        position: absolute;
+        top: 40%;
+        left: 40%;
+        width: 140px;
+        animation: glow 3s ease-in-out infinite;
+    }
+
+@keyframes glow {
+    0% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 0.5;
+    }
+}

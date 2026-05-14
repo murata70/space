@@ -1,0 +1,23 @@
+.orbital-flow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+    .orbital-flow img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 120px;
+        animation: orbit 4s linear infinite;
+    }
+
+@keyframes orbit {
+    0% {
+        transform: rotate(0) translateX(100px);
+    }
+
+    100% {
+        transform: rotate(360deg) translateX(100px);
+    }
+}

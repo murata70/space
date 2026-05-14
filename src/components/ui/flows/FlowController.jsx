@@ -1,52 +1,44 @@
-import UFOFlow from "./flows/UFOFlow";
-import FlagFlow from "./flows/FlagFlow";
-import OrbitalFlow from "./flows/OrbitalFlow";
-import SupermanFlow from "./flows/SupermanFlow";
-import BlackHoleFlow from "./flows/BlackHoleFlow";
-import MeteorShowerFlow from "./flows/MeteorShowerFlow";
-import MeteorFlow from "./flows/MeteorFlow";
-import CatFlow from "./flows/CatFlow";
-import AstronautFlow from "./flows/AstronautFlow";
-import ZodiacFlow from "./flows/ZodiacFlow";
-import GiantSpaceshipFlow from "./flows/GiantSpaceshipFlow";
+import { useEffect, useState, useRef } from "react";
+import collectionMaster from "../../../data/collectionMaster";
 
-export default function FlowController({ item }) {
+export default function FlowController() {
+  const [currentFlow, setCurrentFlow] = useState(null);
+  const usedIndexRef = useRef(null);
 
-  switch (item.id) {
+  useEffect(() => {
+    spawnNext();
+  }, []);
 
-    case "ufo":
-      return <UFOFlow item={item} />
+  const spawnNext = () => {
+    if (!collectionMaster.length) return;
 
-    case "flag":
-      return <FlagFlow item={item} />
+    let nextIndex = Math.floor(Math.random() * collectionMaster.length);
 
-    case "orbital":
-      return <OrbitalFlow item={item} />
+    // òAë±ìØÇ∂ñhé~
+    if (collectionMaster.length > 1) {
+      while (nextIndex === usedIndexRef.current) {
+        nextIndex = Math.floor(Math.random() * collectionMaster.length);
+      }
+    }
 
-    case "superman":
-      return <SupermanFlow item={item} />
+    usedIndexRef.current = nextIndex;
 
-    case "blackhole":
-      return <BlackHoleFlow item={item} />
+    const selected = collectionMaster[nextIndex];
 
-    case "meteor_shower":
-      return <MeteorShowerFlow item={item} />
+    setCurrentFlow(() => selected.component);
+  };
 
-    case "meteor":
-      return <MeteorFlow item={item} />
+  const handleComplete = () => {
+    setCurrentFlow(null);
 
-    case "cat":
-      return <CatFlow item={item} />
+    setTimeout(() => {
+      spawnNext();
+    }, 1500); // è≠Çµä‘ÇãÛÇØÇÈ
+  };
 
-    case "astronaut":
-      return <AstronautFlow item={item} />
+  if (!currentFlow) return null;
 
-    case "zodiac":
-      return <ZodiacFlow item={item} />
+  const FlowComponent = currentFlow;
 
-    case "giant_spaceship":
-      return <GiantSpaceshipFlow item={item} />
-
-    default:
-      return null;
-  }
+  return <FlowComponent onComplete={handleComplete} />;
+}

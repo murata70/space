@@ -1,0 +1,19 @@
+.astronaut-flow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+    .astronaut-flow img {
+        position: absolute;
+        top: 40%;
+        left: 100vw;
+        width: 120px;
+        animation: move 6s linear forwards;
+    }
+
+@keyframes move {
+    to {
+        transform: translateX(-140vw);
+    }
+}
