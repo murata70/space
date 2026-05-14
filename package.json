@@ -5,34 +5,37 @@
   "homepage": ".",
   "scripts": {
     "dev": "react-scripts start",
-    "start": "electron .",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "dist": "npm run build && electron-builder",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "electron:dev": "electron .",
+    "electron:build": "npm run build && electron-builder --win",
+    "postinstall": "electron-builder install-app-deps"
   },
   "keywords": [],
-  "author": "Your Name",
+  "author": "Nao Murata",
   "license": "ISC",
   "description": "PROJECT: space - Interactive Wallpaper Platform",
   "devDependencies": {
-    "electron": "latest",
+    "electron": "^28.3.3",
     "electron-builder": "^24.13.3",
     "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
+    "better-sqlite3": "^11.10.0",
     "electron-as-wallpaper": "^2.0.3",
     "framer-motion": "^12.38.0",
     "howler": "^2.2.4",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "^6.30.3",
-    "react-scripts": "latest",
-    "sqlite3": "^5.1.7"
+    "react-scripts": "latest"
   },
   "build": {
     "appId": "com.space.wallpaper",
     "productName": "PROJECT_space",
-    "copyright": "Copyright © 2024",
+    "copyright": "Copyright © 2026",
     "directories": {
       "output": "dist"
     },
@@ -49,8 +52,9 @@
       "build/**/*",
       "main.js",
       "preload.js",
-      "node_modules/**/*"
+      "package.json"
     ],
+    "asar": true,
     "extends": null
   },
   "browserslist": {
