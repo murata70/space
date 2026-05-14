@@ -8,15 +8,46 @@ import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
 const Settings = () => {
     const navigate = useNavigate();
 
+    /* 保存済み設定を取得 */
+        let savedSettings = {};
+
+    try {
+        savedSettings =
+            JSON.parse(localStorage.getItem("user_settings")) || {};
+    } catch (error) {
+        console.error("設定の読み込み失敗", error);
+    }
+    /* 東京から大阪に自動変換 */
+    if (savedSettings.tz === "Asia/Osaka") {
+        savedSettings.tz = "Asia/Tokyo";
+    }
+
     /* state */
-    const [muted, setMuted] = useState(false);
-    const [sec, setSec] = useState(true);
-    const [tz, setTz] = useState("Asia/Tokyo");
-    const [is24h, setIs24h] = useState(true);
+    const [muted, setMuted] =
+        useState(savedSettings.muted ?? false);
+
+    const [sec, setSec] =
+        useState(savedSettings.sec ?? true);
+
+    const [tz, setTz] =
+        useState(savedSettings.tz ?? "Asia/Tokyo");
+
+    const [is24h, setIs24h] =
+        useState(savedSettings.is24h ?? true);
+
+    const [volume, setVolume] = useState(
+        savedSettings.volume ?? 50
+    );
 
     /* 保存 */
     const handleSave = () => {
-        const settings = { muted, sec, tz, is24h };
+        const settings = {
+            muted,
+            volume,
+            sec,
+            tz,
+            is24h
+        };
         localStorage.setItem("user_settings", JSON.stringify(settings));
         alert("設定を保存しました！");
         navigate("/wallpaper");
@@ -57,6 +88,8 @@ const Settings = () => {
                 <SettingsPart
                     muted={muted}
                     setMuted={setMuted}
+                    volume={volume}
+                    setVolume={setVolume}
                     sec={sec}
                     setSec={setSec}
                     is24h={is24h}
@@ -71,7 +104,7 @@ const Settings = () => {
                         登録（保存）
                     </button>
                     <button className="settings-btn backBtn" onClick={handleBack}>
-                        ← 壁紙へ戻る
+                        ← 壁紙へ戻る🚀
                     </button>
                     <button className="settings-btn homeBtn" onClick={handleGoHome}>
                         🏠 ホームへ
