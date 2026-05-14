@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./Wallpaper.css";
@@ -10,6 +10,8 @@ import Rocket from "../../components/ui/Rocket/Rocket";
 import FlowingAssets from "../../components/ui/FlowingAssets/FlowingAssets";
 
 import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
+
+
 
 
 const Wallpaper = () => {
