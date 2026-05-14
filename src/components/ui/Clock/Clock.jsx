@@ -9,13 +9,33 @@ const Clock = () => {
 
         const updateClock = () => {
 
+            const settings =
+                JSON.parse(localStorage.getItem("user_settings")) || {};
+
+            const {
+                sec = true,
+                is24h = true,
+                tz = "Asia/Osaka"
+            } = settings;
+
             const now = new Date();
 
-            const h = String(now.getHours()).padStart(2, "0");
-            const m = String(now.getMinutes()).padStart(2, "0");
-            const s = String(now.getSeconds()).padStart(2, "0");
+            const options = {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: !is24h,
+                timeZone: tz
+            };
 
-            setTime(`${h}:${m}:${s}`);
+            // sec ON の時だけ秒表示
+            if (sec) {
+                options.second = "2-digit";
+            }
+
+            const formattedTime =
+                now.toLocaleTimeString("ja-JP", options);
+
+            setTime(formattedTime);
         };
 
         updateClock();

@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import "./SettingsPart.css";
+
 const SettingsPart = ({
     muted,
     setMuted,
@@ -78,7 +80,7 @@ const SettingsPart = ({
                     タイムゾーン</span>
 
                 <select value={tz} onChange={(e) => setTz(e.target.value)}>
-                    <option value="Asia/Tokyo">Asia/Tokyo</option>
+                    <option value="Asia/Osaka">Asia/Osaka</option>
                     <option value="UTC">UTC</option>
                     <option value="America/New_York">New York</option>
                     <option value="Europe/London">London</option>

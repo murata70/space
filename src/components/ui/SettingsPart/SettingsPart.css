@@ -1,0 +1,194 @@
+/* ===== SettingPart.css ===== */
+
+/* ===== テキスト ===== */
+    .settings-row span {
+        font-size: 22px;
+        font-weight: 700;
+        color: #cfe8ff;
+    }
+
+/* ===== 入力フォーム（宇宙風） ===== */
+
+    input[type="range"] {
+        width: 100%;
+        max-width: 180px;
+        accent-color: #00c3ff;
+    }
+
+/* ===== select ===== */
+    select {
+        font-size: 18px;
+        font-weight: 600;
+        width: 100%;
+        max-width: 100%;
+        padding: 8px;
+        margin-top: 6px;
+        background: rgba(0, 10, 30, 0.8);
+        color: #fff;
+        border: 1px solid rgba(100, 180, 255, 0.3);
+        border-radius: 8px;
+        /*            outline: none;
+                        transition: 0.2s;*/
+    }
+
+    select:hover {
+        box-shadow: 0 0 10px rgba(0, 200, 255, 0.4);
+    }
+
+
+/* ===== ボタン ===== */
+/* ===== 大きいボタンだけ指定 ===== */
+    .primaryBtn,
+    .backBtn,
+    .homeBtn {
+        width: min(100%, 320px);
+        padding: clamp(10px, 1.5vw, 15px);
+    }
+
+
+/* ===== ピコッと動かす ===== */
+    button:hover {
+        transform: scale(1.02);
+    }
+/* 確実に縦並びに */
+    .button-group {
+        margin-top: 6px;
+        display: flex;
+        flex-direction: column; /* 縦並び */
+        align-items: center; /* 中央ぞろえ */
+        gap: 9px;
+    }
+
+
+/* ===== text toggle ===== */
+
+/* hover */
+    .text-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        font-weight: 700;
+        font-size: 18px;
+        cursor: pointer;
+        padding: 4px 8px;
+    }
+
+    /* 選択中 */
+    .text-btn.active {
+        color: #4fc3ff;
+        text-shadow: 0 0 6px rgba(79,195,255,0.5);
+    }
+
+
+
+/* ===== ミュートボタン ===== */
+    .muteBtn {
+        font-size: 30px;
+        background: transparent;
+        border: none;
+        width: auto;
+        padding: 0 10px;
+        cursor: pointer;
+        color: white;
+        box-shadow: none;
+        flex-shrink: 0;
+    }
+
+    .muteBtn:hover {
+        transform: scale(1.15);
+        box-shadow: none;
+    }
+
+
+
+/* 登録ボタン */
+    .primaryBtn {
+        background: linear-gradient(90deg, #00c3ff, #3a7bd5);
+        box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+    }
+
+    .primaryBtn:hover {
+        box-shadow: 0 0 25px rgba(0, 200, 255, 0.7);
+    }
+
+/* 戻るボタン */
+    .backBtn {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(120, 180, 255, 0.3);
+        color: #cfe8ff;
+        margin-top: 5px;
+    }
+
+/* ホームへボタン */
+    .homeBtn {
+        background: #ffffff;
+        color: #1a1a1a !important;
+        border: 1px solid #ccc;
+        margin-top: 5px;
+    }
+
+    .homeBtn:hover {
+        background: rgba(255, 255, 255, 0.85);
+        color: #000000 !important;
+    }
+
+/* ===== row 統一用 ===== */
+    .settings-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 4px 6px;
+        border-radius: 8px;
+        transition: 0.3s;
+        margin: 0px;
+        /*            flex-wrap: nowrap;*/
+        min-width: 0;
+        width: 100%;
+    }
+
+    .settings-row span {
+        flex-shrink: 0;
+    }
+
+    .settings-row:hover {
+        background: rgba(0, 150, 255, 0.08);
+    }
+
+    .text-toggle {
+        display: flex;
+        gap: 15px;
+        margin-left: auto;
+    }
+
+/* ===== botton 統一用 ===== */
+    .settings-btn {
+        width: min(100%, 390px);
+        padding: 15px 20px;
+        border-radius: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        font-size: 17px;
+    }
+
+    .settings-btn:hover {
+        transform: scale(1.02);
+    }
+
+/* ===== responsive（1個だけに統一） ===== */
+@media (max-width: 600px) {
+
+
+
+    .text-btn {
+        font-size: 16px;
+    }
+
+    .text-toggle {
+        gap: 8px;
+    }
+}
