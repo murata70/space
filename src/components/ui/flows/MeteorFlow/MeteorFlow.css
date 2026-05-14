@@ -1,0 +1,32 @@
+.meteor-flow {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 4;
+}
+
+.meteor-image {
+    position: absolute;
+    width: 140px;
+    height: auto;
+    will-change: transform;
+    animation: meteorFall 4s linear forwards;
+    /*
+      êiçsï˚å¸Ç÷åXÇØÇÈ
+    */
+    transform: rotate(var(--meteor-angle));
+}
+
+@keyframes meteorFall {
+
+    from {
+        transform: translate(0, 0) rotate(var(--meteor-angle)) scale(1);
+        opacity: 1;
+    }
+
+    to {
+        transform: translate(-160vw, 140vh) rotate(var(--meteor-angle)) scale(0.7);
+        opacity: 0.9;
+    }
+}

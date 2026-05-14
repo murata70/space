@@ -1,0 +1,19 @@
+.flag-flow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+    .flag-flow img {
+        position: absolute;
+        top: 20%;
+        left: 100vw;
+        width: 120px;
+        animation: flagMove 5.5s linear forwards;
+    }
+
+@keyframes flagMove {
+    to {
+        transform: translateX(-130vw);
+    }
+}
