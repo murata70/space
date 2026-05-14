@@ -1,0 +1,17 @@
+.meteor-shower {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+    .meteor-shower img {
+        position: absolute;
+        width: 80px;
+        animation: rain 3s linear infinite;
+    }
+
+@keyframes rain {
+    to {
+        transform: translateY(120vh);
+    }
+}

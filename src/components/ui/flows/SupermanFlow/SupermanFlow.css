@@ -1,0 +1,19 @@
+.superman-flow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+    .superman-flow img {
+        position: absolute;
+        top: 50%;
+        left: 100vw;
+        width: 120px;
+        animation: fly 5s linear forwards;
+    }
+
+@keyframes fly {
+    to {
+        transform: translateX(-150vw);
+    }
+}

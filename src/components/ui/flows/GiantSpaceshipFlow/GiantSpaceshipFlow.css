@@ -1,0 +1,19 @@
+.ship-flow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+    .ship-flow img {
+        position: absolute;
+        top: 30%;
+        left: 100vw;
+        width: 180px;
+        animation: ship 7s linear forwards;
+    }
+
+@keyframes ship {
+    to {
+        transform: translateX(-160vw);
+    }
+}
