@@ -11,8 +11,8 @@ import collectionMaster from "../../data/collectionMaster";
 
 const THEMES = [
     { id: "space", name: "宇宙" },
-    { id: "ocean", name: "海", locked: true },
-    { id: "forest", name: "森", locked: true },
+    { id: "ocean", name: "未定", locked: true },
+    { id: "forest", name: "未定", locked: true },
 ];
 
 export default function Collection() {
