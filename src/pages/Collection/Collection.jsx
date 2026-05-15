@@ -8,8 +8,11 @@ import Slide from "../../components/ui/Slide/Slide";
 
 import { getCollections } from "../../utils/collectionStorage";
 import collectionMaster from "../../data/collectionMaster";
+<<<<<<< HEAD
 
 const publicUrl = process.env.PUBLIC_URL || "";
+=======
+>>>>>>> origin/toshikuni_0515_3
 
 const THEMES = [
   { id: "space", name: "宇宙" },
@@ -48,6 +51,7 @@ export default function Collection() {
                       alt={item.name}
                       className="collection-image"
                     />
+
                     <div className="collection-name">
                       {item.name}
                     </div>
