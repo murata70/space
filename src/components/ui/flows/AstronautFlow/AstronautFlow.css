@@ -1,19 +1,50 @@
-.astronaut-flow {
+.astronaut-flow-wrapper {
     position: fixed;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
+    z-index: 5;
 }
 
-    .astronaut-flow img {
-        position: absolute;
-        top: 40%;
-        left: 100vw;
-        width: 120px;
-        animation: move 6s linear forwards;
+/* ‰Q‚Ì’†S */
+.astronaut-flow-stage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ‰F’ˆ”òsm */
+.astronaut-flow-image {
+    width: clamp(80px, 12vw, 180px);
+    height: auto;
+    will-change: transform;
+    transform-origin: center;
+    animation: astronautSlowVortex 20s linear forwards;
+    filter: drop-shadow(0 0 14px rgba(180, 220, 255, 0.25));
+}
+
+/* -----------------------------------------
+   ‚ä‚Á‚­‚è—†ù‹z‚¢‚İiŠŠ‚ç‚©d‹j
+------------------------------------------ */
+@keyframes astronautSlowVortex {
+    0% {
+        transform: rotate(0deg) translate(0px, -120vh) scale(1);
     }
 
-@keyframes move {
-    to {
-        transform: translateX(-140vw);
+    25% {
+        transform: rotate(360deg) translate(40px, -70vh) scale(0.8);
+    }
+
+    50% {
+        transform: rotate(720deg) translate(30px, -20vh) scale(0.6);
+    }
+
+    75% {
+        transform: rotate(1080deg) translate(15px, 40vh) scale(0.3);
+    }
+
+    100% {
+        transform: rotate(1440deg) translate(0px, 0px) scale(0);
     }
 }
