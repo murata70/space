@@ -1,23 +1,53 @@
-.orbital-flow {
+﻿/* OrbitalFlow.css */
+
+/* 画面全体を覆うラッパー */
+.orbital-flow-wrapper {
     position: fixed;
     inset: 0;
     pointer-events: none;
+    overflow: hidden;
+    z-index: 5; /* 規定の 4〜6 範囲内 */
 }
 
-    .orbital-flow img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 120px;
-        animation: orbit 4s linear infinite;
-    }
+/* 人工衛星本体：巨大サイズで視認性を向上 */
+.orbital-flow-unit {
+    position: absolute;
+    /* topはJSX側のインラインスタイルで動的に適用 */
+    left: 100vw;
+    width: 550px;
+    height: auto;
+    will-change: transform;
+    /* 右から左へ一直線にゆっくり進む（infiniteは禁止） */
+    animation: orbitalPassMove 35s linear forwards;
+    /* メタリックな質感を出すための発光と、わずかな傾きで宇宙空間を表現 */
+    filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.3));
+    transform: rotate(-5deg);
+    user-select: none;
+    -webkit-user-drag: none;
+}
 
-@keyframes orbit {
+/* 直線移動アニメーション */
+@keyframes orbitalPassMove {
     0% {
-        transform: rotate(0) translateX(100px);
+        /* 初期位置：右端の外側。わずかな傾きを維持 */
+        transform: translateX(0) rotate(-5deg);
     }
 
     100% {
-        transform: rotate(360deg) translateX(100px);
+        /* 終点：左端の外側まで。画像サイズ(550px)＋画面幅分移動 */
+        transform: translateX(calc(-100vw - 600px)) rotate(-5deg);
+    }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1024px) {
+    .orbital-flow-unit {
+        width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .orbital-flow-unit {
+        width: 280px;
     }
 }
