@@ -47,10 +47,7 @@ export default function Collection() {
                       alt={item.name}
                       className="collection-image"
                     />
-
-                    <div className="collection-name">
-                      {item.name}
-                    </div>
+                    <div className="collection-name">{item.name}</div>
                   </>
                 ) : (
                   <div className="unknown">?</div>
