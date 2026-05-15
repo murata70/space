@@ -6,6 +6,8 @@
     overflow: hidden;
     position: relative;
     isolation: isolate;
+    /* “ú–{Œê•¶š‰»‚¯‘Îô */
+    font-family: "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
 }
 
 /* =========================
@@ -20,6 +22,8 @@
     z-index: 1;
     display: flex;
     flex-direction: column;
+    /* ’†‰›Šñ‚¹’Ç‰Á */
+    align-items: center;
 }
 
 /* =========================
@@ -39,13 +43,19 @@
 ========================= */
 
 .grid {
+    width: 100%;
+    max-width: 1100px;
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
     grid-template-rows: repeat(3, 1fr);
     gap: 18px;
     align-content: center;
-    padding-right: 280px;
+    justify-content: center;
+    justify-items: center;
+    /* ©‚±‚ê‚ª¶Šñ‚èŒ´ˆö‚¾‚Á‚½ */
+    padding-right: 0;
+    margin: 0 auto;
 }
 
 /* =========================
@@ -53,6 +63,8 @@
 ========================= */
 
 .card {
+    width: 100%;
+    max-width: 220px;
     height: 180px;
     border: 1px solid #444;
     background: rgba(15,15,15,0.92);
@@ -91,6 +103,9 @@
     text-align: center;
     color: white;
     letter-spacing: 1px;
+    /* “ú–{Œê•ö‚ê‘Îô */
+    word-break: keep-all;
+    line-height: 1.4;
 }
 
 /* =========================
@@ -137,6 +152,10 @@
 
 @media (max-width: 1200px) {
 
+    .grid {
+        grid-template-columns: repeat(3, minmax(180px, 1fr));
+    }
+
     .card {
         height: 160px;
     }
@@ -153,8 +172,7 @@
 @media (max-width: 900px) {
 
     .grid {
-        grid-template-columns: repeat(3, 1fr);
-        padding-right: 0;
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
     }
 }
 
