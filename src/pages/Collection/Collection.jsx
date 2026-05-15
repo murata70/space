@@ -7,7 +7,7 @@ import StarField from "../../components/ui/StarField/StarField";
 import Slide from "../../components/ui/Slide/Slide";
 
 import { getCollections } from "../../utils/collectionStorage";
-import collectionMaster from "../../data/collectionMaster"; // ★修正ここ
+import collectionMaster from "../../data/collectionMaster";
 
 const THEMES = [
   { id: "space", name: "宇宙" },
@@ -47,6 +47,7 @@ export default function Collection() {
                       alt={item.name}
                       className="collection-image"
                     />
+
                     <div className="collection-name">
                       {item.name}
                     </div>

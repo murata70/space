@@ -1,4 +1,6 @@
-﻿import UFOFlow from "../components/ui/flows/UFOFlow/UFOFlow";
+﻿const publicUrl = process.env.PUBLIC_URL || "";
+
+import UFOFlow from "../components/ui/flows/UFOFlow/UFOFlow";
 import MeteorFlow from "../components/ui/flows/MeteorFlow/MeteorFlow";
 import CatFlow from "../components/ui/flows/CatFlow/CatFlow";
 import AstronautFlow from "../components/ui/flows/AstronautFlow/AstronautFlow";
@@ -15,82 +17,77 @@ const collectionMaster = [
     id: "ufo",
     name: "UFO",
     component: UFOFlow,
-    images: ["/assets/image/collections/ufo.png"],
+    images: [`${publicUrl}/assets/image/collections/ufo.png`],
   },
 
   {
     id: "meteor",
     name: "隕石",
     component: MeteorFlow,
-    images: ["/assets/image/collections/meteor1.png"],
+    images: [`${publicUrl}/assets/image/collections/meteor1.png`],
   },
 
   {
     id: "twink_cat",
     name: "ひかるねこ",
     component: CatFlow,
-    images: ["/assets/image/collections/twinkling_cat1.png"],
+    images: [`${publicUrl}/assets/image/collections/twinkling_cat1.png`],
   },
 
   {
     id: "astronaut",
-
-    // ① 修正
     name: "もう助からない宇宙飛行士",
-
     component: AstronautFlow,
-    images: ["/assets/image/collections/astronaut.png"],
+    images: [`${publicUrl}/assets/image/collections/astronaut.png`],
   },
 
   {
     id: "blackhole",
     name: "ブラックホール",
     component: BlackHoleFlow,
-    images: ["/assets/image/collections/blackhole.png"],
+    images: [`${publicUrl}/assets/image/collections/blackhole.png`],
   },
 
   {
     id: "flag",
     name: "エンドクレジット",
     component: FlagFlow,
-    images: ["/assets/image/collections/flag.png"],
+    images: [`${publicUrl}/assets/image/collections/flag.png`],
   },
 
   {
     id: "giant_spaceship",
     name: "巨大宇宙船",
     component: GiantSpaceshipFlow,
-    images: ["/assets/image/collections/giant_spaceship.png"],
+    images: [`${publicUrl}/assets/image/collections/giant_spaceship.png`],
   },
 
   {
     id: "meteor_shower",
     name: "流星群",
     component: MeteorShowerFlow,
-
-    // ② 修正
-    images: ["/assets/image/collections/meteor_shower.png"],
+    images: [`${publicUrl}/assets/image/collections/meteor_shower.png`],
   },
 
   {
     id: "orbital",
     name: "人工衛星",
     component: OrbitalFlow,
-    images: ["/assets/image/collections/orbital.png"],
+    images: [`${publicUrl}/assets/image/collections/orbital.png`],
   },
 
   {
     id: "superman",
     name: "スーパーマン",
     component: SupermanFlow,
-    images: ["/assets/image/collections/superman.png"],
+    images: [`${publicUrl}/assets/image/collections/superman.png`],
   },
 
   {
     id: "zodiac",
     name: "星座",
     component: ZodiacFlow,
-    images: ["/assets/image/collections/Aries.png"],
+    images: [`${publicUrl}/assets/image/collections/Aries.png`],
   },
 ];
 

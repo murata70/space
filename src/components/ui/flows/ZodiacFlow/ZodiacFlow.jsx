@@ -1,22 +1,24 @@
 import { useEffect, useRef, useState } from "react";
 import "./ZodiacFlow.css";
 
+const publicUrl = process.env.PUBLIC_URL || "";
+
 export default function ZodiacFlow({ onComplete }) {
   const wrapperRef = useRef(null);
 
   const zodiacImages = [
-    "/assets/image/collections/aquarius.png",
-    "/assets/image/collections/aries.png",
-    "/assets/image/collections/cancer.png",
-    "/assets/image/collections/capricorn.png",
-    "/assets/image/collections/gemini.png",
-    "/assets/image/collections/leo.png",
-    "/assets/image/collections/libra.png",
-    "/assets/image/collections/pisces.png",
-    "/assets/image/collections/scorpio.png",
-    "/assets/image/collections/taurus.png",
-    "/assets/image/collections/virgo.png",
-    "/assets/image/collections/sagittarius.png",
+    `${publicUrl}/assets/image/collections/aquarius.png`,
+    `${publicUrl}/assets/image/collections/aries.png`,
+    `${publicUrl}/assets/image/collections/cancer.png`,
+    `${publicUrl}/assets/image/collections/capricorn.png`,
+    `${publicUrl}/assets/image/collections/gemini.png`,
+    `${publicUrl}/assets/image/collections/leo.png`,
+    `${publicUrl}/assets/image/collections/libra.png`,
+    `${publicUrl}/assets/image/collections/pisces.png`,
+    `${publicUrl}/assets/image/collections/scorpio.png`,
+    `${publicUrl}/assets/image/collections/taurus.png`,
+    `${publicUrl}/assets/image/collections/virgo.png`,
+    `${publicUrl}/assets/image/collections/sagittarius.png`,
   ];
 
   const [img, setImg] = useState(null);
@@ -26,23 +28,23 @@ export default function ZodiacFlow({ onComplete }) {
   useEffect(() => {
     const selected =
       zodiacImages[Math.floor(Math.random() * zodiacImages.length)];
+
     setImg(selected);
 
     const margin = 180;
-    const x = Math.random() * (window.innerWidth - margin * 2) + margin;
-    const y = Math.random() * (window.innerHeight - margin * 2) + margin;
+
+    const x =
+      Math.random() * (window.innerWidth - margin * 2) + margin;
+
+    const y =
+      Math.random() * (window.innerHeight - margin * 2) + margin;
 
     setPos({ x, y });
 
     const timers = [];
 
-    // 5秒フェードイン
     timers.push(setTimeout(() => setPhase("stay"), 5000));
-
-    // 25秒滞在後フェードアウト開始
     timers.push(setTimeout(() => setPhase("out"), 30000));
-
-    // 完了
     timers.push(setTimeout(() => onComplete?.(), 35000));
 
     return () => timers.forEach(clearTimeout);
