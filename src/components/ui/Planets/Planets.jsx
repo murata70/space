@@ -3,45 +3,44 @@
 import { useEffect, useRef, useState } from "react";
 import "./Planets.css";
 
+// 先頭のスラッシュを削除し、publicUrlを結合しやすくします
 const planetImages = [
-    "/assets/image/planets/asteroid.png",
-    "/assets/image/planets/planet1_1.png",
-    "/assets/image/planets/planet1_2.png",
-    "/assets/image/planets/planet1_3.png",
-    "/assets/image/planets/planet2_1.png",
-    "/assets/image/planets/planet3_1.png",
-    "/assets/image/planets/planet4_1.png",
-    "/assets/image/planets/planet5_1.png",
-    "/assets/image/planets/planet6_1.png",
-    "/assets/image/planets/planet7_1.png",
-    "/assets/image/planets/planet8_1.png",
-    "/assets/image/planets/planet9_1.png",
-    "/assets/image/planets/planet10_1.png",
-    "/assets/image/planets/planet11_1.png",
-    "/assets/image/planets/planet12_1.png",
-    "/assets/image/planets/planet13_1.png",
-    "/assets/image/planets/planet14.png",
-    "/assets/image/planets/sun_1.png",
-    "/assets/image/planets/sun_2.png",
-    "/assets/image/planets/sun_3.png",
+    "assets/image/planets/asteroid.png",
+    "assets/image/planets/planet1_1.png",
+    "assets/image/planets/planet1_2.png",
+    "assets/image/planets/planet1_3.png",
+    "assets/image/planets/planet2_1.png",
+    "assets/image/planets/planet3_1.png",
+    "assets/image/planets/planet4_1.png",
+    "assets/image/planets/planet5_1.png",
+    "assets/image/planets/planet6_1.png",
+    "assets/image/planets/planet7_1.png",
+    "assets/image/planets/planet8_1.png",
+    "assets/image/planets/planet9_1.png",
+    "assets/image/planets/planet10_1.png",
+    "assets/image/planets/planet11_1.png",
+    "assets/image/planets/planet12_1.png",
+    "assets/image/planets/planet13_1.png",
+    "assets/image/planets/planet14.png",
+    "assets/image/planets/sun_1.png",
+    "assets/image/planets/sun_2.png",
+    "assets/image/planets/sun_3.png",
 ];
 
 const FLOW_TIME = 180; // 秒
 const WAIT_TIME = 2500; // 2.5秒
 
 export default function Planets() {
-
     const [planet, setPlanet] = useState(null);
+    const publicUrl = process.env.PUBLIC_URL || "";
 
     // 直近3回の履歴
     const historyRef = useRef([]);
 
     useEffect(() => {
-
         let timeoutId;
 
         const spawnPlanet = () => {
-
             const history = historyRef.current;
 
             // 直近3回を除外
@@ -84,39 +83,32 @@ export default function Planets() {
             timeoutId = setTimeout(() => {
                 spawnPlanet();
             }, FLOW_TIME * 1000 + WAIT_TIME);
-
         };
 
         spawnPlanet();
 
         return () => clearTimeout(timeoutId);
-
     }, []);
 
     if (!planet) return null;
 
     return (
         <div className="planet-layer">
-
             <img
                 key={planet.id}
-                src={planet.image}
+                /* ここでpublicUrlを結合して正しいパスを生成します */
+                src={`${publicUrl}/${planet.image}`}
                 alt="planet"
                 className="planet-object"
                 style={{
                     top: `${planet.top}%`,
-
                     width: `${planet.size}px`,
-
                     // 惑星の左端を画面右外へ置く
                     left: "100vw",
-
                     "--planet-size": `${planet.size}px`,
-
                     animationDuration: `${FLOW_TIME}s`,
                 }}
             />
-
         </div>
     );
 }

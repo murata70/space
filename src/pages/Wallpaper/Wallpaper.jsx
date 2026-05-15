@@ -11,17 +11,25 @@ import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
 
 const Wallpaper = () => {
     const navigate = useNavigate();
-    // パスの起点となるURLを取得
+
+    // パスの起点となるURLを取得（Electronの相対パス対応）
     const publicUrl = process.env.PUBLIC_URL || "";
 
     return (
         <div
             className="wallpaper"
             style={{
+                /* CSS変数への適用 */
                 "--bg-16x9": `url('${publicUrl}/assets/image/BackGround/background_16x9.png')`,
                 "--bg-4x3": `url('${publicUrl}/assets/image/BackGround/background_4x3.png')`,
             }}
         >
+            {/* 
+               もしWallpaper.jsx内で直接画像を表示する場合は、
+               以下のように img タグを記述します。
+               <img src={`${publicUrl}/assets/image/test.png`} alt="test" />
+            */}
+
             <StarField />
             <Planets />
             <SpaceDust />
