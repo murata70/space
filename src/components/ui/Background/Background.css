@@ -11,7 +11,7 @@
     background-repeat: no-repeat;
     /* デフォルト設定（16:9） */
     background-image: var(--bg-16x9);
-    /* 切り替え時のアニメーション（必要であれば） */
+    /* 切り替え時のアニメーション */
     transition: background-image 0.5s ease-in-out;
 }
 

@@ -35,6 +35,7 @@ export default function Collection() {
                     {collectionMaster.map((item) => {
                         const unlocked = owned.some((o) => o.id === item.id);
 
+<<<<<<< HEAD
                         return (
                             <div
                                 key={item.id}
@@ -67,6 +68,28 @@ export default function Collection() {
             </div>
 
             <Slide title="THEMES" items={THEMES} />
+=======
+            return (
+              <div
+                key={item.id}
+                className={`card ${unlocked ? "unlocked" : "locked"}`}
+              >
+                {unlocked ? (
+                  <>
+                    <img
+                      src={item.images?.[0]}
+                      alt={item.name}
+                      className="collection-image"
+                    />
+                    <div className="collection-name">{item.name}</div>
+                  </>
+                ) : (
+                  <div className="unknown">?</div>
+                )}
+              </div>
+            );
+          })}
+>>>>>>> origin/toshikuni_0515_3
         </div>
     );
 }
