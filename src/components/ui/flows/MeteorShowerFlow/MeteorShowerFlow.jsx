@@ -1,74 +1,74 @@
-import { useEffect, useMemo } from "react";
-import "./MeteorShowerFlow.css"; // ©‚±‚±‚ğC³
+import { useEffect, useState } from "react";
+import "./MeteorShowerFlow.css";
+
+const publicUrl = process.env.PUBLIC_URL || "";
 
 export default function MeteorShowerFlow({ onComplete }) {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onComplete?.();
-    }, 40000);
+  const [meteors, setMeteors] = useState([]);
 
-    return () => clearTimeout(timer);
+  useEffect(() => {
+    const spawnInterval = setInterval(() => {
+      const fromTop = Math.random() < 0.5;
+
+      const baseSize = 30 + Math.random() * 30;
+      const size = baseSize * (1 + Math.random());
+
+      const newMeteor = {
+        id: Date.now() + Math.random(),
+
+        x: fromTop
+          ? Math.random() * window.innerWidth
+          : window.innerWidth + 50,
+
+        y: fromTop ? -120 : Math.random() * window.innerHeight,
+
+        size,
+        delay: Math.random() * 0.3,
+      };
+
+      setMeteors((prev) => [...prev, newMeteor]);
+    }, 180); // š‡@ 250ms ¨ 180msi‚‘¬‰»j
+
+    const stopTimer = setTimeout(() => {
+      clearInterval(spawnInterval);
+    }, 25000);
+
+    const finishTimer = setTimeout(() => {
+      onComplete?.();
+    }, 27000);
+
+    return () => {
+      clearInterval(spawnInterval);
+      clearTimeout(stopTimer);
+      clearTimeout(finishTimer);
+    };
   }, [onComplete]);
 
-  const meteors = useMemo(() => {
-    return Array.from({ length: 120 }).map((_, i) => {
-      const size = 24 + Math.random() * 220;
-      const duration = Math.max(3, 15 - size / 20);
-      const fromLeftSide = Math.random() > 0.5;
-
-      const left = fromLeftSide
-        ? Math.random() * 40
-        : 60 + Math.random() * 40;
-
-      const top = Math.random() * 35;
-      const delay = Math.random() * 30;
-
-      let z = 4;
-      if (size > 170) z = 6;
-      else if (size > 100) z = 5;
-
-      return {
-        id: i,
-        size,
-        duration,
-        top,
-        left,
-        delay,
-        z,
-      };
-    });
-  }, []);
-
   return (
-    <div className="meteor-flow-wrap">
-      <div className="meteor-flow-dark" />
+    <div className="meteor-shower-flow">
+      {/* š‡A ˆÃ“]ƒŒƒCƒ„[’Ç‰Á */}
+      <div className="meteor-shower-dark" />
 
       {meteors.map((m) => (
         <div
           key={m.id}
-          className="meteor-flow-item"
+          className="meteor-shower-item"
           style={{
-            top: `${m.top}%`,
-            left: `${m.left}%`,
-            zIndex: m.z,
-            animationDuration: `${m.duration}s`,
+            left: `${m.x}px`,
+            top: `${m.y}px`,
             animationDelay: `${m.delay}s`,
           }}
         >
-          <div
-            className="meteor-flow-glow"
-            style={{
-              width: `${m.size * 1.2}px`,
-              height: `${m.size * 1.2}px`,
-            }}
-          />
+          <div className="meteor-shower-glow" />
 
           <img
-            src="/assets/image/collections/ryuseigun.png"
+            src={`${publicUrl}/assets/image/collections/ryuseigun.png`}
+            className="meteor-shower-image"
+            style={{
+              width: `${m.size}px`,
+              height: "auto",
+            }}
             alt="meteor"
-            className="meteor-flow-img"
-            style={{ width: `${m.size}px` }}
-            draggable="false"
           />
         </div>
       ))}
