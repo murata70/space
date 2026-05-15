@@ -1,16 +1,99 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import "./MeteorShowerFlow.css";
 
 export default function MeteorShowerFlow({ onComplete }) {
+
   useEffect(() => {
-    const t = setTimeout(() => onComplete?.(), 6000);
-    return () => clearTimeout(t);
+
+    const timer = setTimeout(() => {
+      onComplete?.();
+    }, 40000);
+
+    return () => clearTimeout(timer);
+
   }, [onComplete]);
 
+  const meteors = useMemo(() => {
+
+    return Array.from({ length: 120 }).map((_, i) => {
+
+      const size = 24 + Math.random() * 220;
+
+      const duration = Math.max(3, 15 - size / 20);
+
+      // 左上 or 右上どちらからも発生
+      const fromLeftSide = Math.random() > 0.5;
+
+      const left = fromLeftSide
+        ? Math.random() * 40
+        : 60 + Math.random() * 40;
+
+      const top = Math.random() * 35;
+
+      const delay = Math.random() * 30;
+
+      let z = 4;
+      if (size > 170) z = 6;
+      else if (size > 100) z = 5;
+
+      return {
+        id: i,
+        size,
+        duration,
+        top,
+        left,
+        delay,
+        z,
+      };
+
+    });
+
+  }, []);
+
   return (
-    <div className="flow meteor-shower">
-      <img src="/assets/image/collections/meteor1.png" />
-      <img src="/assets/image/collections/meteor2.png" />
+    <div className="meteor-flow-wrap">
+
+      {/* 暗転 */}
+      <div className="meteor-flow-dark" />
+
+      {meteors.map((m) => (
+
+        <div
+          key={m.id}
+          className="meteor-flow-item"
+          style={{
+            top: `${m.top}%`,
+            left: `${m.left}%`,
+            zIndex: m.z,
+            animationDuration: `${m.duration}s`,
+            animationDelay: `${m.delay}s`,
+          }}
+        >
+
+          {/* ぼんやり光るコア（小さく弱く） */}
+          <div
+            className="meteor-flow-glow"
+            style={{
+              width: `${m.size * 1.2}px`,
+              height: `${m.size * 1.2}px`,
+            }}
+          />
+
+          {/* 本体（回転なし） */}
+          <img
+            src="/assets/image/collections/ryuseigun.png"
+            alt="meteor"
+            className="meteor-flow-img"
+            style={{
+              width: `${m.size}px`,
+            }}
+            draggable="false"
+          />
+
+        </div>
+
+      ))}
+
     </div>
   );
 }
