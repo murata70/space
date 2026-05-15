@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import "./MeteorShowerFlow.css";
+import "./MeteorShowerFlow.css"; // ©‚±‚±‚ðC³
 
 export default function MeteorShowerFlow({ onComplete }) {
   useEffect(() => {
