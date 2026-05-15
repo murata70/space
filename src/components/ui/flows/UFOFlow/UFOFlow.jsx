@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import "./UFOFlow.css";
 
-export default function UFOFlow({ onComplete }) {
+const publicUrl = process.env.PUBLIC_URL || "";
 
+export default function UFOFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
@@ -14,7 +15,7 @@ export default function UFOFlow({ onComplete }) {
   return (
     <div className="ufo-flow">
       <img
-        src="/assets/image/collections/ufo.png"
+        src={`${publicUrl}/assets/image/collections/ufo.png`}
         alt="ufo"
         className="ufo-image"
       />

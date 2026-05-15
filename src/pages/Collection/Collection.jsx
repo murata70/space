@@ -7,7 +7,9 @@ import StarField from "../../components/ui/StarField/StarField";
 import Slide from "../../components/ui/Slide/Slide";
 
 import { getCollections } from "../../utils/collectionStorage";
-import collectionMaster from "../../data/collectionMaster"; // ★修正ここ
+import collectionMaster from "../../data/collectionMaster";
+
+const publicUrl = process.env.PUBLIC_URL || "";
 
 const THEMES = [
   { id: "space", name: "宇宙" },
@@ -20,8 +22,7 @@ export default function Collection() {
   const [owned, setOwned] = useState([]);
 
   useEffect(() => {
-    const saved = getCollections();
-    setOwned(saved);
+    setOwned(getCollections());
   }, []);
 
   return (
@@ -43,7 +44,7 @@ export default function Collection() {
                 {unlocked ? (
                   <>
                     <img
-                      src={item.images?.[0]}
+                      src={`${publicUrl}${item.images?.[0]}`}
                       alt={item.name}
                       className="collection-image"
                     />
