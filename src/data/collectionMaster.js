@@ -1,4 +1,4 @@
-import UFOFlow from "../components/ui/flows/UFOFlow/UFOFlow";
+ï»¿import UFOFlow from "../components/ui/flows/UFOFlow/UFOFlow";
 import MeteorFlow from "../components/ui/flows/MeteorFlow/MeteorFlow";
 import CatFlow from "../components/ui/flows/CatFlow/CatFlow";
 import AstronautFlow from "../components/ui/flows/AstronautFlow/AstronautFlow";
@@ -15,66 +15,82 @@ const collectionMaster = [
     id: "ufo",
     name: "UFO",
     component: UFOFlow,
+    images: ["/assets/image/collections/ufo.png"],
   },
 
   {
     id: "meteor",
-    name: "è¦Î",
+    name: "éš•çŸ³",
     component: MeteorFlow,
+    images: ["/assets/image/collections/meteor1.png"],
   },
 
   {
-    id: "cat",
-    name: "‚Ğ‚©‚é‚Ë‚±",
+    id: "twink_cat",
+    name: "ã²ã‹ã‚‹ã­ã“",
     component: CatFlow,
+    images: ["/assets/image/collections/twinkling_cat1.png"],
   },
 
   {
     id: "astronaut",
-    name: "‰F’ˆ”òsm",
+
+    // â‘  ä¿®æ­£
+    name: "ã‚‚ã†åŠ©ã‹ã‚‰ãªã„å®‡å®™é£›è¡Œå£«",
+
     component: AstronautFlow,
+    images: ["/assets/image/collections/astronaut.png"],
   },
 
   {
     id: "blackhole",
-    name: "ƒuƒ‰ƒbƒNƒz[ƒ‹",
+    name: "ãƒ–ãƒ©ãƒƒã‚¯ãƒ›ãƒ¼ãƒ«",
     component: BlackHoleFlow,
+    images: ["/assets/image/collections/blackhole.png"],
   },
 
   {
     id: "flag",
-    name: "ƒGƒ“ƒhƒNƒŒƒWƒbƒg",
+    name: "ã‚¨ãƒ³ãƒ‰ã‚¯ãƒ¬ã‚¸ãƒƒãƒˆ",
     component: FlagFlow,
+    images: ["/assets/image/collections/flag.png"],
   },
 
   {
     id: "giant_spaceship",
-    name: "‹‘å‰F’ˆ‘D",
+    name: "å·¨å¤§å®‡å®™èˆ¹",
     component: GiantSpaceshipFlow,
+    images: ["/assets/image/collections/giant_spaceship.png"],
   },
 
   {
     id: "meteor_shower",
-    name: "—¬¯ŒQ",
+    name: "æµæ˜Ÿç¾¤",
     component: MeteorShowerFlow,
+
+    // â‘¡ ä¿®æ­£
+    images: ["/assets/image/collections/meteor_shower.png"],
   },
 
   {
     id: "orbital",
-    name: "lH‰q¯",
+    name: "äººå·¥è¡›æ˜Ÿ",
     component: OrbitalFlow,
+    images: ["/assets/image/collections/orbital.png"],
   },
 
   {
     id: "superman",
-    name: "ƒX[ƒp[ƒ}ƒ“",
+    name: "ã‚¹ãƒ¼ãƒ‘ãƒ¼ãƒãƒ³",
     component: SupermanFlow,
+    images: ["/assets/image/collections/superman.png"],
   },
 
   {
     id: "zodiac",
-    name: "¯À",
+    name: "æ˜Ÿåº§",
     component: ZodiacFlow,
+    images: ["/assets/image/collections/Aries.png"],
   },
 ];
 
