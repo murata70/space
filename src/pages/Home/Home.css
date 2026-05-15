@@ -1,220 +1,93 @@
-/* Home.css */
-
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
-html,
-body,
-#root {
+html, body, #root {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: "Segoe UI", sans-serif;
+}
+
+.home-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
     background: #050816;
 }
 
-/* =========================
-   背景（宇宙空間アニメーション）
-========================= */
-
 .home-bg {
-    position: fixed;
+    position: absolute;
     inset: 0;
-    overflow: hidden;
-    /* 修正ポイント: z-indexを最背面に、マウスイベントを無効化 */
-    z-index: -1;
-    pointer-events: none;
+    z-index: 0;
     background: radial-gradient(circle at top, #182445 0%, #070b17 45%, #02040b 100%);
 }
 
-    /* 星の粒 */
-    .home-bg::before,
-    .home-bg::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: radial-gradient(white 1px, transparent 1px), radial-gradient(white 1px, transparent 1px), radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px);
-        background-size: 120px 120px, 180px 180px, 260px 260px;
-        animation: starsMove 80s linear infinite;
-        opacity: 0.6;
-    }
-
-    .home-bg::after {
-        animation-duration: 140s;
-        opacity: 0.3;
-    }
-
-@keyframes starsMove {
-    from {
-        transform: translateX(0);
-    }
-
-    to {
-        transform: translateX(-500px);
-    }
-}
-
-/* =========================
-   メインコンテナ
-========================= */
-
 .home-container {
-    width: 100vw;
-    height: 100vh;
     position: relative;
-    color: white;
-    /* 背景より前面に配置 */
     z-index: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    color: white;
 }
 
-/* タイトル：ネオンエフェクト */
 .home-title {
     font-size: 42px;
     letter-spacing: 6px;
     margin-bottom: 40px;
-    font-weight: 700;
-    color: #ffffff;
-    text-shadow: 0 0 10px rgba(255,255,255,0.7), 0 0 20px rgba(0,170,255,0.5), 0 0 40px rgba(0,170,255,0.3);
+    text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
+    font-family: sans-serif;
 }
-
-/* =========================
-   設定BOX（グラスモーフィズム）
-========================= */
 
 .settings-box {
     width: 360px;
     padding: 28px;
     border-radius: 20px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 0 25px rgba(0,0,0,0.5), 0 0 10px rgba(0,170,255,0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
-    /* 子要素のクリックを確実にする */
-    pointer-events: auto;
-}
-
-/* 行のレイアウト */
-.icon-row,
-.toggle-row,
-.select-row {
-    width: 100%;
-    display: flex;
-    align-items: center;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .icon-row {
-    justify-content: center;
-    font-size: 28px;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .toggle-row {
+    display: flex;
     justify-content: space-between;
-    gap: 12px;
+    align-items: center;
 }
 
-    .toggle-row span {
-        font-size: 15px;
-        letter-spacing: 1px;
-        opacity: 0.9;
-    }
-
-    /* =========================
-   ボタン & フォーム要素
-========================= */
-
-    .toggle-row button {
-        min-width: 72px;
-        padding: 10px 0;
-        border: none;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.08);
-        color: white;
-        cursor: pointer;
-        font-size: 14px;
-        font-weight: 600;
-        transition: 0.25s ease;
-        pointer-events: auto;
-    }
-
-        .toggle-row button:hover {
-            background: rgba(0,170,255,0.4);
-            box-shadow: 0 0 10px rgba(0,170,255,0.5);
-        }
-
-.select-row select {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.08);
+.toggle-btn {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: white;
-    outline: none;
     cursor: pointer;
-    transition: 0.25s ease;
-    pointer-events: auto;
+    border-radius: 4px;
 }
-
-    .select-row select option {
-        background: #0b1020;
-        color: white;
-    }
-
-/* =========================
-   OKボタン（右下固定）
-========================= */
 
 .ok-button {
-    position: absolute;
-    right: 30px;
-    bottom: 30px;
-    padding: 14px 30px;
+    margin-top: 30px;
+    padding: 14px 60px;
     border: none;
     border-radius: 14px;
     background: linear-gradient(135deg, #2ea7ff, #4f7cff);
     color: white;
-    font-size: 16px;
     font-weight: bold;
+    font-size: 18px;
     cursor: pointer;
-    box-shadow: 0 0 20px rgba(46,167,255,0.4);
-    transition: 0.25s ease;
-    /* 修正ポイント: クリックイベントを明示的に有効化 */
-    z-index: 20;
-    pointer-events: auto;
+    transition: 0.2s;
 }
 
     .ok-button:hover {
-        transform: translateY(-2px) scale(1.03);
-        box-shadow: 0 0 28px rgba(46,167,255,0.7);
+        transform: scale(1.05);
+        filter: brightness(1.1);
     }
-
-/* =========================
-   レスポンシブ
-========================= */
-
-@media (max-width: 480px) {
-    .home-title {
-        font-size: 28px;
-        letter-spacing: 3px;
-    }
-
-    .settings-box {
-        width: 90%;
-        padding: 22px;
-    }
-
-    .ok-button {
-        right: 20px;
-        bottom: 20px;
-    }
-}
