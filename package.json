@@ -8,9 +8,19 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "dist": "npm run build && electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "electron:dev": "electron .",
     "electron:build": "npm run build && electron-builder --win",
     "postinstall": "electron-builder install-app-deps"
+  },
+  "keywords": [],
+  "author": "Nao Murata",
+  "license": "ISC",
+  "description": "PROJECT: space - Interactive Wallpaper Platform",
+  "devDependencies": {
+    "electron": "^28.3.3",
+    "electron-builder": "^24.13.3",
+    "electron-rebuild": "^3.2.9"
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",
@@ -22,19 +32,21 @@
     "react-router-dom": "^6.30.3",
     "react-scripts": "latest"
   },
-  "devDependencies": {
-    "electron": "^28.3.3",
-    "electron-builder": "^24.13.3",
-    "electron-rebuild": "^3.2.9"
-  },
   "build": {
     "appId": "com.space.wallpaper",
     "productName": "PROJECT_space",
+    "copyright": "Copyright © 2026",
     "directories": {
       "output": "release"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "requestedExecutionLevel": "highestAvailable"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "PROJECT_space"
     },
     "files": [
       "build/**/*",
@@ -43,7 +55,8 @@
       "package.json",
       "node_modules/**/*"
     ],
-    "asar": true
+    "asar": true,
+    "extends": null
   },
   "browserslist": {
     "production": [

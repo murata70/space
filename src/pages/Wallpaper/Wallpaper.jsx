@@ -8,15 +8,29 @@ import Planets from "../../components/ui/Planets/Planets";
 import Rocket from "../../components/ui/Rocket/Rocket";
 import FlowController from "../../components/ui/flows/FlowController";
 import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
-import Background from "../../components/ui/Background/Background";
+import BackGround from "../../components/ui/BackGround/BackGround";
 
 const Wallpaper = () => {
     const navigate = useNavigate();
 
+    // UIエリアに入った時はクリックできるようにする
+    const handleMouseEnter = () => {
+        if (window.electron && window.electron.setIgnoreMouse) {
+            window.electron.setIgnoreMouse(false);
+        }
+    };
+
+    // UIエリアから出た時は背後のアイコン等に触れるよう透過する
+    const handleMouseLeave = () => {
+        if (window.electron && window.electron.setIgnoreMouse) {
+            window.electron.setIgnoreMouse(true);
+        }
+    };
+
     return (
         <div className="wallpaper">
             {/* 背景画像コンポーネント */}
-            <Background />
+            <BackGround />
 
             <StarField />
             <Planets />
@@ -24,7 +38,11 @@ const Wallpaper = () => {
             <FlowController />
             <Rocket />
 
-            <div className="bottom-ui">
+            <div
+                className="bottom-ui"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+            >
                 <Clock />
                 <button
                     className="icon-btn"

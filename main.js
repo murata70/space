@@ -56,7 +56,7 @@ function createWindow() {
     const startUrl = process.env.NODE_ENV === 'development'
         ? 'http://localhost:3000'
         : url.format({
-            pathname: path.join(__dirname, 'build/index.html'),
+            pathname: path.join(__dirname, 'build', 'index.html'),
             protocol: 'file:',
             slashes: true
         });
@@ -74,10 +74,17 @@ function createWindow() {
 ipcMain.on('attach-wallpaper', () => {
     if (eaw && win) {
         try {
+            // 1. 全画面サイズを取得
             const { width, height } = screen.getPrimaryDisplay().bounds;
+
+            // 2. ウィンドウ設定の変更（リサイズ許可 -> 境界設定）
             win.setResizable(true);
             win.setBounds({ x: 0, y: 0, width, height });
+
+            // 3. デスクトップ背面へアタッチ
             eaw.attach(win);
+
+            // 4. 再描画を促し、確実に表示を維持
             win.focus();
             win.setOpacity(1.0);
             win.show();
@@ -87,12 +94,10 @@ ipcMain.on('attach-wallpaper', () => {
     }
 });
 
-// ★修正ポイント：マウス透過の制御
 ipcMain.on('set-ignore-mouse', (event, ignore) => {
     if (win) {
+        // 壁紙モード(ignore=true)の時のみ、マウスイベントを無視（透過）
         if (ignore) {
-            // forward: true を指定することで、
-            // 「HTML上の透明な部分はスルーし、不透明な部分（ボタン等）だけ反応する」ようになります
             win.setIgnoreMouseEvents(true, { forward: true });
         } else {
             win.setIgnoreMouseEvents(false);
