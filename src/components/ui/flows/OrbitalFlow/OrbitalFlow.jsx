@@ -1,6 +1,8 @@
 ﻿import { useEffect, useState } from "react";
 import "./OrbitalFlow.css";
 
+const publicUrl = process.env.PUBLIC_URL || "";
+
 export default function OrbitalFlow({ onComplete }) {
     // 人工衛星の高度（高さ）をランダムに決定
     const [satelliteTop, setSatelliteTop] = useState("40%");
@@ -25,7 +27,7 @@ export default function OrbitalFlow({ onComplete }) {
     return (
         <div className="orbital-flow-wrapper">
             <img
-                src="/assets/image/collections/orbital.png"
+                src={`${publicUrl}/assets/image/collections/orbital.png`}
                 alt="Orbital Satellite"
                 className="orbital-flow-unit"
                 style={{ top: satelliteTop }}

@@ -1,6 +1,8 @@
 ﻿import { useEffect, useState } from "react";
 import "./FlagFlow.css";
 
+const publicUrl = process.env.PUBLIC_URL || "";
+
 export default function FlagFlow({ onComplete }) {
     // マウント時に決定するランダムな高さの状態管理
     const [randomTop, setRandomTop] = useState("30%");
@@ -25,7 +27,7 @@ export default function FlagFlow({ onComplete }) {
     return (
         <div className="flag-flow-outer-wrap">
             <img
-                src="/assets/image/collections/flag.png"
+                src={`${publicUrl}/assets/image/collections/flag.png`}
                 alt="End Credits Flag"
                 className="flag-flow-main-img"
                 style={{ top: randomTop }} // JSで計算した高さを適用
