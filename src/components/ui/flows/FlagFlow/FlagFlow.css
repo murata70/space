@@ -1,19 +1,101 @@
-.flag-flow {
+﻿/* FlagFlow.css */
+
+/* 画面全体を覆うラッパー */
+.flag-flow-outer-wrap {
     position: fixed;
     inset: 0;
     pointer-events: none;
+    overflow: hidden;
+    z-index: 5; /* 4〜6の範囲 */
 }
 
-    .flag-flow img {
-        position: absolute;
-        top: 20%;
-        left: 100vw;
-        width: 120px;
-        animation: flagMove 5.5s linear forwards;
+/* 旗のメイン画像 */
+.flag-flow-main-img {
+    position: absolute;
+    /* topはJSX側のインラインスタイルで動的に決定される */
+    left: 100vw;
+    width: 600px;
+    height: auto;
+    will-change: transform;
+    /* 40秒かけてゆったり移動 */
+    animation: flagFlowDeepSpaceMove 40s linear forwards;
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* 右から左への移動アニメーション */
+@keyframes flagFlowDeepSpaceMove {
+    0% {
+        transform: translateX(0);
     }
 
-@keyframes flagMove {
-    to {
-        transform: translateX(-130vw);
+    100% {
+        /* 画面外へ完全に消えるまで移動 */
+        transform: translateX(calc(-100vw - 700px));
+    }
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1024px) {
+    .flag-flow-main-img {
+        width: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .flag-flow-main-img {
+        width: 320px;
+    }
+}
+/* FlagFlow.css */
+
+/* 画面全体を覆うラッパー */
+.flag-flow-outer-wrap {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 5; /* 4〜6の範囲内 */
+}
+
+/* 旗の画像：文字が見える巨大サイズ */
+.flag-flow-main-img {
+    position: absolute;
+    /* topはJSXのインラインスタイルで動的に決定 */
+    left: 100vw;
+    width: 600px;
+    height: auto;
+    will-change: transform;
+    /* 40秒かけて非常にゆっくりと移動 */
+    animation: flagFlowDeepSpaceMove 40s linear forwards;
+    /* 視認性向上のための発光 */
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* 右から左へ一定速度で直進するアニメーション */
+@keyframes flagFlowDeepSpaceMove {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        /* 画像幅(600px)分まで完全に画面左外へ消えるように設定 */
+        transform: translateX(calc(-100vw - 700px));
+    }
+}
+
+/* レスポンシブ対応：画面幅が狭いデバイスでの調整 */
+@media (max-width: 1024px) {
+    .flag-flow-main-img {
+        width: 450px;
+    }
+}
+
+@media (max-width: 768px) {
+    .flag-flow-main-img {
+        width: 320px;
     }
 }

@@ -1,24 +1,81 @@
-.cat-flow {
+﻿/* CatFlow.css */
+
+/* 画面全体を覆うラッパー（マウス透過） */
+.cat-flow-container {
     position: fixed;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
+    z-index: 5; /* 制約: 4〜6の範囲 */
 }
 
-.cat-image {
+/* 軌道を描きながら右から左へ移動するコンテナ */
+.cat-flow-orbit-wrapper {
     position: absolute;
-    bottom: 20%;
+    top: 25%; /* 漂い始めの高さ */
     left: 100vw;
-    width: 120px;
-    animation: catMove 6s linear forwards;
+    width: 140px;
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    will-change: transform;
+    /* 30秒かけて非常にゆっくりと移動 */
+    animation: catFlowCombinedPath 30s linear forwards;
 }
 
-@keyframes catMove {
-    from {
-        transform: translateX(0);
+/* 猫自体の回転と発光演出 */
+.cat-flow-image {
+    width: 100%;
+    height: auto;
+    will-change: transform;
+    /* 30秒間でゆっくり4回転（自転） */
+    animation: catFlowSelfRotate 30s linear forwards;
+    /* 宇宙の光を表現 */
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.7));
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* 漂流アニメーション：より緩やかで大きな波を描く */
+@keyframes catFlowCombinedPath {
+    0% {
+        transform: translate(0, 0);
     }
 
-    to {
-        transform: translateX(-150vw);
+    33% {
+        transform: translate(-60vw, 15vh);
+    }
+
+    66% {
+        transform: translate(-120vw, -10vh);
+    }
+
+    100% {
+        transform: translate(-180vw, 5vh);
+    }
+}
+
+/* 猫自身のゆっくりとした回転 */
+@keyframes catFlowSelfRotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(1440deg);
+    }
+}
+
+/* レスボンシブ対応 */
+@media (max-width: 768px) {
+    .cat-flow-orbit-wrapper {
+        width: 70px;
+        height: 70px;
+        top: 20%;
+    }
+
+    .cat-flow-image {
+        filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
     }
 }
