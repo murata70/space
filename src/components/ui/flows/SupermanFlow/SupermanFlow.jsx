@@ -2,6 +2,8 @@
 import { useEffect } from "react";
 import "./SupermanFlow.css";
 
+const publicUrl = process.env.PUBLIC_URL || "";
+
 export default function SupermanFlow({ onComplete }) {
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -17,7 +19,7 @@ export default function SupermanFlow({ onComplete }) {
         <div className="superman-flow-wrapper">
             <img
                 className="superman-flow-image"
-                src="/assets/image/collections/superman.png"
+                src={`${publicUrl}/assets/image/collections/superman.png`}
                 alt="superman"
             />
         </div>

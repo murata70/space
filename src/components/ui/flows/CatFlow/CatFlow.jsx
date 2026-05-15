@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import "./CatFlow.css";
 
+const publicUrl = process.env.PUBLIC_URL || "";
+
 // 画像パスを直接配列に定義
 const catFrameAssets = [
-    "/assets/image/collections/twinkling_cat1.png",
-    "/assets/image/collections/twinkling_cat2.png",
-    "/assets/image/collections/twinkling_cat3.png",
+    `${publicUrl}/assets/image/collections/twinkling_cat1.png`,
+    `${publicUrl}/assets/image/collections/twinkling_cat2.png`,
+    `${publicUrl}/assets/image/collections/twinkling_cat3.png`,
 ];
 
 export default function CatFlow({ onComplete }) {
