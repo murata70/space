@@ -1,0 +1,23 @@
+.background-container {
+    position: fixed; /* 画面に固定 */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -10; /* 全ての要素の最背面に配置 */
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* デフォルト設定（16:9） */
+    background-image: var(--bg-16x9);
+    /* 切り替え時のアニメーション（必要であれば） */
+    transition: background-image 0.5s ease-in-out;
+}
+
+/* 画面が4:3に近い（または縦長に近い）場合、画像を切り替える */
+@media (max-aspect-ratio: 4/3) {
+    .background-container {
+        background-image: var(--bg-4x3);
+    }
+}
