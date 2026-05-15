@@ -8,7 +8,6 @@ let win;
 let eaw;
 let db;
 
-// 壁紙化モジュール
 try {
     eaw = require('electron-as-wallpaper');
 } catch (e) {
@@ -18,7 +17,6 @@ try {
 const userDataPath = app.getPath('userData');
 const dbPath = path.join(userDataPath, 'project_space.db');
 
-// --- データベース初期化 ---
 function initDatabase() {
     if (!fs.existsSync(userDataPath)) {
         fs.mkdirSync(userDataPath, { recursive: true });
@@ -38,23 +36,16 @@ function initDatabase() {
         item_id TEXT,
         discovered_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )`);
-    const row = db.prepare('SELECT id FROM user_settings WHERE id = 1').get();
-    if (!row) {
-        db.prepare('INSERT INTO user_settings (id, current_theme_id) VALUES (1, "default")').run();
-    }
-    console.log("DB初期化完了: ", dbPath);
 }
 
-// --- ウィンドウ作成 ---
 function createWindow() {
     win = new BrowserWindow({
-        width: 1280,
-        height: 720,
-        // 壁紙として機能させるための基本設定
+        width: 1000,
+        height: 700,
         transparent: true,
         frame: false,
         show: false,
-        hasShadow: false,
+        resizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             contextIsolation: true,
@@ -73,64 +64,55 @@ function createWindow() {
     win.loadURL(startUrl);
 
     win.once('ready-to-show', () => {
+        win.center();
         win.show();
-
-        // 開発中のみDevToolsを開く（ビルド後は開かない）
-        if (!app.isPackaged) {
-            win.webContents.openDevTools();
-        }
-
-        // 起動時は必ず操作できるようにマウスイベントを透過させない
-        win.setIgnoreMouseEvents(false);
-
-        // 壁紙化の処理（必要に応じて有効化）
-        /*
-        if (eaw) {
-            try { eaw.attach(win); } catch (e) { console.error(e); }
-        }
-        */
-    });
-
-    win.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
-        console.error(`Failed to load: ${errorCode} - ${errorDescription}`);
     });
 }
 
 // --- IPC通信 ---
-ipcMain.handle('get-db-data', (event, query, params = []) => {
-    try {
-        const rows = db.prepare(query).all(params);
-        return rows;
-    } catch (err) {
-        console.error("DB取得エラー:", err);
-        throw err;
+
+ipcMain.on('attach-wallpaper', () => {
+    if (eaw && win) {
+        try {
+            const { width, height } = screen.getPrimaryDisplay().bounds;
+            win.setResizable(true);
+            win.setBounds({ x: 0, y: 0, width, height });
+            eaw.attach(win);
+            win.focus();
+            win.setOpacity(1.0);
+            win.show();
+        } catch (e) {
+            console.error("壁紙化失敗:", e);
+        }
     }
+});
+
+// ★修正ポイント：マウス透過の制御
+ipcMain.on('set-ignore-mouse', (event, ignore) => {
+    if (win) {
+        if (ignore) {
+            // forward: true を指定することで、
+            // 「HTML上の透明な部分はスルーし、不透明な部分（ボタン等）だけ反応する」ようになります
+            win.setIgnoreMouseEvents(true, { forward: true });
+        } else {
+            win.setIgnoreMouseEvents(false);
+        }
+    }
+});
+
+ipcMain.handle('get-db-data', (event, query, params = []) => {
+    return db.prepare(query).all(params);
 });
 
 ipcMain.on('save-discovery', (event, itemId) => {
-    try {
-        db.prepare('INSERT INTO discovery_logs (item_id) VALUES (?)').run(itemId);
-    } catch (err) {
-        console.error("保存エラー:", err);
-    }
-});
-
-ipcMain.on('set-ignore-mouse', (event, ignore) => {
-    // forward: true をつけることで、背面のデスクトップアイコン等へのクリックを維持しつつ、
-    // mousemoveイベントなどをElectron側で検知可能にします
-    if (win) win.setIgnoreMouseEvents(ignore, { forward: true });
+    db.prepare('INSERT INTO discovery_logs (item_id) VALUES (?)').run(itemId);
 });
 
 ipcMain.on('quit-app', () => app.quit());
 
-// --- アプリのライフサイクル ---
 app.whenReady().then(() => {
     initDatabase();
     createWindow();
-});
-
-app.on('will-quit', () => {
-    if (db) db.close();
 });
 
 app.on('window-all-closed', () => {

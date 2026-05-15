@@ -6,33 +6,33 @@ const Home = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // ホーム画面表示時は、必ずマウス操作を受け付けるように設定
         if (window.electron && window.electron.setIgnoreMouse) {
-            window.electron.setIgnoreMouse(false);
+            window.electron.setIgnoreMouse(false); // 初期状態は操作可能
         }
     }, []);
 
     const handleStart = () => {
-        // 壁紙画面へ遷移
         navigate("/wallpaper");
+
+        setTimeout(() => {
+            if (window.electron && window.electron.attachWallpaper) {
+                window.electron.attachWallpaper();
+            }
+            if (window.electron && window.electron.setIgnoreMouse) {
+                // 第二引数に { forward: true } をメインプロセスで処理させることで
+                // 「透明な部分は透過し、クリック要素（ボタン）は反応する」設定にします
+                window.electron.setIgnoreMouse(true);
+            }
+        }, 300);
     };
 
     return (
-        <>
-            {/* 
-               背景レイヤー：Home.cssで pointer-events: none; を指定してください。
-               これが無いとボタンがクリックできない原因になります。
-            */}
+        <div className="home-wrapper">
             <div className="home-bg"></div>
-
             <div className="home-container">
                 <h1 className="home-title">SPACE WALLPAPER</h1>
-
                 <div className="settings-box">
-                    <div className="icon-row">
-                        <span role="img" aria-label="volume">🔊</span>
-                    </div>
-
+                    <div className="icon-row"><span role="img" aria-label="volume">🔊</span></div>
                     <div className="toggle-row">
                         <span>sec</span>
                         <div style={{ display: 'flex', gap: '8px' }}>
@@ -40,29 +40,12 @@ const Home = () => {
                             <button className="toggle-btn">OFF</button>
                         </div>
                     </div>
-
-                    <div className="toggle-row">
-                        <span>24h</span>
-                        <div style={{ display: 'flex', gap: '8px' }}>
-                            <button className="toggle-btn">ON</button>
-                            <button className="toggle-btn">OFF</button>
-                        </div>
-                    </div>
-
-                    <div className="select-row">
-                        <select defaultValue="Asia/Tokyo" className="timezone-select">
-                            <option value="Asia/Tokyo">Asia/Tokyo</option>
-                            <option value="UTC">UTC</option>
-                            <option value="America/New_York">New York</option>
-                        </select>
-                    </div>
                 </div>
-
                 <button className="ok-button" onClick={handleStart}>
                     OK
                 </button>
             </div>
-        </>
+        </div>
     );
 };
 
