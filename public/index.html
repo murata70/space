@@ -4,6 +4,17 @@
     <meta charset="UTF-8" />
     <title>SPACE WALLPAPER - React App</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* アプリ全体の土台を宇宙の暗闇色に固定し、白画面化を防ぐ */
+        html, body, #root {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #050816; /* Home.cssで使用されている宇宙のベース黒 */
+        }
+    </style>
 </head>
 <body>
     <div id="root"></div>
