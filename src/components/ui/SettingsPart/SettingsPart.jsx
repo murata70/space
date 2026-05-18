@@ -59,7 +59,7 @@ const SettingsPart = ({
 
             {/* sec */}
             <div className="settings-row">
-                <span>sec</span>
+                <span>Sec</span>
 
                 <div className="text-toggle">
                     <button
@@ -105,7 +105,7 @@ const SettingsPart = ({
             <div className="settings-row" style={{ display: "block" }}>
                 <span style={{ display: "block", marginBottom: "5px" }}
                 >
-                    タイムゾーン</span>
+                    Time Zone</span>
 
                 <select value={tz} onChange={(e) => setTz(e.target.value)}>
                     <option value="Asia/Tokyo">Japan / Osaka</option>

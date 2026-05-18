@@ -1,6 +1,7 @@
 ﻿import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import StarField from "../../components/ui/StarField/StarField";
 
 /* 共通設定パーツ */
 import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
@@ -88,7 +89,12 @@ const Home = () => {
 
     return (
         <div className="home-wrapper">
+ 
+            {/* 星空背景 */}
+            <StarField />
+
             <div className="home-bg"></div>
+
             <div className="home-container">
                 <h1 className="home-title">
                     SPACE WALLPAPER
