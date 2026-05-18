@@ -31,8 +31,12 @@ export default function Collection() {
         const confirmChange = window.confirm(`この壁紙（${currentTheme.name}）に設定しますか？`);
 
         if (confirmChange) {
-            // Wallpaper画面へ選択したテーマIDを状態として持って遷移
-            navigate("/wallpaper", { state: { themeId } });
+            // themeId に応じて、App.jsx に設定したURLと完全に一致させて遷移
+            if (themeId === "ocean") {
+                navigate("/wallpaper_ocean");
+            } else {
+                navigate("/wallpaper");
+            }
         }
     };
 
