@@ -30,12 +30,55 @@
 @keyframes orbitalPassMove {
     0% {
         /* 初期位置：右端の外側。わずかな傾きを維持 */
-        transform: translateX(0) rotate(-5deg);
+        transform: translateX(0) translateY(0px) rotate(-5deg);
+    }
+
+    20% {
+        transform: translateX(calc(-20vw - 120px)) translateY(-12px) rotate(-4deg);
+    }
+
+    40% {
+        transform: translateX(calc(-40vw - 240px)) translateY(8px) rotate(-6deg);
+    }
+
+    60% {
+        transform: translateX(calc(-60vw - 360px)) translateY(-10px) rotate(-5deg);
+    }
+
+    80% {
+        transform: translateX(calc(-80vw - 480px)) translateY(6px) rotate(-4deg);
     }
 
     100% {
         /* 終点：左端の外側まで。画像サイズ(550px)＋画面幅分移動 */
-        transform: translateX(calc(-100vw - 600px)) rotate(-5deg);
+        transform: translateX(calc(-100vw - 600px)) translateY(0px) rotate(-5deg)
+    }
+}
+
+/*ふわふわ*/
+@keyframes orbitalFloatMove {
+    0% {
+        transform: translateY(0px) rotate(-5deg);
+    }
+
+    20% {
+        transform: translateY(-12px) rotate(-4deg);
+    }
+
+    40% {
+        transform: translateY(8px) rotate(-6deg);
+    }
+
+    60% {
+        transform: translateY(-10px) rotate(-5deg);
+    }
+
+    80% {
+        transform: translateY(6px) rotate(-4deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(-5deg);
     }
 }
 
