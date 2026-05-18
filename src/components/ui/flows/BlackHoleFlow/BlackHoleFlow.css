@@ -1,27 +1,112 @@
-.blackhole-flow {
+.blackhole-wrap {
     position: fixed;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
+    z-index: 4;
 }
 
-    .blackhole-flow img {
-        position: absolute;
-        top: 45%;
-        left: 45%;
-        width: 140px;
-        animation: pulse 2s infinite;
-    }
+/* フェード */
+.blackhole-in {
+    animation: fadeIn 3s ease forwards;
+}
 
-@keyframes pulse {
+.blackhole-out {
+    animation: fadeOut 3s ease forwards;
+}
+
+/* ブラックホール本体 */
+.blackhole-core {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: clamp(160px, 18vw, 340px);
+    animation: breath 3.8s ease-in-out infinite;
+}
+
+.blackhole-image {
+    width: 100%;
+    height: auto;
+}
+
+/* もわっとした外側 */
+.blackhole-aura {
+    position: absolute;
+    inset: -80px;
+    border-radius: 50%;
+    background: radial-gradient( circle, rgba(0,0,0,0.0) 30%, rgba(80,140,255,0.12) 60%, rgba(0,0,0,0.4) 100% );
+    filter: blur(12px);
+    animation: auraBreath 3.8s ease-in-out infinite;
+}
+
+/* 画面暗転（かなり強め） */
+.blackhole-dark {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient( circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.75) 40%, rgba(0,0,0,0.95) 100% );
+    animation: darkHold 20s ease-in-out forwards;
+}
+
+/* 呼吸 */
+@keyframes breath {
     0% {
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
     }
 
     50% {
-        transform: scale(1.2);
+        transform: translate(-50%, -50%) scale(1.1);
     }
 
     100% {
-        transform: scale(1);
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* 外側の揺れ */
+@keyframes auraBreath {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.45;
+    }
+
+    50% {
+        transform: scale(1.12);
+        opacity: 0.75;
+    }
+
+    100% {
+        transform: scale(0.95);
+        opacity: 0.45;
+    }
+}
+
+/* 暗転維持 */
+@keyframes darkHold {
+    0% {
+        opacity: 0.6;
+    }
+
+    100% {
+        opacity: 0.95;
+    }
+}
+
+/* フェード */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
     }
 }

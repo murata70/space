@@ -1,4 +1,3 @@
-// SupermanFlow.jsx
 import { useEffect } from "react";
 import "./SupermanFlow.css";
 
@@ -10,18 +9,18 @@ export default function SupermanFlow({ onComplete }) {
             if (onComplete) onComplete();
         }, 85000);
 
-        return () => {
-            clearTimeout(timer);
-        };
+        return () => clearTimeout(timer);
     }, [onComplete]);
 
     return (
         <div className="superman-flow-wrapper">
-            <img
-                className="superman-flow-image"
-                src={`${publicUrl}/assets/image/collections/superman.png`}
-                alt="superman"
-            />
+            <div className="superman-image-wrap">
+                <img
+                    className="superman-flow-image"
+                    src={`${publicUrl}/assets/image/collections/superman.png`}
+                    alt="superman"
+                />
+            </div>
         </div>
     );
 }

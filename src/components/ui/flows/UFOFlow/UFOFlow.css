@@ -1,24 +1,65 @@
-.ufo-flow {
+.ufo-flow-wrapper {
     position: fixed;
     inset: 0;
-    pointer-events: none;
     overflow: hidden;
+    pointer-events: none;
+    z-index: 5;
 }
 
-.ufo-image {
+/* UFO本体 */
+.ufo-flow-object {
     position: absolute;
-    top: 20%;
-    left: 100vw;
-    width: 120px;
-    animation: ufoMove 5s linear forwards;
+    width: 140px;
+    height: 140px;
+    transform: translate(-50%, -50%);
+    will-change: transform, left, top;
 }
 
-@keyframes ufoMove {
+/* 画像 */
+.ufo-flow-image {
+    width: 100%;
+    filter: drop-shadow(0 0 12px rgba(120, 200, 255, 0.8));
+}
+
+/* オーラ */
+.ufo-aura {
+    position: absolute;
+    inset: -40px;
+    background: radial-gradient( circle, rgba(120, 200, 255, 0.35), transparent 70% );
+    animation: ufoAuraPulse 2.5s ease-in-out infinite;
+    z-index: -1;
+}
+
+/* フェードアウト */
+.ufo-phase-out {
+    animation: ufoFadeOut 3s forwards;
+}
+
+/* オーラ */
+@keyframes ufoAuraPulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.4;
+    }
+}
+
+/* フェードアウト */
+@keyframes ufoFadeOut {
     from {
-        transform: translateX(0);
+        opacity: 1;
     }
 
     to {
-        transform: translateX(-140vw);
+        opacity: 0;
     }
 }

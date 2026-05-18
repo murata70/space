@@ -1,16 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./AstronautFlow.css";
 
 const publicUrl = process.env.PUBLIC_URL || "";
 
 export default function AstronautFlow({ onComplete }) {
+  const [shine, setShine] = useState(false);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer1 = setTimeout(() => {
+      setShine(true);
+    }, 19500);
+
+    const timer2 = setTimeout(() => {
+      setShine(false);
       if (onComplete) onComplete();
     }, 20000);
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
     };
   }, [onComplete]);
 
@@ -23,6 +31,8 @@ export default function AstronautFlow({ onComplete }) {
           alt="astronaut"
         />
       </div>
+
+      {shine && <div className="astronaut-shine-star" />}
     </div>
   );
 }
