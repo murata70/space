@@ -3,30 +3,36 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    z-index: 4;
+    z-index: 5;
 }
 
-.meteor-image {
+/* 個別流星 */
+.meteor-item {
     position: absolute;
-    width: 140px;
-    height: auto;
-    will-change: transform;
-    animation: meteorFall 4s linear forwards;
-    /*
-      進行方向へ傾ける
-    */
-    transform: rotate(var(--meteor-angle));
+    will-change: transform, opacity;
+    animation: meteorFall45 4s linear forwards;
 }
 
-@keyframes meteorFall {
+/* 画像 */
+.meteor-image {
+    display: block;
+    filter: drop-shadow(0 0 8px rgba(180,220,255,0.4)) drop-shadow(0 0 14px rgba(120,180,255,0.25));
+    transform: none; /* ★回転禁止 */
+}
 
-    from {
-        transform: translate(0, 0) rotate(var(--meteor-angle)) scale(1);
+/* ★45度固定：右上 → 左下 */
+@keyframes meteorFall45 {
+    0% {
+        transform: translate(0, 0);
+        opacity: 0;
+    }
+
+    10% {
         opacity: 1;
     }
 
-    to {
-        transform: translate(-160vw, 140vh) rotate(var(--meteor-angle)) scale(0.7);
-        opacity: 0.9;
+    100% {
+        transform: translate(-180vw, 180vh); /* ★45度方向 */
+        opacity: 0;
     }
 }

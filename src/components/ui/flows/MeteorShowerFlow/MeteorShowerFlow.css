@@ -1,92 +1,69 @@
-.meteor-flow-wrap {
+.meteor-shower-flow {
     position: fixed;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    z-index: 4;
+    z-index: 5;
 }
 
-/* =========================
-   暗転（控えめ）
-========================= */
-
-.meteor-flow-dark {
+/* ★② 画面全体暗転 */
+.meteor-shower-dark {
     position: absolute;
     inset: 0;
-    background: radial-gradient( circle, rgba(40,80,140,0.08), rgba(10,15,30,0.35) );
-    animation: meteorDarkFade 40s ease-in-out forwards;
+    background: radial-gradient( circle, rgba(0, 0, 20, 0.15), rgba(0, 0, 0, 0.65) );
+    animation: meteorDarkFade 25s ease-in-out forwards;
+    z-index: 0;
 }
 
-/* =========================
-   流星
-========================= */
-
-.meteor-flow-item {
+.meteor-shower-item {
     position: absolute;
     will-change: transform, opacity;
-    animation: meteorMove 30s linear forwards;
-    opacity: 0;
+    animation: meteorShowerFall 3.8s linear forwards; /* ★① 5s → 3.8s */
 }
 
-/* =========================
-   本体画像
-========================= */
-
-.meteor-flow-img {
+.meteor-shower-image {
+    position: relative;
     display: block;
-    object-fit: contain;
-    /* 反転・回転なし */
-    filter: drop-shadow(0 0 6px rgba(180,220,255,0.35)) drop-shadow(0 0 12px rgba(120,180,255,0.25));
-    animation: meteorBlink 2s ease-in-out infinite;
+    z-index: 2;
+    transform: none;
+    filter: drop-shadow(0 0 8px rgba(180,220,255,0.45)) drop-shadow(0 0 16px rgba(120,180,255,0.25));
 }
 
-/* =========================
-   ぼんやり発光（強化版）
-========================= */
-
-.meteor-flow-glow {
+.meteor-shower-glow {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
     border-radius: 50%;
-    /* 周囲に広がる光 */
-    background: radial-gradient( circle, rgba(180,220,255,0.25) 0%, rgba(120,180,255,0.12) 35%, rgba(120,180,255,0.05) 60%, transparent 75% );
-    /* ぼかしで“空気感”を出す */
-    filter: blur(2px);
-    animation: glowPulse 3.5s ease-in-out infinite;
+    background: radial-gradient( circle, rgba(180,220,255,0.35), rgba(120,180,255,0.15), transparent 70% );
+    filter: blur(6px);
+    transform: scale(1.4);
+    z-index: 1;
+    animation: meteorGlow 2.5s ease-in-out infinite;
 }
 
-/* =========================
-   移動（右上＆左上 → 左下）
-========================= */
-
-@keyframes meteorMove {
+/* 右上 → 左下（高速化） */
+@keyframes meteorShowerFall {
     0% {
-        transform: translate3d(0, 0, 0);
+        transform: translate(0, 0);
         opacity: 0;
     }
 
-    6% {
+    10% {
         opacity: 1;
     }
 
     100% {
-        transform: translate3d(-180vw, 180vh, 0);
+        transform: translate(-180vw, 180vh);
         opacity: 0;
     }
 }
 
-/* =========================
-   暗転
-========================= */
-
+/* ★暗転フェード */
 @keyframes meteorDarkFade {
     0% {
         opacity: 0;
     }
 
-    20% {
+    15% {
         opacity: 1;
     }
 
@@ -99,55 +76,25 @@
     }
 }
 
-/* =========================
-   点滅
-========================= */
-
-@keyframes meteorBlink {
+@keyframes meteorGlow {
     0% {
-        opacity: 0.6;
+        opacity: 0.3;
+        transform: scale(1.2);
     }
 
     50% {
-        opacity: 1;
-    }
-
-    100% {
         opacity: 0.6;
-    }
-}
-
-/* =========================
-   光の呼吸（改善版）
-========================= */
-
-@keyframes glowPulse {
-    0% {
-        transform: translate(-50%, -50%) scale(0.9);
-        opacity: 0.18;
-    }
-
-    50% {
-        transform: translate(-50%, -50%) scale(1.25);
-        opacity: 0.32;
+        transform: scale(1.5);
     }
 
     100% {
-        transform: translate(-50%, -50%) scale(0.9);
-        opacity: 0.18;
+        opacity: 0.3;
+        transform: scale(1.2);
     }
 }
-
-/* =========================
-   スマホ最適化
-========================= */
 
 @media (max-width: 768px) {
-    .meteor-flow-glow {
-        filter: blur(1.5px);
-    }
-
-    .meteor-flow-img {
-        filter: drop-shadow(0 0 4px rgba(180,220,255,0.3)) drop-shadow(0 0 10px rgba(120,180,255,0.2));
+    .meteor-shower-image {
+        filter: drop-shadow(0 0 4px rgba(180,220,255,0.35));
     }
 }

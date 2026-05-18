@@ -7,36 +7,55 @@ export default function MeteorFlow({ onComplete }) {
   const [meteors, setMeteors] = useState([]);
 
   useEffect(() => {
-    const items = Array.from({ length: 6 }).map(() => ({
-      id: Math.random(),
-      startX: Math.random() * window.innerWidth,
-      startY: -200,
-      angle: Math.random() * 360,
-    }));
+    const spawnInterval = setInterval(() => {
+      const newMeteor = {
+        id: Date.now() + Math.random(),
 
-    setMeteors(items);
+        // š‰Eã‚©‚ço‚·
+        x: Math.random() * window.innerWidth,
+        y: -100,
 
-    const timer = setTimeout(() => {
+        size: 30 + Math.random() * 40,
+        delay: Math.random() * 0.3,
+      };
+
+      setMeteors((prev) => [...prev, newMeteor]);
+    }, 200);
+
+    const stopTimer = setTimeout(() => {
+      clearInterval(spawnInterval);
+    }, 20000);
+
+    const finishTimer = setTimeout(() => {
       onComplete?.();
-    }, 8000);
+    }, 22000);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearInterval(spawnInterval);
+      clearTimeout(stopTimer);
+      clearTimeout(finishTimer);
+    };
   }, [onComplete]);
 
   return (
-    <div className="meteor-wrapper">
+    <div className="meteor-flow">
       {meteors.map((m) => (
-        <img
+        <div
           key={m.id}
-          src={`${publicUrl}/assets/image/collections/meteor1.png`}
-          className="meteor-image"
-          alt="meteor"
+          className="meteor-item"
           style={{
-            left: `${m.startX}px`,
-            top: `${m.startY}px`,
-            "--meteor-angle": `${m.angle}deg`,
+            left: `${m.x}px`,
+            top: `${m.y}px`,
+            animationDelay: `${m.delay}s`,
           }}
-        />
+        >
+          <img
+            src={`${publicUrl}/assets/image/collections/meteor1.png`}
+            className="meteor-image"
+            style={{ width: `${m.size}px` }}
+            alt="meteor"
+          />
+        </div>
       ))}
     </div>
   );
