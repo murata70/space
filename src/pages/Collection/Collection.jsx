@@ -33,12 +33,16 @@ export default function Collection() {
 
                 <div className="grid">
                     {collectionMaster.map((item) => {
-                        const unlocked = owned.some((o) => o.id === item.id);
+                        const unlocked = owned.some(
+                            (o) => o.id === item.id
+                        );
 
                         return (
                             <div
                                 key={item.id}
-                                className={`card ${unlocked ? "unlocked" : "locked"}`}
+                                className={`card ${
+                                    unlocked ? "unlocked" : "locked"
+                                }`}
                             >
                                 {unlocked ? (
                                     <>
@@ -48,7 +52,9 @@ export default function Collection() {
                                             className="collection-image"
                                         />
 
-                                        <div className="collection-name">{item.name}</div>
+                                        <div className="collection-name">
+                                            {item.name}
+                                        </div>
                                     </>
                                 ) : (
                                     <div className="unknown">?</div>
@@ -67,28 +73,6 @@ export default function Collection() {
             </div>
 
             <Slide title="THEMES" items={THEMES} />
-
-            return (
-              <div
-                key={item.id}
-                className={`card ${unlocked ? "unlocked" : "locked"}`}
-              >
-                {unlocked ? (
-                  <>
-                    <img
-                      src={item.images?.[0]}
-                      alt={item.name}
-                      className="collection-image"
-                    />
-                    <div className="collection-name">{item.name}</div>
-                  </>
-                ) : (
-                  <div className="unknown">?</div>
-                )}
-              </div>
-            );
-          })}
-
         </div>
     );
 }

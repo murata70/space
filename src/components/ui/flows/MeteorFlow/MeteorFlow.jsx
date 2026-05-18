@@ -1,62 +1,42 @@
 import { useEffect, useState } from "react";
 import "./MeteorFlow.css";
 
-const publicUrl = process.env.PUBLIC_URL || "";
-
 export default function MeteorFlow({ onComplete }) {
-  const [meteors, setMeteors] = useState([]);
+    const publicUrl = process.env.PUBLIC_URL || "";
 
-  useEffect(() => {
-    const spawnInterval = setInterval(() => {
-      const newMeteor = {
-        id: Date.now() + Math.random(),
+    const meteorImages = [
+        `${publicUrl}/assets/image/collections/meteor1.png`,
+        `${publicUrl}/assets/image/collections/meteor2.png`,
+    ];
 
-        // š‰Eã‚©‚ço‚·
-        x: Math.random() * window.innerWidth,
-        y: -100,
+    const [meteorIndex, setMeteorIndex] = useState(0);
 
-        size: 30 + Math.random() * 40,
-        delay: Math.random() * 0.3,
-      };
+    useEffect(() => {
+        const switchTimer = setInterval(() => {
+            setMeteorIndex((prev) => (prev === 0 ? 1 : 0));
+        }, 350);
 
-      setMeteors((prev) => [...prev, newMeteor]);
-    }, 200);
+        const completeTimer = setTimeout(() => {
+            if (onComplete) onComplete();
+        }, 20000);
 
-    const stopTimer = setTimeout(() => {
-      clearInterval(spawnInterval);
-    }, 20000);
+        return () => {
+            clearInterval(switchTimer);
+            clearTimeout(completeTimer);
+        };
+    }, [onComplete]);
 
-    const finishTimer = setTimeout(() => {
-      onComplete?.();
-    }, 22000);
+    return (
+        <div className="meteor-flow-wrap">
+            <div className="meteor-flow-body">
+                <div className="meteor-flow-flame" />
 
-    return () => {
-      clearInterval(spawnInterval);
-      clearTimeout(stopTimer);
-      clearTimeout(finishTimer);
-    };
-  }, [onComplete]);
-
-  return (
-    <div className="meteor-flow">
-      {meteors.map((m) => (
-        <div
-          key={m.id}
-          className="meteor-item"
-          style={{
-            left: `${m.x}px`,
-            top: `${m.y}px`,
-            animationDelay: `${m.delay}s`,
-          }}
-        >
-          <img
-            src={`${publicUrl}/assets/image/collections/meteor1.png`}
-            className="meteor-image"
-            style={{ width: `${m.size}px` }}
-            alt="meteor"
-          />
+                <img
+                    src={meteorImages[meteorIndex]}
+                    alt="meteor"
+                    className="meteor-flow-image"
+                />
+            </div>
         </div>
-      ))}
-    </div>
-  );
+    );
 }

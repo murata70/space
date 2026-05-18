@@ -1,4 +1,4 @@
-.meteor-flow {
+.meteor-flow-wrap {
     position: fixed;
     inset: 0;
     overflow: hidden;
@@ -6,33 +6,101 @@
     z-index: 5;
 }
 
-/* 個別流星 */
-.meteor-item {
+.meteor-flow-body {
     position: absolute;
+    top: -20vh;
+    right: -20vw;
+    width: clamp(140px, 18vw, 280px);
+    height: clamp(140px, 18vw, 280px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform;
+    animation: meteorFlowMove 20s linear forwards;
+}
+
+.meteor-flow-image {
+    position: relative;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    z-index: 2;
+    will-change: transform;
+    animation: meteorFlowShake 0.35s ease-in-out infinite alternate;
+    filter: drop-shadow(0 0 10px rgba(255, 180, 0, 0.95)) drop-shadow(0 0 20px rgba(255, 120, 0, 0.85)) drop-shadow(0 0 38px rgba(255, 80, 0, 0.7));
+}
+
+.meteor-flow-flame {
+    position: absolute;
+    width: 180%;
+    height: 180%;
+    border-radius: 50%;
+    z-index: 1;
+    background: radial-gradient( circle, rgba(255, 240, 180, 0.95) 0%, rgba(255, 180, 0, 0.85) 25%, rgba(255, 100, 0, 0.65) 50%, rgba(255, 0, 0, 0.15) 70%, rgba(255, 0, 0, 0) 100% );
+    filter: blur(35px);
+    opacity: 0.95;
     will-change: transform, opacity;
-    animation: meteorFall45 4s linear forwards;
+    animation: meteorFlowFlame 0.8s ease-in-out infinite alternate;
 }
 
-/* 画像 */
-.meteor-image {
-    display: block;
-    filter: drop-shadow(0 0 8px rgba(180,220,255,0.4)) drop-shadow(0 0 14px rgba(120,180,255,0.25));
-    transform: none; /* ★回転禁止 */
-}
-
-/* ★45度固定：右上 → 左下 */
-@keyframes meteorFall45 {
+/* ★修正ポイント：rotate削除 */
+@keyframes meteorFlowMove {
     0% {
-        transform: translate(0, 0);
+        transform: translate3d(0, 0, 0);
         opacity: 0;
     }
 
-    10% {
+    5% {
         opacity: 1;
     }
 
     100% {
-        transform: translate(-180vw, 180vh); /* ★45度方向 */
-        opacity: 0;
+        transform: translate3d(-140vw, 140vh, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes meteorFlowShake {
+    0% {
+        transform: translateX(-2px) translateY(-1px) rotate(-3deg);
+    }
+
+    25% {
+        transform: translateX(2px) translateY(1px) rotate(2deg);
+    }
+
+    50% {
+        transform: translateX(-1px) translateY(2px) rotate(-2deg);
+    }
+
+    75% {
+        transform: translateX(1px) translateY(-2px) rotate(3deg);
+    }
+
+    100% {
+        transform: translateX(-2px) translateY(1px) rotate(-1deg);
+    }
+}
+
+@keyframes meteorFlowFlame {
+    0% {
+        transform: scale(0.92);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1.12);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .meteor-flow-body {
+        width: clamp(90px, 24vw, 180px);
+        height: clamp(90px, 24vw, 180px);
+    }
+
+    .meteor-flow-flame {
+        filter: blur(20px);
     }
 }

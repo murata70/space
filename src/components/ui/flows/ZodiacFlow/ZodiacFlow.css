@@ -3,12 +3,11 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    z-index: 4;
+    /* 背景より前、惑星より後ろ */
+    z-index: 2;
 }
 
-/* =========================
-   ベース（位置固定＋4倍）
-========================= */
+/* ベース */
 .zodiac-flow-image {
     position: absolute;
     transform: translate(-50%, -50%) scale(4);
@@ -23,7 +22,7 @@
         filter: drop-shadow(0 0 18px rgba(255, 220, 90, 0.9));
     }
 
-    /* 黄色いオーラ（静的） */
+    /* オーラ */
     .zodiac-flow-image::after {
         content: "";
         position: absolute;
@@ -32,32 +31,25 @@
         z-index: -1;
     }
 
-/* =========================
-   フェード（各5秒）
-========================= */
+/* フェードイン */
 .zodiac-flow-in {
     opacity: 0;
     animation: zodiacFadeIn 5s ease forwards;
 }
 
+/* フェードアウト */
 .zodiac-flow-out {
     opacity: 1;
     animation: zodiacFadeOut 5s ease forwards;
 }
 
-/* =========================
-   滞在中：シンプル呼吸のみ
-========================= */
+/* 滞在中 */
 .zodiac-flow-stay {
     opacity: 1;
     animation: zodiacBreathOpacity 6s ease-in-out infinite;
 }
 
-/* =========================
-   アニメーション
-========================= */
-
-/* フェードイン */
+/* アニメーション */
 @keyframes zodiacFadeIn {
     from {
         opacity: 0;
@@ -68,7 +60,6 @@
     }
 }
 
-/* フェードアウト */
 @keyframes zodiacFadeOut {
     from {
         opacity: 1;
@@ -79,7 +70,6 @@
     }
 }
 
-/* ただの透明度呼吸（シンプル版） */
 @keyframes zodiacBreathOpacity {
     0% {
         opacity: 1;
@@ -94,9 +84,7 @@
     }
 }
 
-/* =========================
-   レスポンシブ
-========================= */
+/* レスポンシブ */
 @media (max-width: 768px) {
     .zodiac-flow-image img {
         width: 90px;

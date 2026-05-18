@@ -1,32 +1,28 @@
 import { useEffect } from "react";
 import "./GiantSpaceshipFlow.css";
 
-const publicUrl = process.env.PUBLIC_URL || "";
-
 export default function GiantSpaceshipFlow({ onComplete }) {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onComplete?.();
-    }, 25000);
+    const publicUrl = process.env.PUBLIC_URL || "";
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [onComplete]);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (onComplete) onComplete();
+        }, 25000);
 
-  return (
-    <div className="giant-ship-flow">
-      {/* ˆÃ“]ƒŒƒCƒ„[ */}
-      <div className="giant-ship-dark" />
+        return () => clearTimeout(timer);
+    }, [onComplete]);
 
-      {/* ‰F’ˆ‘D */}
-      <div className="giant-ship-wrapper">
-        <img
-          src={`${publicUrl}/assets/image/collections/giant_spaceship.png`}
-          className="giant-ship-image"
-          alt="giant spaceship"
-        />
-      </div>
-    </div>
-  );
+    return (
+        <div className="giant-ship-flow-wrap">
+            <div className="giant-ship-dark-overlay" />
+
+            <div className="giant-ship-body">
+                <img
+                    src="/assets/image/collections/giant_spaceship.png"
+                    alt="giant spaceship"
+                    className="giant-ship-image"
+                />
+            </div>
+        </div>
+    );
 }

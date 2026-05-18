@@ -1,4 +1,4 @@
-.giant-ship-flow {
+.giant-ship-flow-wrap {
     position: fixed;
     inset: 0;
     overflow: hidden;
@@ -7,43 +7,54 @@
 }
 
 /* =========================
-   暗転エフェクト
+   暗転
 ========================= */
-.giant-ship-dark {
+.giant-ship-dark-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient( circle, rgba(0, 10, 30, 0.15), rgba(0, 0, 0, 0.55) );
+    background: radial-gradient( circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 40%, rgba(0,0,0,0.85) 100% );
+    animation: giantShipDarkFade 25s linear forwards;
+    z-index: 1;
+}
+
+/* =========================
+   本体（移動専用）
+========================= */
+.giant-ship-body {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 220px;
     opacity: 0;
-    animation: giantShipDarkFade 25s ease-in-out forwards;
+    will-change: transform, opacity;
+    /* ★移動だけ担当 */
+    animation: giantShipMove 25s linear forwards;
+    z-index: 5;
 }
 
 /* =========================
-   宇宙船ラッパー
+   フワフワ用レイヤー（追加）
 ========================= */
-.giant-ship-wrapper {
-    position: absolute;
-    right: -30%;
-    bottom: -20%;
-    will-change: transform;
-    animation: giantShipMove 25s ease-in-out forwards;
+.giant-ship-float {
+    width: 100%;
+    height: 100%;
+    animation: giantShipFloat 4s ease-in-out infinite;
 }
 
-/* =========================
-   宇宙船本体（★5倍）
-========================= */
+/* 画像 */
 .giant-ship-image {
-    width: 1600px; /* 320px → 5倍 */
+    width: 600%;
     height: auto;
     display: block;
-    filter: drop-shadow(0 0 18px rgba(120, 180, 255, 0.25));
+    filter: drop-shadow(0 0 12px rgba(120, 180, 255, 0.6)) drop-shadow(0 0 28px rgba(80, 140, 255, 0.4));
 }
 
 /* =========================
-   動き（右下 → 中央 → 右画面外へ消える）
+   左スクロール（維持）
 ========================= */
 @keyframes giantShipMove {
     0% {
-        transform: translate(0, 0) scale(0.6);
+        transform: translate(-50%, -50%);
         opacity: 0;
     }
 
@@ -51,44 +62,55 @@
         opacity: 1;
     }
 
-    45% {
-        transform: translate(-40vw, -35vh) scale(0.9);
+    50% {
+        transform: translate(-20vw, -50%);
+        opacity: 1;
+    }
+
+    97% {
         opacity: 1;
     }
 
     100% {
-        /* ★右端を超えて完全に画面外へ */
-        transform: translate(140vw, -10vh) scale(0.85);
+        transform: translate(-120vw, -50%);
         opacity: 0;
     }
 }
 
 /* =========================
-   暗転フェード
+   フワフワ（transform分離）
+========================= */
+@keyframes giantShipFloat {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* =========================
+   暗転
 ========================= */
 @keyframes giantShipDarkFade {
     0% {
         opacity: 0;
     }
 
-    15% {
-        opacity: 1;
+    10% {
+        opacity: 0.65;
     }
 
-    80% {
-        opacity: 1;
+    90% {
+        opacity: 0.65;
     }
 
     100% {
         opacity: 0;
-    }
-}
-
-/* =========================
-   レスポンシブ
-========================= */
-@media (max-width: 768px) {
-    .giant-ship-image {
-        width: 900px; /* スマホ用調整（5倍維持） */
     }
 }
