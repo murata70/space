@@ -1,19 +1,94 @@
-.ship-flow {
+.giant-ship-flow {
     position: fixed;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
+    z-index: 5;
 }
 
-    .ship-flow img {
-        position: absolute;
-        top: 30%;
-        left: 100vw;
-        width: 180px;
-        animation: ship 7s linear forwards;
+/* =========================
+   暗転エフェクト
+========================= */
+.giant-ship-dark {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient( circle, rgba(0, 10, 30, 0.15), rgba(0, 0, 0, 0.55) );
+    opacity: 0;
+    animation: giantShipDarkFade 25s ease-in-out forwards;
+}
+
+/* =========================
+   宇宙船ラッパー
+========================= */
+.giant-ship-wrapper {
+    position: absolute;
+    right: -30%;
+    bottom: -20%;
+    will-change: transform;
+    animation: giantShipMove 25s ease-in-out forwards;
+}
+
+/* =========================
+   宇宙船本体（★5倍）
+========================= */
+.giant-ship-image {
+    width: 1600px; /* 320px → 5倍 */
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 0 18px rgba(120, 180, 255, 0.25));
+}
+
+/* =========================
+   動き（右下 → 中央 → 右画面外へ消える）
+========================= */
+@keyframes giantShipMove {
+    0% {
+        transform: translate(0, 0) scale(0.6);
+        opacity: 0;
     }
 
-@keyframes ship {
-    to {
-        transform: translateX(-160vw);
+    10% {
+        opacity: 1;
+    }
+
+    45% {
+        transform: translate(-40vw, -35vh) scale(0.9);
+        opacity: 1;
+    }
+
+    100% {
+        /* ★右端を超えて完全に画面外へ */
+        transform: translate(140vw, -10vh) scale(0.85);
+        opacity: 0;
+    }
+}
+
+/* =========================
+   暗転フェード
+========================= */
+@keyframes giantShipDarkFade {
+    0% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    80% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+/* =========================
+   レスポンシブ
+========================= */
+@media (max-width: 768px) {
+    .giant-ship-image {
+        width: 900px; /* スマホ用調整（5倍維持） */
     }
 }
