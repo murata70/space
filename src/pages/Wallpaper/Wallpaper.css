@@ -1,77 +1,56 @@
-﻿/* ========================================
-   Wallpaper
-   レスポンシブ対応版
-======================================== */
-
-.wallpaper {
+﻿.wallpaper-ocean {
     width: 100vw;
     height: 100vh;
+
     min-height: 100dvh;
+
     overflow: hidden;
+
     position: relative;
+
     color: white;
+
     font-family: Arial, sans-serif;
+
     box-sizing: border-box;
-    /* ノッチ対策 */
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    /* ========================================
-       背景画像
-    ======================================== */
-    /* デフォルトは16:9 */
-    background-image: var(--bg-16x9);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    /* iOSチラつき軽減 */
+
+    padding:
+        env(safe-area-inset-top)
+        env(safe-area-inset-right)
+        env(safe-area-inset-bottom)
+        env(safe-area-inset-left);
+
     transform: translateZ(0);
+
     backface-visibility: hidden;
 }
 
 /* ========================================
-   4:3寄り画面
-   タブレット・縦画面向け
-======================================== */
-
-@media (max-aspect-ratio: 4/3) {
-
-    .wallpaper {
-        background-image: var(--bg-4x3);
-    }
-}
-
-/* ========================================
-   ロケット
-======================================== */
-
-.rocket {
-    position: absolute;
-    top: 45%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    /* レスポンシブサイズ */
-    font-size: clamp(28px, 6vw, 54px);
-    z-index: 5;
-    pointer-events: none;
-}
-
-/* ========================================
-   UIエリア
+   UI
 ======================================== */
 
 .bottom-ui {
     position: fixed;
+
     bottom: clamp(10px, 2vw, 20px);
     right: clamp(10px, 2vw, 20px);
+
     display: flex;
     align-items: center;
+
     gap: clamp(6px, 1vw, 10px);
+
     background: rgba(0, 0, 0, 0.35);
-    padding: clamp(8px, 1vw, 10px) clamp(10px, 1.5vw, 15px);
+
+    padding:
+        clamp(8px, 1vw, 10px)
+        clamp(10px, 1.5vw, 15px);
+
     border-radius: clamp(10px, 1.5vw, 12px);
+
     backdrop-filter: blur(6px);
-    z-index: 10;
-    max-width: calc(100vw - 20px);
-    box-sizing: border-box;
+
+    z-index: 20;
 }
 
 /* ========================================
@@ -81,77 +60,23 @@
 .icon-btn {
     width: clamp(34px, 5vw, 36px);
     height: clamp(34px, 5vw, 36px);
+
     border: none;
     border-radius: clamp(6px, 1vw, 8px);
+
     background: rgba(255, 255, 255, 0.15);
+
     color: white;
+
     cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-    flex-shrink: 0;
+
+    transition:
+        background 0.2s,
+        transform 0.2s;
 }
 
-/* hover対応デバイスのみ */
+.icon-btn:hover {
+    background: rgba(255, 255, 255, 0.35);
 
-@media (hover: hover) {
-
-    .icon-btn:hover {
-        background: rgba(255, 255, 255, 0.35);
-        transform: scale(1.05);
-    }
-}
-
-/* タップ時 */
-
-.icon-btn:active {
-    transform: scale(0.95);
-}
-
-/* ========================================
-   タブレット
-======================================== */
-
-@media (max-width: 1024px) {
-
-    .bottom-ui {
-        gap: 8px;
-    }
-}
-
-/* ========================================
-   スマホ
-======================================== */
-
-@media (max-width: 768px) {
-
-    .bottom-ui {
-        bottom: max( 10px, env(safe-area-inset-bottom) );
-        right: 10px;
-        padding: 8px 10px;
-        border-radius: 10px;
-    }
-
-    .rocket {
-        top: 48%;
-    }
-}
-
-/* ========================================
-   超小型スマホ
-======================================== */
-
-@media (max-width: 480px) {
-
-    .bottom-ui {
-        gap: 6px;
-        padding: 6px 8px;
-    }
-
-    .icon-btn {
-        width: 32px;
-        height: 32px;
-    }
-
-    .rocket {
-        font-size: clamp(24px, 8vw, 40px);
-    }
+    transform: scale(1.05);
 }
