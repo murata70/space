@@ -1,4 +1,4 @@
-.stars {
+/*.stars {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -10,8 +10,26 @@
     border-radius: 50%;
     animation-name: starBlink;
     animation-iteration-count: infinite;
+    animation-direction: alternate;*/
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
+    /*filter: blur(0.6px);
+    will-change: transform, opacity;
+}*/
+
+.stars {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    border-radius: 50%;
+    animation-name: starBlink;
+    animation-iteration-count: infinite;
     animation-direction: alternate;
-    /* ”­Œõ‹­‰» */
     filter: blur(0.6px);
     will-change: transform, opacity;
 }
