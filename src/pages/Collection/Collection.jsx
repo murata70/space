@@ -11,7 +11,7 @@ import collectionMaster from "../../data/collectionMaster";
 
 const THEMES = [
     { id: "space", name: "宇宙" },
-    { id: "ocean", name: "未定", locked: true },
+    { id: "ocean", name: "海", locked: false },
     { id: "forest", name: "未定", locked: true },
 ];
 
@@ -23,6 +23,18 @@ export default function Collection() {
         const saved = getCollections();
         setOwned(saved);
     }, []);
+
+    // テーマが選択されたときの処理
+    const handleThemeSelect = (themeId) => {
+        // 確認ポップアップを表示
+        const currentTheme = THEMES.find(t => t.id === themeId);
+        const confirmChange = window.confirm(`この壁紙（${currentTheme.name}）に設定しますか？`);
+
+        if (confirmChange) {
+            // Wallpaper画面へ選択したテーマIDを状態として持って遷移
+            navigate("/wallpaper", { state: { themeId } });
+        }
+    };
 
     return (
         <div className="collection-wrap">
@@ -40,9 +52,8 @@ export default function Collection() {
                         return (
                             <div
                                 key={item.id}
-                                className={`card ${
-                                    unlocked ? "unlocked" : "locked"
-                                }`}
+                                className={`card ${unlocked ? "unlocked" : "locked"
+                                    }`}
                             >
                                 {unlocked ? (
                                     <>
@@ -72,7 +83,7 @@ export default function Collection() {
                 </button>
             </div>
 
-            <Slide title="THEMES" items={THEMES} />
+            <Slide title="THEMES" items={THEMES} onSelect={handleThemeSelect} />
         </div>
     );
 }

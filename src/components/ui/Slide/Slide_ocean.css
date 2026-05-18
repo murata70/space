@@ -1,0 +1,63 @@
+.slide-area {
+    position: relative;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+/* タブ */
+.slide-tab {
+    writing-mode: vertical-rl;
+    background: #111;
+    height: 100%;
+    padding: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #333;
+    letter-spacing: 2px;
+    color: white;
+    user-select: none;
+}
+
+/* パネル */
+.slide-panel {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    background: #111;
+    border-left: 1px solid #333;
+    transition: right 0.25s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    color: white;
+}
+
+    /* open */
+    .slide-panel.open {
+        box-shadow: -10px 0 20px rgba(0,0,0,0.4);
+    }
+
+.slide-title {
+    margin-bottom: 20px;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+
+/* item */
+.slide-item {
+    padding: 12px;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+    transition: 0.15s;
+}
+
+    .slide-item:hover {
+        background: #1a1a1a;
+    }
+
+/* lock */
+.locked {
+    opacity: 0.4;
+    cursor: default;
+}
