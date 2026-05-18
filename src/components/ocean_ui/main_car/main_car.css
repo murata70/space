@@ -1,0 +1,85 @@
+/* ========================================
+   メインカー位置
+======================================== */
+
+.main-car-position {
+    position: fixed;
+    top: 70%;
+    left: clamp(12px, 8vw, 140px);
+    transform: translateY(-50%);
+    z-index: 5;
+    max-width: 100vw;
+}
+
+/* ========================================
+   本体
+======================================== */
+
+.main-car-wrapper {
+    display: flex;
+    align-items: center;
+    animation: mainCarFloat 3s ease-in-out infinite;
+    user-select: none;
+    will-change: transform;
+}
+
+/* ========================================
+   車画像
+======================================== */
+
+.main-car-image {
+    width: clamp(120px, 16vw, 230px);
+    height: auto;
+    object-fit: contain;
+    pointer-events: auto;
+}
+
+/* ========================================
+   浮遊
+======================================== */
+
+@keyframes mainCarFloat {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(clamp(-4px, -1vw, -10px));
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* ========================================
+   タブレット
+======================================== */
+
+@media (max-width: 1024px) {
+    .main-car-position {
+        top: 72%;
+    }
+}
+
+/* ========================================
+   スマホ
+======================================== */
+
+@media (max-width: 768px) {
+    .main-car-position {
+        top: 78%;
+        left: 4vw;
+    }
+}
+
+/* ========================================
+   超小型スマホ
+======================================== */
+
+@media (max-width: 480px) {
+    .main-car-position {
+        top: 82%;
+        left: 2vw;
+    }
+}
