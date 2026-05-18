@@ -6,16 +6,16 @@
     pointer-events: none;
 }
 
-/* ========================================
-   共通
-======================================== */
+/* 共通 */
 
 .road-layer {
     position: absolute;
+    top: 0;
     left: 0;
     width: 200%;
     height: 100%;
     display: flex;
+    will-change: transform;
 }
 
 .road-track {
@@ -27,18 +27,14 @@
     background-position: center;
 }
 
-/* ========================================
-   road1
-======================================== */
+/* road1 */
 
 .road1 {
     animation: roadScroll1 18s linear infinite;
     z-index: 1;
 }
 
-/* ========================================
-   road2
-======================================== */
+/* road2 */
 
 .road2 {
     animation: roadScroll2 35s linear infinite;
@@ -46,9 +42,7 @@
     opacity: 0.9;
 }
 
-/* ========================================
-   アニメーション
-======================================== */
+/* アニメーション */
 
 @keyframes roadScroll1 {
     from {

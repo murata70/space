@@ -7,7 +7,12 @@ const carFrames = [
 ];
 
 export default function MainCar() {
-    const publicUrl = process.env.PUBLIC_URL || "";
+    const isDev = window.location.hostname === "localhost";
+
+    const publicUrl = isDev
+        ? ""
+        : window.location.origin +
+        window.location.pathname.replace("index.html", "");
 
     const [frame, setFrame] = useState(0);
 
@@ -23,7 +28,7 @@ export default function MainCar() {
         <div className="main-car-position">
             <div className="main-car-wrapper">
                 <img
-                    src={`${publicUrl}/${carFrames[frame]}`}
+                    src={`${publicUrl}${carFrames[frame]}`}
                     alt="main car"
                     className="main-car-image"
                     draggable="false"

@@ -12,11 +12,15 @@ import MainCar from "../../components/ocean_ui/main_car/main_car";
 const WallpaperOcean = () => {
     const navigate = useNavigate();
 
+    // マウス透過解除
+
     const handleMouseEnter = () => {
         if (window.electron?.setIgnoreMouse) {
             window.electron.setIgnoreMouse(false);
         }
     };
+
+    // マウス透過
 
     const handleMouseLeave = () => {
         if (window.electron?.setIgnoreMouse) {
@@ -26,11 +30,19 @@ const WallpaperOcean = () => {
 
     return (
         <div className="wallpaper-ocean">
+            {/* 背景 */}
+
             <BackGroundOcean />
+
+            {/* 道路 */}
 
             <OceanBg />
 
+            {/* メインカー */}
+
             <MainCar />
+
+            {/* UI */}
 
             <div
                 className="bottom-ui"
