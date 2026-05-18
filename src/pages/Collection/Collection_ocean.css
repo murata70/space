@@ -1,3 +1,4 @@
+
 .wallpaper-ocean {
     width: 100vw;
     height: 100vh;
@@ -49,3 +50,71 @@
         background: rgba(255, 255, 255, 0.35);
         transform: scale(1.05);
     }
+
+.ocean-collection-wrapper {
+    min-height: 100vh;
+    padding: 40px;
+    background: linear-gradient(to bottom, #0a2a43, #0e4d64, #0b6e99);
+    color: white;
+}
+
+.ocean-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    letter-spacing: 2px;
+}
+
+.ocean-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+}
+
+.ocean-card {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 12px;
+    text-align: center;
+    transition: 0.3s;
+    position: relative;
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+    .ocean-card:hover {
+        transform: translateY(-5px);
+    }
+
+.ocean-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+}
+
+.ocean-name {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.ocean-card.owned {
+    border: 1px solid #00e5ff;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+}
+
+.ocean-card.locked {
+    opacity: 0.4;
+    filter: grayscale(1);
+}
+
+.ocean-lock {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 12px;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 6px;
+    border-radius: 8px;
+}
+

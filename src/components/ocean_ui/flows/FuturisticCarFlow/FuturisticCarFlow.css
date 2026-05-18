@@ -1,0 +1,37 @@
+.futuristic-car-flow {
+    position: fixed;
+    right: -400px;
+    top: 70%;
+    z-index: 25;
+    pointer-events: none;
+    animation: futuristicCarMove 7s linear forwards;
+}
+
+.futuristic-car-image {
+    width: 300px;
+    animation: futuristicFloat 1s infinite ease-in-out;
+}
+
+@keyframes futuristicCarMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-170vw);
+    }
+}
+
+@keyframes futuristicFloat {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

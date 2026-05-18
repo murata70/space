@@ -1,0 +1,45 @@
+.carriage-flow {
+    position: fixed;
+    right: -400px;
+    top: 72%;
+    z-index: 20;
+    pointer-events: none;
+    animation: carriageMove 10s linear forwards;
+}
+
+.carriage-image {
+    width: 260px;
+    animation: carriageShake 0.18s infinite linear;
+}
+
+@keyframes carriageMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-160vw);
+    }
+}
+
+@keyframes carriageShake {
+    0% {
+        transform: translateY(0px);
+    }
+
+    25% {
+        transform: translateY(-2px);
+    }
+
+    50% {
+        transform: translateY(1px);
+    }
+
+    75% {
+        transform: translateY(-1px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}

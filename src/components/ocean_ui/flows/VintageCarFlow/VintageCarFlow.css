@@ -1,0 +1,37 @@
+.vintage-car-flow {
+    position: fixed;
+    right: -400px;
+    top: 74%;
+    z-index: 20;
+    pointer-events: none;
+    animation: vintageCarMove 10s linear forwards;
+}
+
+.vintage-car-image {
+    width: 300px;
+    animation: vintageShake 0.22s infinite linear;
+}
+
+@keyframes vintageCarMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-170vw);
+    }
+}
+
+@keyframes vintageShake {
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
