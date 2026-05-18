@@ -1,0 +1,22 @@
+.shinkansen-flow {
+    position: fixed;
+    right: -600px;
+    top: 68%;
+    z-index: 25;
+    pointer-events: none;
+    animation: shinkansenMove 8s linear forwards;
+}
+
+.shinkansen-image {
+    width: 600px;
+}
+
+@keyframes shinkansenMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-220vw);
+    }
+}

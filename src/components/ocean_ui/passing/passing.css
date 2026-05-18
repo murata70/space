@@ -1,0 +1,66 @@
+.passing-wrapper {
+    position: fixed;
+    right: -300px;
+    width: 300px;
+    z-index: 5;
+    pointer-events: none;
+    animation: passingMove 10s linear forwards;
+}
+
+    /*
+  íÜíiÇ∆ç≈â∫íiÇÃíÜä‘Ç≠ÇÁÇ¢
+*/
+    .passing-wrapper.middle {
+        top: 72%;
+    }
+
+/*
+  ç∂Ç÷ó¨ÇÍÇÈ
+*/
+@keyframes passingMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-140vw);
+    }
+}
+
+/*
+  é‘ñ{ëÃ
+*/
+.passing-car {
+    width: 220px;
+    user-select: none;
+    animation: carShake 0.18s infinite linear;
+}
+
+/*
+  ÉKÉ^ÉKÉ^óhÇÍ
+*/
+@keyframes carShake {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    20% {
+        transform: translateY(-1px) rotate(-0.3deg);
+    }
+
+    40% {
+        transform: translateY(1px) rotate(0.3deg);
+    }
+
+    60% {
+        transform: translateY(-1px) rotate(-0.2deg);
+    }
+
+    80% {
+        transform: translateY(1px) rotate(0.2deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
