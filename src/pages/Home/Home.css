@@ -21,7 +21,7 @@ html, body, #root {
 }
 
 .home-bg {
-    position: absolute;
+    position: fixed;
     inset: 0;
     z-index: 0;
     background: radial-gradient(circle at top, #182445 0%, #070b17 45%, #02040b 100%);
@@ -29,24 +29,34 @@ html, body, #root {
 
 .home-container {
     position: relative;
-    z-index: 1;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
     color: white;
 }
 
-.home-title {
+/*.home-title {
     font-size: 42px;
     letter-spacing: 6px;
     margin-bottom: 40px;
     text-shadow: 0 0 10px rgba(0, 170, 255, 0.5);
     font-family: sans-serif;
+}*/
+
+.home-title {
+    font-size: 42px;
+    letter-spacing: 6px;
+    margin-bottom: 40px;
+    font-family: sans-serif;
+    color: #dff4ff;
+    text-shadow: 0 0 5px rgba(120, 220, 255, 0.9), 0 0 10px rgba(80, 200, 255, 0.8), 0 0 20px rgba(0, 160, 255, 0.7), 0 0 40px rgba(0, 120, 255, 0.6);
+    animation: glowPulse 3s ease-in-out infinite;
 }
 
 .settings-box {
-    width: 360px;
-    padding: 28px;
+    width: 420px;
+    padding: 36px 34px;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(10px);
@@ -91,3 +101,18 @@ html, body, #root {
         transform: scale(1.05);
         filter: brightness(1.1);
     }
+
+@keyframes glowPulse {
+
+    0% {
+        text-shadow: 0 0 5px rgba(120, 220, 255, 0.7), 0 0 10px rgba(80, 200, 255, 0.6), 0 0 20px rgba(0, 160, 255, 0.5);
+    }
+
+    50% {
+        text-shadow: 0 0 10px rgba(120, 220, 255, 1), 0 0 20px rgba(80, 200, 255, 0.9), 0 0 40px rgba(0, 160, 255, 0.8), 0 0 60px rgba(0, 120, 255, 0.7);
+    }
+
+    100% {
+        text-shadow: 0 0 5px rgba(120, 220, 255, 0.7), 0 0 10px rgba(80, 200, 255, 0.6), 0 0 20px rgba(0, 160, 255, 0.5);
+    }
+}

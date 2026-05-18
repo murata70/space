@@ -44,7 +44,7 @@ const StarField = () => {
     const [stars, setStars] = useState([]);
 
     /**
-     * ‰Šú¶¬
+     * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
      */
     useEffect(() => {
 
@@ -61,7 +61,7 @@ const StarField = () => {
     }, []);
 
     /**
-     * ˆÚ“®
+     * ï¿½Ú“ï¿½
      */
     useEffect(() => {
 
@@ -81,7 +81,7 @@ const StarField = () => {
     }, []);
 
     /**
-     * Ä¶¬
+     * ï¿½Äï¿½ï¿½ï¿½
      */
     useEffect(() => {
 
