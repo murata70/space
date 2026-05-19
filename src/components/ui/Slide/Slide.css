@@ -1,10 +1,12 @@
-.slide-area {
+﻿.slide-area {
     position: relative;
     height: 100%;
     flex-shrink: 0;
+    /* ★追加：フォント強制（文字化け対策） */
+    font-family: "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
 }
 
-/* �^�u */
+/* タブ */
 .slide-tab {
     writing-mode: vertical-rl;
     background: #111;
@@ -18,9 +20,11 @@
     letter-spacing: 2px;
     color: white;
     user-select: none;
+    /* ★追加 */
+    font-family: inherit;
 }
 
-/* �p�l�� */
+/* パネル */
 .slide-panel {
     position: absolute;
     top: 0;
@@ -31,6 +35,8 @@
     padding: 20px;
     box-sizing: border-box;
     color: white;
+    /* ★追加 */
+    font-family: inherit;
 }
 
     /* open */
@@ -42,6 +48,8 @@
     margin-bottom: 20px;
     font-size: 18px;
     letter-spacing: 2px;
+    /* ★追加 */
+    font-family: inherit;
 }
 
 /* item */
@@ -50,6 +58,8 @@
     border-bottom: 1px solid #333;
     cursor: pointer;
     transition: 0.15s;
+    /* ★追加 */
+    font-family: inherit;
 }
 
     .slide-item:hover {

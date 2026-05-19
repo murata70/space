@@ -1,120 +1,116 @@
-
-.wallpaper-ocean {
-    width: 100vw;
+.collection-wrap.ocean-theme {
+    display: flex;
     height: 100vh;
-    min-height: 100dvh;
+    background: #4fc3f7; /* ★超重要：鮮やかな水色 */
+    color: white;
     overflow: hidden;
     position: relative;
-    color: white;
-    font-family: Arial, sans-serif;
-    box-sizing: border-box;
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    transform: translateZ(0);
-    backface-visibility: hidden;
+    isolation: isolate;
+    /* ★追加：文字化け対策 */
+    font-family: "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
 }
 
-/* ========================================
-   UI
-======================================== */
-
-.bottom-ui {
-    position: fixed;
-    bottom: clamp(10px, 2vw, 20px);
-    right: clamp(10px, 2vw, 20px);
-    display: flex;
-    align-items: center;
-    gap: clamp(6px, 1vw, 10px);
-    background: rgba(0, 0, 0, 0.35);
-    padding: clamp(8px, 1vw, 10px) clamp(10px, 1.5vw, 15px);
-    border-radius: clamp(10px, 1.5vw, 12px);
-    backdrop-filter: blur(6px);
-    z-index: 20;
-}
-
-/* ========================================
-   ボタン
-======================================== */
-
-.icon-btn {
-    width: clamp(34px, 5vw, 36px);
-    height: clamp(34px, 5vw, 36px);
-    border: none;
-    border-radius: clamp(6px, 1vw, 8px);
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
-}
-
-    .icon-btn:hover {
-        background: rgba(255, 255, 255, 0.35);
-        transform: scale(1.05);
-    }
-
-.ocean-collection-wrapper {
-    min-height: 100vh;
-    padding: 40px;
-    background: linear-gradient(to bottom, #0a2a43, #0e4d64, #0b6e99);
-    color: white;
-}
-
-.ocean-title {
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 30px;
-    letter-spacing: 2px;
-}
-
-.ocean-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 20px;
-}
-
-.ocean-card {
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    padding: 12px;
-    text-align: center;
-    transition: 0.3s;
+/* メイン */
+.collection-main {
+    flex: 1;
+    padding: 20px;
     position: relative;
-    backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: inherit;
 }
 
-    .ocean-card:hover {
-        transform: translateY(-5px);
+/* タイトル */
+.title {
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+    font-size: 32px;
+    flex-shrink: 0;
+    font-family: inherit;
+}
+
+/* グリッド */
+.grid {
+    width: 100%;
+    max-width: 1100px;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    grid-template-rows: repeat(3, 1fr);
+    gap: 18px;
+    align-content: center;
+    justify-content: center;
+    justify-items: center;
+    margin: 0 auto;
+    font-family: inherit;
+}
+
+/* カード */
+.card {
+    width: 100%;
+    max-width: 220px;
+    height: 180px;
+    border: 1px solid #444;
+    background: rgba(15,15,15,0.92);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: 0.25s;
+    font-family: inherit;
+}
+
+    .card:hover {
+        transform: scale(1.03);
+        border-color: #999;
     }
 
-.ocean-image img {
-    width: 100%;
-    height: auto;
-    border-radius: 12px;
+/* 画像 */
+.collection-image {
+    width: 80%;
+    height: 110px;
+    object-fit: contain;
+    pointer-events: none;
 }
 
-.ocean-name {
+/* 名前 */
+.collection-name {
     margin-top: 10px;
     font-size: 14px;
+    text-align: center;
+    color: white;
+    letter-spacing: 1px;
+    word-break: keep-all;
+    line-height: 1.4;
+    font-family: inherit;
 }
 
-.ocean-card.owned {
-    border: 1px solid #00e5ff;
-    box-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+/* 未発見 */
+.unknown {
+    font-size: 46px;
+    color: #666;
 }
 
-.ocean-card.locked {
-    opacity: 0.4;
-    filter: grayscale(1);
-}
-
-.ocean-lock {
+/* 戻るボタン */
+.back-btn {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: 12px;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 4px 6px;
-    border-radius: 8px;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 18px;
+    background: #111;
+    border: 1px solid #555;
+    color: white;
+    cursor: pointer;
+    z-index: 100;
+    font-family: inherit;
 }
 
+    .back-btn:hover {
+        background: #222;
+    }
