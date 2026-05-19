@@ -7,49 +7,42 @@ const road1Url = `${publicUrl}/assets/ocean_image/background_ocean/background_ro
 const road2Url = `${publicUrl}/assets/ocean_image/background_ocean/background_road2.png`;
 
 const OceanBg = () => {
-
     return (
-        <div className="ocean-road-wrapper">
-
-            {/* road1 */}
-            <div className="road-layer road1">
-
-                <div
-                    className="road-track"
-                    style={{
-                        backgroundImage: `url('${road1Url}')`,
-                    }}
-                />
-
-                <div
-                    className="road-track"
-                    style={{
-                        backgroundImage: `url('${road1Url}')`,
-                    }}
-                />
-
+        <>
+            <div className="ocean-road-layer ocean-road1">
+                <div className="road-layer road1">
+                    <div
+                        className="road-track"
+                        style={{
+                            backgroundImage: `url('${road1Url}')`,
+                        }}
+                    />
+                    <div
+                        className="road-track"
+                        style={{
+                            backgroundImage: `url('${road1Url}')`,
+                        }}
+                    />
+                </div>
             </div>
 
-            {/* road2 */}
-            <div className="road-layer road2">
-
-                <div
-                    className="road-track"
-                    style={{
-                        backgroundImage: `url('${road2Url}')`,
-                    }}
-                />
-
-                <div
-                    className="road-track"
-                    style={{
-                        backgroundImage: `url('${road2Url}')`,
-                    }}
-                />
-
+            <div className="ocean-road-layer ocean-road2">
+                <div className="road-layer road2">
+                    <div
+                        className="road-track"
+                        style={{
+                            backgroundImage: `url('${road2Url}')`,
+                        }}
+                    />
+                    <div
+                        className="road-track"
+                        style={{
+                            backgroundImage: `url('${road2Url}')`,
+                        }}
+                    />
+                </div>
             </div>
-
-        </div>
+        </>
     );
 };
 

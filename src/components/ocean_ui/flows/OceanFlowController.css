@@ -1,0 +1,31 @@
+/* road1(1) / main_car(2) の上、road2(4) の下 */
+.ocean-flow-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+    --ocean-vehicle-lane-top: 55%;
+}
+
+/* main_car 以外の通過車・コレクションは同一レーン */
+.ocean-flow-layer .passing-wrapper,
+.ocean-flow-layer [class$="-flow"] {
+    top: var(--ocean-vehicle-lane-top);
+}
+
+/* 上下振動: 上0.1秒・下0.1秒 */
+@keyframes oceanVehicleBounce {
+    0% {
+        transform: translateY(-1px);
+    }
+
+    100% {
+        transform: translateY(1px);
+    }
+}
+
+.ocean-flow-layer .passing-car,
+.ocean-flow-layer [class$="-flow"] img {
+    animation: oceanVehicleBounce 0.2s steps(2, jump-none) infinite;
+}

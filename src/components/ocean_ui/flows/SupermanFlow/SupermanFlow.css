@@ -1,15 +1,12 @@
 .superman-flow {
     position: fixed;
-    right: -300px;
-    top: 22%;
-    z-index: 100;
+    right: -330px;
     pointer-events: none;
-    animation: supermanMove 9s linear forwards;
+    animation: supermanMove 11s linear forwards;
 }
 
 .superman-image {
-    width: 220px;
-    animation: supermanFloat 1.2s infinite ease-in-out;
+    width: 240px;
 }
 
 @keyframes supermanMove {
@@ -19,19 +16,5 @@
 
     to {
         transform: translateX(-180vw);
-    }
-}
-
-@keyframes supermanFloat {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-6px);
-    }
-
-    100% {
-        transform: translateY(0px);
     }
 }

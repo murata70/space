@@ -1,15 +1,12 @@
 .sports-car-flow {
     position: fixed;
-    right: -350px;
-    top: 73%;
-    z-index: 30;
+    right: -390px;
     pointer-events: none;
-    animation: sportsCarMove 7s linear forwards;
+    animation: sportsCarMove 9s linear forwards;
 }
 
 .sports-car-image {
-    width: 280px;
-    animation: sportsCarShake 0.14s infinite linear;
+    width: 310px;
 }
 
 @keyframes sportsCarMove {
@@ -19,19 +16,5 @@
 
     to {
         transform: translateX(-180vw);
-    }
-}
-
-@keyframes sportsCarShake {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-2px);
-    }
-
-    100% {
-        transform: translateY(0px);
     }
 }

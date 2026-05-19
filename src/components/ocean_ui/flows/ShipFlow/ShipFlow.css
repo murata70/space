@@ -1,15 +1,12 @@
 .ship-flow {
     position: fixed;
-    right: -500px;
-    top: 60%;
-    z-index: 15;
+    right: -555px;
     pointer-events: none;
-    animation: shipMove 14s linear forwards;
+    animation: shipMove 17s linear forwards;
 }
 
 .ship-image {
-    width: 420px;
-    animation: shipWave 2s infinite ease-in-out;
+    width: 460px;
 }
 
 @keyframes shipMove {
@@ -19,19 +16,5 @@
 
     to {
         transform: translateX(-180vw);
-    }
-}
-
-@keyframes shipWave {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    50% {
-        transform: rotate(1deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
     }
 }

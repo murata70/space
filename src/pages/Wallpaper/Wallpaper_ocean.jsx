@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./Wallpaper_ocean.css";
@@ -7,6 +7,7 @@ import Clock from "../../components/ui/Clock/Clock";
 import BackGroundOcean from "../../components/ocean_ui/background_ocean/BackGround";
 import OceanBg from "../../components/ocean_ui/ocean_bg/ocean_bg";
 import MainCar from "../../components/ocean_ui/main_car/main_car";
+import OceanFlowController from "../../components/ocean_ui/flows/OceanFlowController";
 
 const WallpaperOcean = ({ baseUrl }) => {
     const navigate = useNavigate();
@@ -35,6 +36,8 @@ const WallpaperOcean = ({ baseUrl }) => {
 
             {/* メインカー */}
             <MainCar baseUrl={baseUrl} />
+
+            <OceanFlowController />
 
             {/* 時計・ボタン（右上） */}
             <div

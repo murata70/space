@@ -7,7 +7,7 @@ export default function TrainFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 11000);
+    }, 14000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

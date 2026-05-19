@@ -7,7 +7,7 @@ export default function Astronaut2Flow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 9000);
+    }, 11000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

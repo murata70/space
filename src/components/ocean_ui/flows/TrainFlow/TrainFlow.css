@@ -1,15 +1,12 @@
 .train-flow {
     position: fixed;
-    right: -500px;
-    top: 76%;
-    z-index: 20;
+    right: -555px;
     pointer-events: none;
-    animation: trainMove 11s linear forwards;
+    animation: trainMove 14s linear forwards;
 }
 
 .train-image {
-    width: 450px;
-    animation: trainShake 0.15s infinite linear;
+    width: 500px;
 }
 
 @keyframes trainMove {
@@ -19,19 +16,5 @@
 
     to {
         transform: translateX(-200vw);
-    }
-}
-
-@keyframes trainShake {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-1px);
-    }
-
-    100% {
-        transform: translateY(0px);
     }
 }

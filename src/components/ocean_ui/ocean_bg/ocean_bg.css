@@ -1,12 +1,19 @@
-.ocean-road-wrapper {
+.ocean-road-layer {
     position: fixed;
     inset: 0;
     overflow: hidden;
-    z-index: 1;
     pointer-events: none;
 }
 
-/* ???? */
+/* background_road1 */
+.ocean-road1 {
+    z-index: 1;
+}
+
+/* background_road2（通過車・コレクションより手前） */
+.ocean-road2 {
+    z-index: 4;
+}
 
 .road-layer {
     position: absolute;
@@ -18,7 +25,6 @@
     will-change: transform;
 }
 
-/* 1?????????????200%??????????? */
 .road-track {
     flex: 0 0 50%;
     width: 50%;
@@ -28,25 +34,16 @@
     background-position: center bottom;
 }
 
-/* road1 */
-
 .road1 {
     animation: roadScroll1 18s linear infinite;
-    z-index: 0;
 }
-
-/* road2 */
 
 .road2 {
     animation: roadScroll2 8s linear infinite;
-    z-index: 2;
     opacity: 0.9;
 }
 
-/* ?A?j???[?V???? */
-
 @keyframes roadScroll1 {
-
     from {
         transform: translateX(0);
     }
@@ -57,7 +54,6 @@
 }
 
 @keyframes roadScroll2 {
-
     from {
         transform: translateX(0);
     }

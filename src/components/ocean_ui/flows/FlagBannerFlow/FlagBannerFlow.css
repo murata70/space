@@ -1,15 +1,12 @@
 .flag-banner-flow {
     position: fixed;
-    right: -500px;
-    top: 18%;
-    z-index: 30;
+    right: -555px;
     pointer-events: none;
-    animation: flagBannerMove 12s linear forwards;
+    animation: flagBannerMove 15s linear forwards;
 }
 
 .flag-banner-image {
-    width: 420px;
-    animation: flagWave 1.5s infinite ease-in-out;
+    width: 460px;
 }
 
 @keyframes flagBannerMove {
@@ -19,19 +16,5 @@
 
     to {
         transform: translateX(-180vw);
-    }
-}
-
-@keyframes flagWave {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    50% {
-        transform: rotate(1deg);
-    }
-
-    100% {
-        transform: rotate(0deg);
     }
 }
