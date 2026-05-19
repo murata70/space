@@ -1,20 +1,54 @@
+﻿/* コントローラーの仕様（position: fixed, inset: 0等）を活かしつつ調整 */
 .futuristic-car-flow {
     position: fixed;
-    right: -440px;
+    inset: 0;
     pointer-events: none;
-    animation: futuristicCarMove 9s linear forwards;
+    overflow: hidden;
+    z-index: 5; /* 4〜6の範囲 */
 }
 
+/* コントローラーのimg強制バウンドを回避し、こちらで横移動を制御するスタイル */
+.futuristic-car-body {
+    position: absolute;
+    /* コントローラーから付与される top: 55% の位置から、さらに道路の「上」に配置するために引き上げる */
+    margin-top: -120px;
+    left: 100%; /* スタート地点を確実に画面の右外端にセット */
+    /* パフォーマンス最適化 */
+    will-change: transform;
+    /* 9秒かけて右から左へゆっくり等速で走らせる（1回のみ） */
+    animation: futuristicCarDriveMove 9s linear forwards;
+}
+
+/* 近未来の車本体の大きさと光る演出 */
 .futuristic-car-image {
-    width: 330px;
+    /* 大きめの表示（レスポンシブ設計） */
+    width: 36vw;
+    max-width: 560px;
+    min-width: 380px;
+    height: auto;
+    /* 近未来の輝き・光ってる感じを演出（ネオングロー効果） */
+    filter: drop-shadow(0 0 12px rgba(0, 243, 255, 0.9)) drop-shadow(0 0 25px rgba(0, 243, 255, 0.5));
 }
 
-@keyframes futuristicCarMove {
+/* 固有のアニメーション名（他Flowとの衝突禁止） */
+@keyframes futuristicCarDriveMove {
     from {
         transform: translateX(0);
     }
 
     to {
-        transform: translateX(-170vw);
+        /* 画面左外（-100vw）に、さらに車の最大横幅分を引いて確実に画面左へ流し切る */
+        transform: translateX(calc(-100vw - 600px));
+    }
+}
+
+/* レスポンシブ対応：画面の高さが低い（横長）場合の配置の微調整 */
+@media (max-height: 600px) {
+    .futuristic-car-body {
+        margin-top: -80px;
+    }
+
+    .futuristic-car-image {
+        width: 32vw;
     }
 }
