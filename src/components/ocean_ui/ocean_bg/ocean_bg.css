@@ -40,7 +40,6 @@
 
 .road2 {
     animation: roadScroll2 8s linear infinite;
-    opacity: 0.9;
 }
 
 @keyframes roadScroll1 {
