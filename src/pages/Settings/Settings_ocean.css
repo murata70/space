@@ -123,6 +123,36 @@ button:hover {
         background: #f0f8ff;
     }
 
+    /* 途中追加、ゆらぎ */
+.settings-title {
+    transition: all 0.6s ease;
+}
+
+    .settings-title.warp-mode {
+        animation: oceanWave 1s ease-in-out;
+    }
+
+@keyframes oceanWave {
+    0% {
+        transform: translateY(0) scale(1);
+        letter-spacing: 0px;
+        filter: blur(0px);
+    }
+
+    30% {
+        transform: translateY(3px) scale(1.02);
+    }
+
+    60% {
+        transform: translateY(-2px) scale(0.99);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        letter-spacing: 2px;
+    }
+}
+
 /* ===== responsive ===== */
 @media (max-width: 600px) {
     .text-btn {
@@ -132,4 +162,6 @@ button:hover {
     .text-toggle {
         gap: 8px;
     }
+
+
 }
