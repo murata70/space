@@ -82,7 +82,7 @@ const Settings_ocean = () => {
 
         setTimeout(() => {
             setIsWarping(false);
-        }, 1000);
+        }, 3000);
     };
 
     return (

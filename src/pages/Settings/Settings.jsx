@@ -109,6 +109,14 @@ const Settings = () => {
                     <button className="settings-btn homeBtn" onClick={handleGoHome}>
                         🏠 ホームへ
                     </button>
+
+                    <button
+                        className="settings-btn oceanBtn"
+                        onClick={() => navigate("/settings_ocean")}
+                    >
+                        🌊 OCEAN SETTINGSへ
+                    </button>
+
                 </div>
 
             </div>
