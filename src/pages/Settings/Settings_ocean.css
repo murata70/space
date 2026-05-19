@@ -1,54 +1,108 @@
 /* ===== Settings_ocean.css ===== */
-/* =========================
-   OCEAN THEME ONLY
-========================= */
+/* OCEAN THEME ONLY */
 
-/* ===== コンテナ ===== */
+/* ページ全体のラッパー */
+.settings-page-wrapper.ocean-theme {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 80px;
+    background: linear-gradient( to bottom, rgba(173, 216, 230, 0.9), rgba(0, 191, 255, 0.7) );
+    background-size: 200% 200%;
+    animation: waterWave 15s ease-in-out infinite alternate;
+    backdrop-filter: blur(2px);
+}
+
+/* コンテナ */
 .settings-page-container.ocean-theme {
     width: min(92vw, 520px);
-    margin: 80px auto 0;
+/*    min-height: 100vh;*/
+    margin: 0px auto 0;
     padding: 24px;
     display: flex;
-    flex-direction: column; /* 縦並び */
-    align-items: center; /* 子要素中央揃え */
+    flex-direction: column;
+    align-items: center;
     border-radius: 20px;
-    background: linear-gradient(to bottom, #bfe9ff 0%, #e6f7ff 40%, #cfefff 70%, #a8d8ff 100%);
+    background: linear-gradient(to bottom, rgba(173,216,230,0.6), rgba(0,191,255,0.5));
+    background-size: 200% 200%;
+    animation: containerWave 12s ease-in-out infinite alternate;
+    backdrop-filter: blur(2px);
     position: relative;
     overflow: hidden;
     z-index: 10;
     border: 1px solid rgba(150, 200, 255, 0.3);
 }
 
-    /* 光レイヤー */
-    .settings-page-container.ocean-theme::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 40%;
-        background: linear-gradient(to top, rgba(255,255,255,0), rgba(200,220,255,0.2));
-        pointer-events: none;
+/* ゆらぎアニメーション（背景） */
+@keyframes waterWave {
+    0% {
+        background-position: 0% 50%;
     }
 
-    /* ===== タイトル ===== */
-    .settings-page-container.ocean-theme .settings-title {
-        color: #2b3a42;
-        text-shadow: 0 0 8px rgba(0,120,255,0.4);
-        text-align: center;
-        width: 100%;
-        font-size: 28px;
-        font-weight: 700;
-        margin-bottom: 20px;
-        cursor: pointer;
-        user-select: none;
+    50% {
+        background-position: 100% 50%;
     }
 
-        .settings-page-container.ocean-theme .settings-title.warp-mode {
-            animation: oceanWave 3s ease-in-out;
-        }
+    100% {
+        background-position: 0% 50%;
+    }
+}
 
-/* ===== oceanWave animation ===== */
+/* コンテナ軽い揺れ */
+@keyframes containerWave {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    25% {
+        transform: translateY(-3px) rotate(-0.2deg);
+    }
+
+    50% {
+        transform: translateY(2px) rotate(0.1deg);
+    }
+
+    75% {
+        transform: translateY(-1px) rotate(-0.1deg);
+    }
+
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+}
+
+/* 光レイヤー */
+.settings-page-container.ocean-theme::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(to top, rgba(255,255,255,0), rgba(200,230,255,0.2));
+    pointer-events: none;
+}
+
+/* タイトル */
+.settings-page-container.ocean-theme .settings-title {
+    color: #2b3a42;
+    text-shadow: 0 0 8px rgba(0,120,255,0.4);
+    text-align: center;
+    width: 100%;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    cursor: pointer;
+    user-select: none;
+}
+
+    .settings-page-container.ocean-theme .settings-title.warp-mode {
+        animation: oceanWave 5s ease-in-out;
+    }
+
+/* タイトル揺れ */
 @keyframes oceanWave {
     0% {
         transform: translateY(0) scale(1);
@@ -66,6 +120,8 @@
         transform: translateY(0) scale(1);
     }
 }
+
+/* 以下、その他スタイルはそのまま（ボタンやinputなど） */
 
 /* ===== Settings rows (inputs etc.) ===== */
 .settings-page-container.ocean-theme .settings-row {
