@@ -36,15 +36,15 @@ const WallpaperOcean = ({ baseUrl }) => {
             {/* メインカー */}
             <MainCar baseUrl={baseUrl} />
 
-            {/* UIレイヤー */}
+            {/* 時計・ボタン（右上） */}
             <div
-                className="bottom-ui"
+                className="top-ui"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
                 <Clock />
 
-                {/* コレクションアイコン：Collection_oceanへ遷移 */}
+                <div className="top-ui-actions">
                 <button
                     className="icon-btn"
                     onClick={() => navigate("/collection_ocean")}
@@ -52,13 +52,13 @@ const WallpaperOcean = ({ baseUrl }) => {
                     📁
                 </button>
 
-                {/* 歯車アイコン：Settings_oceanへ遷移 */}
                 <button
                     className="icon-btn"
                     onClick={() => navigate("/settings_ocean")}
                 >
                     ⚙️
                 </button>
+                </div>
             </div>
         </div>
     );
