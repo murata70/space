@@ -12,11 +12,13 @@ let collectionSpawnIntervalMs = COLLECTION_SPAWN_INTERVAL_MS;
 let debugIgnorePassingVehiclesForCollection = false;
 let debugSpawnCollectionOnMount = false;
 let debugCollectionId = null;
+let debugSpawnCollectionsInOrder = false;
 
-// ???????????????4??????????
-// collectionSpawnIntervalMs = 800;
-// debugIgnorePassingVehiclesForCollection = true;
-// debugSpawnCollectionOnMount = true;
+// デバッグ用: コレクションを登録順に出現（不要になったら以下5行をコメントアウト）
+debugSpawnCollectionsInOrder = true;
+collectionSpawnIntervalMs = 800;
+debugIgnorePassingVehiclesForCollection = true;
+debugSpawnCollectionOnMount = true;
 // debugCollectionId = "astronaut2";
 
 const passingImages = [
@@ -38,6 +40,7 @@ export default function OceanFlowController() {
   const [currentCollectionFlow, setCurrentCollectionFlow] = useState(null);
 
   const usedCollectionIndexRef = useRef(null);
+  const sequentialCollectionIndexRef = useRef(0);
 
   const vehicleIdRef = useRef(0);
 
@@ -130,7 +133,12 @@ export default function OceanFlowController() {
 
     let nextIndex;
 
-    if (debugCollectionId) {
+    if (debugSpawnCollectionsInOrder) {
+      nextIndex =
+        sequentialCollectionIndexRef.current %
+        collectionMaster_ocean.length;
+      sequentialCollectionIndexRef.current += 1;
+    } else if (debugCollectionId) {
       const forcedIndex = collectionMaster_ocean.findIndex(
         (item) => item.id === debugCollectionId
       );
