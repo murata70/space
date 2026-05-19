@@ -4,28 +4,22 @@ import { useNavigate } from "react-router-dom";
 import "./Wallpaper_ocean.css";
 
 import Clock from "../../components/ui/Clock/Clock";
-
 import BackGroundOcean from "../../components/ocean_ui/background_ocean/BackGround";
 import OceanBg from "../../components/ocean_ui/ocean_bg/ocean_bg";
 import MainCar from "../../components/ocean_ui/main_car/main_car";
 
-const WallpaperOcean = () => {
-
+const WallpaperOcean = ({ baseUrl }) => {
     const navigate = useNavigate();
 
     // マウス透過解除
-
     const handleMouseEnter = () => {
-
         if (window.electron?.setIgnoreMouse) {
             window.electron.setIgnoreMouse(false);
         }
     };
 
     // マウス透過
-
     const handleMouseLeave = () => {
-
         if (window.electron?.setIgnoreMouse) {
             window.electron.setIgnoreMouse(true);
         }
@@ -33,17 +27,16 @@ const WallpaperOcean = () => {
 
     return (
         <div className="wallpaper-ocean">
-
             {/* 背景 */}
-            <BackGroundOcean />
+            <BackGroundOcean baseUrl={baseUrl} />
 
             {/* 道路 */}
-            <OceanBg />
+            <OceanBg baseUrl={baseUrl} />
 
             {/* メインカー */}
-            <MainCar />
+            <MainCar baseUrl={baseUrl} />
 
-            {/* UI */}
+            {/* UIレイヤー */}
             <div
                 className="bottom-ui"
                 onMouseEnter={handleMouseEnter}
@@ -51,6 +44,7 @@ const WallpaperOcean = () => {
             >
                 <Clock />
 
+                {/* コレクションアイコン：Collection_oceanへ遷移 */}
                 <button
                     className="icon-btn"
                     onClick={() => navigate("/collection_ocean")}
@@ -58,13 +52,13 @@ const WallpaperOcean = () => {
                     📁
                 </button>
 
+                {/* 歯車アイコン：Settings_oceanへ遷移 */}
                 <button
                     className="icon-btn"
                     onClick={() => navigate("/settings_ocean")}
                 >
                     ⚙️
                 </button>
-
             </div>
         </div>
     );
