@@ -1,10 +1,10 @@
-.slide-area {
+ï»¿.slide-area {
     position: relative;
     height: 100%;
     flex-shrink: 0;
 }
 
-/* ƒ^ƒu */
+/* ã‚¿ãƒ– */
 .slide-tab {
     writing-mode: vertical-rl;
     background: #111;
@@ -20,7 +20,7 @@
     user-select: none;
 }
 
-/* ƒpƒlƒ‹ */
+/* ãƒ‘ãƒãƒ« */
 .slide-panel {
     position: absolute;
     top: 0;
