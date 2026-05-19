@@ -21,7 +21,6 @@ const planetImages = [
     "assets/image/planets/planet11_1.png",
     "assets/image/planets/planet12_1.png",
     "assets/image/planets/planet13_1.png",
-    "assets/image/planets/planet14.png",
     "assets/image/planets/sun_1.png",
     "assets/image/planets/sun_2.png",
     "assets/image/planets/sun_3.png",
