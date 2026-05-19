@@ -10,8 +10,8 @@
 /* コントローラーのimg強制バウンドを回避し、こちらで横移動を制御するスタイル */
 .futuristic-car-body {
     position: absolute;
-    /* コントローラーから付与される top: 55% の位置から、さらに道路の「上」に配置するために引き上げる */
-    margin-top: -120px;
+    /* 道路からはみ出さないよう、引き上げ量を -120px から -180px に大きくして上に移動 */
+    margin-top: -180px;
     left: 100%; /* スタート地点を確実に画面の右外端にセット */
     /* パフォーマンス最適化 */
     will-change: transform;
@@ -45,7 +45,8 @@
 /* レスポンシブ対応：画面の高さが低い（横長）場合の配置の微調整 */
 @media (max-height: 600px) {
     .futuristic-car-body {
-        margin-top: -80px;
+        /* 高さが低い画面でも道路にフィットするように引き上げ量を微調整 */
+        margin-top: -130px;
     }
 
     .futuristic-car-image {

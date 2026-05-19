@@ -22,17 +22,17 @@ debugSpawnCollectionOnMount = true;
 // debugCollectionId = "astronaut2";
 
 const passingImages = [
-  `${publicUrl}/assets/ocean_image/passing/passing_car1.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car2.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car3.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car4.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car5.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car6.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car7.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car8.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car9.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car10.png`,
-  `${publicUrl}/assets/ocean_image/passing/passing_car11.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car1.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car2.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car3.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car4.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car5.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car6.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car7.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car8.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car9.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car10.png`,
+  `${ publicUrl } /assets/ocean_image / passing / passing_car11.png`,
 ];
 
 export default function OceanFlowController() {
@@ -49,7 +49,7 @@ export default function OceanFlowController() {
   const collectionRunningRef = useRef(false);
 
   /*
-    ???????
+    一般通過車両の生成ループ
   */
   useEffect(() => {
     const interval = setInterval(() => {
@@ -60,7 +60,7 @@ export default function OceanFlowController() {
   }, []);
 
   /*
-    ????????
+    コレクション（レア演出）の生成ループ
   */
   useEffect(() => {
     if (debugSpawnCollectionOnMount) {
@@ -75,17 +75,17 @@ export default function OceanFlowController() {
   }, []);
 
   /*
-    ???????????
+    一般通過車両を生成する
   */
   const spawnPassingVehicle = () => {
     if (collectionRunningRef.current) return;
 
-    // ???2??
+    // 同時出現は最大2台まで
     if (passingVehicles.length >= 2) return;
 
     const now = Date.now();
 
-    // ??????
+    // 生成間隔の制限（前回の生成から4秒未満ならスキップ）
     if (now - lastSpawnTimeRef.current < 4000) return;
 
     lastSpawnTimeRef.current = now;
@@ -107,7 +107,7 @@ export default function OceanFlowController() {
   };
 
   /*
-    ?????
+    一般通過車両の移動完了時処理
   */
   const handleVehicleComplete = (id) => {
     setPassingVehicles((prev) =>
@@ -116,12 +116,12 @@ export default function OceanFlowController() {
   };
 
   /*
-    ?R???N?V????????
+    コレクション演出を生成する
   */
   const spawnCollectionFlow = () => {
     if (collectionRunningRef.current) return;
 
-    // ??????????????????? DEBUG_IGNORE_PASSING_VEHICLES_FOR_COLLECTION ??????
+    // 一般車両がいる場合は生成しない（ただしデバッグ用無視フラグが立っている場合は除く）
     if (
       !debugIgnorePassingVehiclesForCollection &&
       passingVehicles.length > 0
@@ -149,7 +149,7 @@ export default function OceanFlowController() {
         Math.random() * collectionMaster_ocean.length
       );
 
-      // ????????????????????
+      // 連続で同じコレクションが出現するのを防止
       if (collectionMaster_ocean.length > 1) {
         while (nextIndex === usedCollectionIndexRef.current) {
           nextIndex = Math.floor(
@@ -169,7 +169,7 @@ export default function OceanFlowController() {
   };
 
   /*
-    ?R???N?V?????I??
+    コレクション演出の終了時処理
   */
   const handleCollectionComplete = () => {
     collectionRunningRef.current = false;
