@@ -1,7 +1,7 @@
 import React from "react";
-import "./SettingsPart.css";
+import "./SettingsPart_ocean.css";
 
-const SettingsPart = ({
+const SettingsPart_ocean = ({
     muted,
     setMuted,
     volume,
@@ -88,22 +88,18 @@ const SettingsPart = ({
                 <span className="timezone-label">Time Zone</span>
 
                 <select value={tz} onChange={(e) => setTz(e.target.value)}>
-                    <option value="Asia/Tokyo">Japan / Tokyo</option>
+                    <option value="Asia/Tokyo">Japan / Osaka</option>
                     <option value="UTC">UTC</option>
-
                     <option value="America/New_York">New York</option>
                     <option value="America/Chicago">Chicago</option>
                     <option value="America/Denver">Denver</option>
                     <option value="America/Los_Angeles">Los Angeles</option>
-
                     <option value="Europe/London">London</option>
                     <option value="Europe/Paris">Paris</option>
                     <option value="Europe/Berlin">Berlin</option>
-
                     <option value="Asia/Seoul">Seoul</option>
                     <option value="Asia/Shanghai">Shanghai</option>
                     <option value="Asia/Singapore">Singapore</option>
-
                     <option value="Australia/Sydney">Sydney</option>
                     <option value="Pacific/Honolulu">Hawaii</option>
                 </select>
@@ -112,4 +108,4 @@ const SettingsPart = ({
     );
 };
 
-export default SettingsPart;
+export default SettingsPart_ocean;
