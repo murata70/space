@@ -1,4 +1,4 @@
-/* ===== SettingPart.css ===== */
+/* ===== SettingPart_ocean.css ===== */
 
 /* ===== テキスト ===== */
 .settings-row span {
@@ -7,7 +7,7 @@
     color: #333;
 }
 
-/* ===== 入力フォーム（宇宙風） ===== */
+/* ===== 入力フォーム（海風） ===== */
 
 input[type="range"] {
     width: 100%;
