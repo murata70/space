@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./Settings_ocean.css";
-import "../../components/ui/SettingsPart/SettingPart_ocean.css";
+import "../../components/ui/SettingsPart/SettingsPart_ocean.css";
 
 import StarField from "../../components/ui/StarField/StarField";
 import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
