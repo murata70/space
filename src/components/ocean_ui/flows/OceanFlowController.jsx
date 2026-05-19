@@ -7,6 +7,18 @@ import "./OceanFlowController.css";
 
 const publicUrl = process.env.PUBLIC_URL || "";
 
+const COLLECTION_SPAWN_INTERVAL_MS = 15000;
+let collectionSpawnIntervalMs = COLLECTION_SPAWN_INTERVAL_MS;
+let debugIgnorePassingVehiclesForCollection = false;
+let debugSpawnCollectionOnMount = false;
+let debugCollectionId = null;
+
+// ???????????????4??????????
+// collectionSpawnIntervalMs = 800;
+// debugIgnorePassingVehiclesForCollection = true;
+// debugSpawnCollectionOnMount = true;
+// debugCollectionId = "astronaut2";
+
 const passingImages = [
   `${publicUrl}/assets/ocean_image/passing/passing_car1.png`,
   `${publicUrl}/assets/ocean_image/passing/passing_car2.png`,
@@ -45,12 +57,16 @@ export default function OceanFlowController() {
   }, []);
 
   /*
-    ?R???N?V????????
+    ????????
   */
   useEffect(() => {
+    if (debugSpawnCollectionOnMount) {
+      spawnCollectionFlow();
+    }
+
     const interval = setInterval(() => {
       spawnCollectionFlow();
-    }, 15000);
+    }, collectionSpawnIntervalMs);
 
     return () => clearInterval(interval);
   }, []);
@@ -102,21 +118,36 @@ export default function OceanFlowController() {
   const spawnCollectionFlow = () => {
     if (collectionRunningRef.current) return;
 
-    // ??????????????
-    if (passingVehicles.length > 0) return;
+    // ??????????????????? DEBUG_IGNORE_PASSING_VEHICLES_FOR_COLLECTION ??????
+    if (
+      !debugIgnorePassingVehiclesForCollection &&
+      passingVehicles.length > 0
+    ) {
+      return;
+    }
 
     if (!collectionMaster_ocean.length) return;
 
-    let nextIndex = Math.floor(
-      Math.random() * collectionMaster_ocean.length
-    );
+    let nextIndex;
 
-    // ?????R???N?V?????A???h?~
-    if (collectionMaster_ocean.length > 1) {
-      while (nextIndex === usedCollectionIndexRef.current) {
-        nextIndex = Math.floor(
-          Math.random() * collectionMaster_ocean.length
-        );
+    if (debugCollectionId) {
+      const forcedIndex = collectionMaster_ocean.findIndex(
+        (item) => item.id === debugCollectionId
+      );
+      if (forcedIndex === -1) return;
+      nextIndex = forcedIndex;
+    } else {
+      nextIndex = Math.floor(
+        Math.random() * collectionMaster_ocean.length
+      );
+
+      // ????????????????????
+      if (collectionMaster_ocean.length > 1) {
+        while (nextIndex === usedCollectionIndexRef.current) {
+          nextIndex = Math.floor(
+            Math.random() * collectionMaster_ocean.length
+          );
+        }
       }
     }
 
