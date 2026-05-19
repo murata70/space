@@ -1,0 +1,22 @@
+.passing-wrapper {
+    position: fixed;
+    right: -340px;
+    width: 340px;
+    pointer-events: none;
+    animation: passingMove 12s linear forwards;
+}
+
+@keyframes passingMove {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-140vw);
+    }
+}
+
+.passing-car {
+    width: 240px;
+    user-select: none;
+}

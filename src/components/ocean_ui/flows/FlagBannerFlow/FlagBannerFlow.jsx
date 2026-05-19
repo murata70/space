@@ -7,7 +7,7 @@ export default function FlagBannerFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 12000);
+    }, 15000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

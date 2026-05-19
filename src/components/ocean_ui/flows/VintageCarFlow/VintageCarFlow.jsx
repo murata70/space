@@ -7,7 +7,7 @@ export default function VintageCarFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 10000);
+    }, 12000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

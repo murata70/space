@@ -7,7 +7,7 @@ export default function ShipFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 14000);
+    }, 17000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

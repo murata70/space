@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import collectionMaster_ocean from "../../../data/collectionMaster_ocean";
 
 import PassingVehicle from "../passing/PassingVehicle";
+import "./OceanFlowController.css";
 
 const publicUrl = process.env.PUBLIC_URL || "";
 
@@ -33,7 +34,7 @@ export default function OceanFlowController() {
   const collectionRunningRef = useRef(false);
 
   /*
-    一般車生成
+    ???????
   */
   useEffect(() => {
     const interval = setInterval(() => {
@@ -44,7 +45,7 @@ export default function OceanFlowController() {
   }, []);
 
   /*
-    コレクション生成
+    ?R???N?V????????
   */
   useEffect(() => {
     const interval = setInterval(() => {
@@ -55,17 +56,17 @@ export default function OceanFlowController() {
   }, []);
 
   /*
-    一般車生成処理
+    ???????????
   */
   const spawnPassingVehicle = () => {
     if (collectionRunningRef.current) return;
 
-    // 最大2台
+    // ???2??
     if (passingVehicles.length >= 2) return;
 
     const now = Date.now();
 
-    // 車間距離
+    // ??????
     if (now - lastSpawnTimeRef.current < 4000) return;
 
     lastSpawnTimeRef.current = now;
@@ -78,19 +79,16 @@ export default function OceanFlowController() {
 
     const id = vehicleIdRef.current++;
 
-    const lane = Math.random() > 0.5 ? "upper" : "lower";
-
     const newVehicle = {
       id,
       image,
-      lane,
     };
 
     setPassingVehicles((prev) => [...prev, newVehicle]);
   };
 
   /*
-    一般車削除
+    ?????
   */
   const handleVehicleComplete = (id) => {
     setPassingVehicles((prev) =>
@@ -99,12 +97,12 @@ export default function OceanFlowController() {
   };
 
   /*
-    コレクション生成
+    ?R???N?V????????
   */
   const spawnCollectionFlow = () => {
     if (collectionRunningRef.current) return;
 
-    // 一般車がいる場合は待つ
+    // ??????????????
     if (passingVehicles.length > 0) return;
 
     if (!collectionMaster_ocean.length) return;
@@ -113,7 +111,7 @@ export default function OceanFlowController() {
       Math.random() * collectionMaster_ocean.length
     );
 
-    // 同じコレクション連続防止
+    // ?????R???N?V?????A???h?~
     if (collectionMaster_ocean.length > 1) {
       while (nextIndex === usedCollectionIndexRef.current) {
         nextIndex = Math.floor(
@@ -132,7 +130,7 @@ export default function OceanFlowController() {
   };
 
   /*
-    コレクション終了
+    ?R???N?V?????I??
   */
   const handleCollectionComplete = () => {
     collectionRunningRef.current = false;
@@ -143,25 +141,18 @@ export default function OceanFlowController() {
   const CollectionFlowComponent = currentCollectionFlow;
 
   return (
-    <>
-      {/* 一般車 */}
+    <div className="ocean-flow-layer">
       {passingVehicles.map((vehicle) => (
         <PassingVehicle
           key={vehicle.id}
           image={vehicle.image}
-          lane={vehicle.lane}
-          onComplete={() =>
-            handleVehicleComplete(vehicle.id)
-          }
+          onComplete={() => handleVehicleComplete(vehicle.id)}
         />
       ))}
 
-      {/* コレクション */}
       {CollectionFlowComponent && (
-        <CollectionFlowComponent
-          onComplete={handleCollectionComplete}
-        />
+        <CollectionFlowComponent onComplete={handleCollectionComplete} />
       )}
-    </>
+    </div>
   );
 }

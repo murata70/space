@@ -1,15 +1,12 @@
 .racing-car-flow {
     position: fixed;
-    right: -400px;
-    top: 74%;
-    z-index: 30;
+    right: -440px;
     pointer-events: none;
-    animation: racingCarMove 6s linear forwards;
+    animation: racingCarMove 8s linear forwards;
 }
 
 .racing-car-image {
-    width: 300px;
-    animation: racingShake 0.1s infinite linear;
+    width: 330px;
 }
 
 @keyframes racingCarMove {
@@ -19,27 +16,5 @@
 
     to {
         transform: translateX(-190vw);
-    }
-}
-
-@keyframes racingShake {
-    0% {
-        transform: translateY(0px);
-    }
-
-    25% {
-        transform: translateY(-2px);
-    }
-
-    50% {
-        transform: translateY(1px);
-    }
-
-    75% {
-        transform: translateY(-1px);
-    }
-
-    100% {
-        transform: translateY(0px);
     }
 }

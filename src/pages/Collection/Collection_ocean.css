@@ -31,16 +31,16 @@
 .collection-wrap.ocean-theme {
     display: flex;
     height: 100vh;
-    background: #4fc3f7; /* š’´d—vF‘N‚â‚©‚È…F */
+    background: #4fc3f7; /* ï¿½ï¿½ï¿½ï¿½ï¿½dï¿½vï¿½Fï¿½Nï¿½â‚©ï¿½Èï¿½ï¿½F */
     color: white;
     overflow: hidden;
     position: relative;
     isolation: isolate;
-    /* š’Ç‰ÁF•¶š‰»‚¯‘Îô */
+    /* ï¿½ï¿½ï¿½Ç‰ï¿½ï¿½Fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îï¿½ */
     font-family: "Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif;
 }
 
-/* ƒƒCƒ“ */
+/* ï¿½ï¿½ï¿½Cï¿½ï¿½ */
 .collection-main {
     flex: 1;
     padding: 20px;
@@ -54,7 +54,7 @@
     font-family: inherit;
 }
 
-/* ƒ^ƒCƒgƒ‹ */
+/* ï¿½^ï¿½Cï¿½gï¿½ï¿½ */
 .title {
     text-align: center;
     margin-bottom: 20px;
@@ -64,7 +64,7 @@
     font-family: inherit;
 }
 
-/* ƒOƒŠƒbƒh */
+/* ï¿½Oï¿½ï¿½ï¿½bï¿½h */
 .grid {
     width: 100%;
     max-width: 1100px;
@@ -80,7 +80,7 @@
     font-family: inherit;
 }
 
-/* ƒJ[ƒh */
+/* ï¿½Jï¿½[ï¿½h */
 .card {
     width: 100%;
     max-width: 220px;
@@ -102,7 +102,7 @@
         border-color: #999;
     }
 
-/* ‰æ‘œ */
+/* ï¿½æ‘œ */
 .collection-image {
     width: 80%;
     height: 110px;
@@ -110,7 +110,7 @@
     pointer-events: none;
 }
 
-/* –¼‘O */
+/* ï¿½ï¿½ï¿½O */
 .collection-name {
     margin-top: 10px;
     font-size: 14px;
@@ -122,13 +122,13 @@
     font-family: inherit;
 }
 
-/* –¢”­Œ© */
+/* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 .unknown {
     font-size: 46px;
     color: #666;
 }
 
-/* –ß‚éƒ{ƒ^ƒ“ */
+/* ï¿½ß‚ï¿½{ï¿½^ï¿½ï¿½ */
 .back-btn {
     position: absolute;
     bottom: 20px;

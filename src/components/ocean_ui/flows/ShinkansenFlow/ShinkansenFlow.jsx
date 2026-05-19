@@ -7,7 +7,7 @@ export default function ShinkansenFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 8000);
+    }, 10000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

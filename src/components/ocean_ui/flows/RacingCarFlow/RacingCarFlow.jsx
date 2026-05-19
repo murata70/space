@@ -7,7 +7,7 @@ export default function RacingCarFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 6000);
+    }, 8000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);

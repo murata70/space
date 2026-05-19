@@ -7,7 +7,7 @@ export default function SportsCarFlow({ onComplete }) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete?.();
-    }, 7000);
+    }, 9000);
 
     return () => clearTimeout(timer);
   }, [onComplete]);
