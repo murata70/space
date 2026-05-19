@@ -76,13 +76,13 @@ const Settings = () => {
 
             {/* 遊び部分 */}
             {/* 【修正箇所】CSSと名前を統一 */}
-            <div className="settings-page-container">
+            <div className="settings-page-container space-theme">
                 <h2
                     className={`settings-title ${isWarping ? "warp-mode" : ""}`}
                     onClick={handleTitleClick}
                     style={{ cursor: 'pointer', userSelect: 'none' }}
                 >
-                    SETTINGS
+                    SPACE SETTINGS
                 </h2>
 
                 <SettingsPart

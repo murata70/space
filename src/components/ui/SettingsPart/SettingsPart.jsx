@@ -1,4 +1,7 @@
+/* ===== SettingsPart.jsx ===== */
+
 import React from "react";
+
 import "./SettingsPart.css";
 
 const SettingsPart = ({
@@ -13,13 +16,16 @@ const SettingsPart = ({
     tz,
     setTz
 }) => {
+
     return (
         <>
+            {/* 各行設定 */}
             {/* 音量 */}
             <div className="settings-row">
                 <button
                     className="muteBtn"
                     onClick={() => {
+
                         if (muted || volume === 0) {
                             setMuted(false);
                             setVolume(50);
@@ -31,23 +37,30 @@ const SettingsPart = ({
                 >
                     {muted || volume === 0 ? "🔇" : "🔊"}
                 </button>
-
                 <input
                     type="range"
                     min="0"
                     max="100"
                     value={volume}
                     onChange={(e) => {
-                        const v = Number(e.target.value);
-                        setVolume(v);
-                        setMuted(v === 0);
+
+                        const newVolume = Number(e.target.value);
+
+                        setVolume(newVolume);
+
+                        if (newVolume === 0) {
+                            setMuted(true);
+                        } else {
+                            setMuted(false);
+                        }
                     }}
                 />
             </div>
 
-            {/* Sec */}
+            {/* sec */}
             <div className="settings-row">
                 <span>Sec</span>
+
                 <div className="text-toggle">
                     <button
                         className={sec ? "text-btn active" : "text-btn"}
@@ -55,6 +68,7 @@ const SettingsPart = ({
                     >
                         ON
                     </button>
+
                     <button
                         className={!sec ? "text-btn active" : "text-btn"}
                         onClick={() => setSec(false)}
@@ -64,9 +78,11 @@ const SettingsPart = ({
                 </div>
             </div>
 
-            {/* 24h */}
+
+            {/* 24時間表示 */}
             <div className="settings-row">
                 <span>24h</span>
+
                 <div className="text-toggle">
                     <button
                         className={is24h ? "text-btn active" : "text-btn"}
@@ -74,6 +90,7 @@ const SettingsPart = ({
                     >
                         ON
                     </button>
+
                     <button
                         className={!is24h ? "text-btn active" : "text-btn"}
                         onClick={() => setIs24h(false)}
@@ -81,31 +98,38 @@ const SettingsPart = ({
                         OFF
                     </button>
                 </div>
+
             </div>
 
-            {/* Timezone */}
-            <div className="settings-row timezone-row">
-                <span className="timezone-label">Time Zone</span>
+            {/* タイムゾーン */}
+            <div className="settings-row" style={{ display: "block" }}>
+                <span style={{ display: "block", marginBottom: "5px" }}
+                >
+                    Time Zone</span>
 
                 <select value={tz} onChange={(e) => setTz(e.target.value)}>
-                    <option value="Asia/Tokyo">Japan / Tokyo</option>
+                    <option value="Asia/Tokyo">Japan / Osaka</option>
+                    {/*<option value="Asia/Tokyo">Japan / Tokyo</option>*/}
                     <option value="UTC">UTC</option>
 
-                    <option value="America/New_York">New York</option>
-                    <option value="America/Chicago">Chicago</option>
-                    <option value="America/Denver">Denver</option>
-                    <option value="America/Los_Angeles">Los Angeles</option>
+                    <option value="America/New_York">USA / New York</option>
+                    <option value="America/Chicago">USA / Chicago</option>
+                    <option value="America/Denver">USA / Denver</option>
+                    <option value="America/Los_Angeles">USA / Los Angeles</option>
 
-                    <option value="Europe/London">London</option>
-                    <option value="Europe/Paris">Paris</option>
-                    <option value="Europe/Berlin">Berlin</option>
+                    <option value="Europe/London">UK / London</option>
+                    <option value="Europe/Paris">France / Paris</option>
+                    <option value="Europe/Berlin">Germany / Berlin</option>
 
-                    <option value="Asia/Seoul">Seoul</option>
-                    <option value="Asia/Shanghai">Shanghai</option>
+                    <option value="Asia/Seoul">Korea / Seoul</option>
+                    <option value="Asia/Shanghai">China / Shanghai</option>
                     <option value="Asia/Singapore">Singapore</option>
 
-                    <option value="Australia/Sydney">Sydney</option>
+                    <option value="Australia/Sydney">Australia / Sydney</option>
+
                     <option value="Pacific/Honolulu">Hawaii</option>
+
+
                 </select>
             </div>
         </>
