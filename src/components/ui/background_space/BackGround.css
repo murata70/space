@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: -10; /* 全ての要素の最背面に配置 */
+    z-index: 0;
 
     background-size: cover;
     background-position: center;

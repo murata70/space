@@ -1,6 +1,6 @@
 /* =========================
    Planet Layer
-   レスポンシブ対応版
+   ???X?|???V?u?????
 ========================= */
 
 .planet-layer {
@@ -11,23 +11,23 @@
     z-index: 2;
 }
 
-/* 惑星本体 */
+/* ?f???{?? */
 .planet-object {
     position: absolute;
-    /* 画面サイズに応じて自動調整 */
+    /* ???T?C?Y?????????????? */
     width: clamp(60px, 10vw, 220px);
     height: auto;
-    opacity: 0.95;
+    opacity: 1;
     user-select: none;
     will-change: transform;
     animation-name: flowPlanet;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
-    /* JS側から duration を渡せるように */
+    /* JS?????? duration ??n??????? */
     animation-duration: var(--planet-duration, 40s);
 }
 
-/* 左へ流れる */
+/* ???????? */
 @keyframes flowPlanet {
 
     from {
@@ -40,7 +40,7 @@
 }
 
 /* =========================
-   タブレット
+   ?^?u???b?g
 ========================= */
 
 @media (max-width: 1024px) {
@@ -51,21 +51,20 @@
 }
 
 /* =========================
-   スマホ
+   ?X?}?z
 ========================= */
 
 @media (max-width: 768px) {
 
     .planet-object {
-        /* 小さめに */
+        /* ??????? */
         width: clamp(40px, 18vw, 140px);
-        /* 少し軽量化 */
-        opacity: 0.9;
+        /* ?????y??? */
     }
 }
 
 /* =========================
-   超小型スマホ
+   ?????^?X?}?z
 ========================= */
 
 @media (max-width: 480px) {

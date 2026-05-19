@@ -1,6 +1,11 @@
 import React from "react";
 import "./ocean_bg.css";
 
+const publicUrl = process.env.PUBLIC_URL || "";
+
+const road1Url = `${publicUrl}/assets/ocean_image/background_ocean/background_road1.png`;
+const road2Url = `${publicUrl}/assets/ocean_image/background_ocean/background_road2.png`;
+
 const OceanBg = () => {
 
     return (
@@ -12,16 +17,14 @@ const OceanBg = () => {
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage:
-                            "url('/assets/ocean_image/background_ocean/background_road1.png')",
+                        backgroundImage: `url('${road1Url}')`,
                     }}
                 />
 
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage:
-                            "url('/assets/ocean_image/background_ocean/background_road1.png')",
+                        backgroundImage: `url('${road1Url}')`,
                     }}
                 />
 
@@ -33,16 +36,14 @@ const OceanBg = () => {
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage:
-                            "url('/assets/ocean_image/background_ocean/background_road2.png')",
+                        backgroundImage: `url('${road2Url}')`,
                     }}
                 />
 
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage:
-                            "url('/assets/ocean_image/background_ocean/background_road2.png')",
+                        backgroundImage: `url('${road2Url}')`,
                     }}
                 />
 

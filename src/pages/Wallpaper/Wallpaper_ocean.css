@@ -16,7 +16,7 @@
 
 .bottom-ui {
     position: fixed;
-    bottom: clamp(10px, 2vw, 20px);
+    bottom: clamp(90px, 12vh, 160px);
     right: clamp(10px, 2vw, 20px);
     display: flex;
     align-items: center;
@@ -30,7 +30,7 @@
     box-sizing: border-box;
 }
 
-/* ボタン */
+/* ?{?^?? */
 
 .icon-btn {
     width: clamp(34px, 5vw, 36px);
@@ -55,7 +55,7 @@
     transform: scale(0.95);
 }
 
-/* タブレット */
+/* ?^?u???b?g */
 
 @media (max-width: 1024px) {
     .bottom-ui {
@@ -63,18 +63,18 @@
     }
 }
 
-/* スマホ */
+/* ?X?}?z */
 
 @media (max-width: 768px) {
     .bottom-ui {
-        bottom: max(10px, env(safe-area-inset-bottom));
+        bottom: max(90px, calc(env(safe-area-inset-bottom) + 75px));
         right: 10px;
         padding: 8px 10px;
         border-radius: 10px;
     }
 }
 
-/* 超小型スマホ */
+/* ?????^?X?}?z */
 
 @media (max-width: 480px) {
     .bottom-ui {

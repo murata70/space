@@ -2,11 +2,11 @@
     position: fixed;
     inset: 0;
     overflow: hidden;
-    z-index: -5;
+    z-index: 1;
     pointer-events: none;
 }
 
-/* 共通 */
+/* ???? */
 
 .road-layer {
     position: absolute;
@@ -18,31 +18,32 @@
     will-change: transform;
 }
 
+/* 1?????????????200%??????????? */
 .road-track {
-    width: 100%;
+    flex: 0 0 50%;
+    width: 50%;
     height: 100%;
-    flex-shrink: 0;
-    background-repeat: repeat-x;
+    background-repeat: no-repeat;
     background-size: cover;
-    background-position: center;
+    background-position: center bottom;
 }
 
 /* road1 */
 
 .road1 {
     animation: roadScroll1 18s linear infinite;
-    z-index: 1;
+    z-index: 0;
 }
 
 /* road2 */
 
 .road2 {
-    animation: roadScroll2 35s linear infinite;
-    z-index: 0;
+    animation: roadScroll2 8s linear infinite;
+    z-index: 2;
     opacity: 0.9;
 }
 
-/* アニメーション */
+/* ?A?j???[?V???? */
 
 @keyframes roadScroll1 {
 
