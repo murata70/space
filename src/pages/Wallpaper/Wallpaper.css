@@ -59,12 +59,13 @@
    UIエリア
 ======================================== */
 
-.bottom-ui {
+.top-ui {
     position: fixed;
-    bottom: clamp(90px, 12vh, 160px);
+    top: max(clamp(10px, 2vw, 20px), env(safe-area-inset-top));
     right: clamp(10px, 2vw, 20px);
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-end;
     gap: clamp(6px, 1vw, 10px);
     background: rgba(0, 0, 0, 0.35);
     padding: clamp(8px, 1vw, 10px) clamp(10px, 1.5vw, 15px);
@@ -73,6 +74,12 @@
     z-index: 10;
     max-width: calc(100vw - 20px);
     box-sizing: border-box;
+}
+
+.top-ui-actions {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1vw, 10px);
 }
 
 /* ========================================
@@ -113,7 +120,11 @@
 
 @media (max-width: 1024px) {
 
-    .bottom-ui {
+    .top-ui {
+        gap: 8px;
+    }
+
+    .top-ui-actions {
         gap: 8px;
     }
 }
@@ -124,8 +135,7 @@
 
 @media (max-width: 768px) {
 
-    .bottom-ui {
-        bottom: max(90px, calc(env(safe-area-inset-bottom) + 75px));
+    .top-ui {
         right: 10px;
         padding: 8px 10px;
         border-radius: 10px;
@@ -142,9 +152,13 @@
 
 @media (max-width: 480px) {
 
-    .bottom-ui {
+    .top-ui {
         gap: 6px;
         padding: 6px 8px;
+    }
+
+    .top-ui-actions {
+        gap: 6px;
     }
 
     .icon-btn {

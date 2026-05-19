@@ -39,23 +39,26 @@ const Wallpaper = () => {
             <Rocket />
 
             <div
-                className="bottom-ui"
+                className="top-ui"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
             >
                 <Clock />
-                <button
-                    className="icon-btn"
-                    onClick={() => navigate("/collection")}
-                >
-                    📁
-                </button>
-                <button
-                    className="icon-btn"
-                    onClick={() => navigate("/settings")}
-                >
-                    ⚙️
-                </button>
+
+                <div className="top-ui-actions">
+                    <button
+                        className="icon-btn"
+                        onClick={() => navigate("/collection")}
+                    >
+                        📁
+                    </button>
+                    <button
+                        className="icon-btn"
+                        onClick={() => navigate("/settings")}
+                    >
+                        ⚙️
+                    </button>
+                </div>
             </div>
         </div>
     );
