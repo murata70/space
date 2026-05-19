@@ -1,17 +1,20 @@
-﻿/* コントローラーの仕様（position: fixed, inset: 0等）を活かしつつ調整 */
+﻿/* FuturisticCarFlow.css */
+
+/* コントローラーの仕様（position: fixed, inset: 0等）を活かしつつ調整 */
 .futuristic-car-flow {
     position: fixed;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-    z-index: 5; /* 4〜6の範囲 */
+    /* 背景画像 background_ocean.png より手前に表示させるため、4〜6の範囲で最大値の 6 に設定 */
+    z-index: 6;
 }
 
-/* コントローラーのimg強制バウンドを回避し、こちらで横移動を制御するスタイル */
+/* コントローラーのCSS廃止に対応し、単独で道路（画面下半分）に配置するスタイル */
 .futuristic-car-body {
     position: absolute;
-    /* 道路からはみ出さないよう、引き上げ量を -120px から -180px に大きくして上に移動 */
-    margin-top: -180px;
+    /* 道路からはみ出ないよう、さらにtopの値を引き上げて上に配置 */
+    top: 32%;
     left: 100%; /* スタート地点を確実に画面の右外端にセット */
     /* パフォーマンス最適化 */
     will-change: transform;
@@ -45,8 +48,8 @@
 /* レスポンシブ対応：画面の高さが低い（横長）場合の配置の微調整 */
 @media (max-height: 600px) {
     .futuristic-car-body {
-        /* 高さが低い画面でも道路にフィットするように引き上げ量を微調整 */
-        margin-top: -130px;
+        /* 高さが狭い画面に合わせて、こちらもさらに上に微調整 */
+        top: 28%;
     }
 
     .futuristic-car-image {
