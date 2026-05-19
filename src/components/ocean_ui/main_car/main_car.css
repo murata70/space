@@ -12,7 +12,9 @@
 .main-car-wrapper {
     display: flex;
     align-items: center;
-    animation: mainCarFloat 3s ease-in-out infinite;
+    /* 削除 */
+    /* animation: mainCarFloat 3s ease-in-out infinite; */
+
     user-select: none;
     will-change: transform;
 }
@@ -26,25 +28,10 @@
     pointer-events: auto;
 }
 
-/* 浮遊 */
-
-@keyframes mainCarFloat {
-    0% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(clamp(-4px, -1vw, -10px));
-    }
-
-    100% {
-        transform: translateY(0px);
-    }
-}
-
 /* タブレット */
 
 @media (max-width: 1024px) {
+
     .main-car-position {
         top: 72%;
     }
@@ -53,6 +40,7 @@
 /* スマホ */
 
 @media (max-width: 768px) {
+
     .main-car-position {
         top: 78%;
         left: 4vw;
@@ -62,6 +50,7 @@
 /* 超小型スマホ */
 
 @media (max-width: 480px) {
+
     .main-car-position {
         top: 82%;
         left: 2vw;

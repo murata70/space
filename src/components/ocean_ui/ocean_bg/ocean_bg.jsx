@@ -3,8 +3,6 @@ import "./ocean_bg.css";
 
 const OceanBg = () => {
 
-    const publicUrl = process.env.PUBLIC_URL || "";
-
     return (
         <div className="ocean-road-wrapper">
 
@@ -14,14 +12,16 @@ const OceanBg = () => {
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage: `url('${publicUrl}/assets/ocean_image/BackGround/background_road1.png')`,
+                        backgroundImage:
+                            "url('/assets/ocean_image/background_ocean/background_road1.png')",
                     }}
                 />
 
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage: `url('${publicUrl}/assets/ocean_image/BackGround/background_road1.png')`,
+                        backgroundImage:
+                            "url('/assets/ocean_image/background_ocean/background_road1.png')",
                     }}
                 />
 
@@ -33,18 +33,21 @@ const OceanBg = () => {
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage: `url('${publicUrl}/assets/ocean_image/BackGround/background_road2.png')`,
+                        backgroundImage:
+                            "url('/assets/ocean_image/background_ocean/background_road2.png')",
                     }}
                 />
 
                 <div
                     className="road-track"
                     style={{
-                        backgroundImage: `url('${publicUrl}/assets/ocean_image/BackGround/background_road2.png')`,
+                        backgroundImage:
+                            "url('/assets/ocean_image/background_ocean/background_road2.png')",
                     }}
                 />
 
             </div>
+
         </div>
     );
 };
