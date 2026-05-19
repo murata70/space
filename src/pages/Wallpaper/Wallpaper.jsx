@@ -8,7 +8,7 @@ import Planets from "../../components/ui/Planets/Planets";
 import Rocket from "../../components/ui/Rocket/Rocket";
 import FlowController from "../../components/ui/flows/FlowController";
 import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
-import BackGround from "../../components/ui/BackGround/BackGround";
+import BackGround from "../../components/ui/background_space/BackGround";
 
 const Wallpaper = () => {
     const navigate = useNavigate();

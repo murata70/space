@@ -10,7 +10,7 @@ const BackGroundOcean = () => {
         window.location.pathname.replace("index.html", "");
 
     const bgStyles = {
-        "--ocean-bg": `url('${publicUrl}assets/ocean_image/BackGround/background_ocean.png')`,
+        "--ocean-bg": `url('${publicUrl}assets/ocean_image/background/background_ocean.png')`,
     };
 
     return (

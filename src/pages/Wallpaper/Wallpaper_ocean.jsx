@@ -5,7 +5,8 @@ import "./Wallpaper_ocean.css";
 
 import Clock from "../../components/ui/Clock/Clock";
 
-import BackGroundOcean from "../../components/ocean_ui/BackGround/BackGround";
+/* ===== 修正箇所：エラーの起きていた9行目のパスを実際のフォルダ名（小文字・ocaen）に一致させました ===== */
+import BackGroundOcean from "../../components/ocean_ui/background_ocean/BackGround";
 import OceanBg from "../../components/ocean_ui/ocean_bg/ocean_bg";
 import MainCar from "../../components/ocean_ui/main_car/main_car";
 
