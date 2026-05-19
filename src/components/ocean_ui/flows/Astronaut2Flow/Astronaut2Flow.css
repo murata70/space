@@ -9,6 +9,10 @@
     z-index: 5;
 }
 
+.astronaut2-flow--ended {
+    visibility: hidden;
+}
+
 /* ① 画面全体を少し暗くする */
 .astronaut2-dark {
     position: absolute;
@@ -19,7 +23,7 @@
         rgba(0, 0, 0, 0.42) 70%
     );
     opacity: 0;
-    animation: astronaut2DarkFade 42s ease forwards;
+    animation: astronaut2DarkFade 49s ease forwards;
 }
 
 /* ② 空の右上がキラッと光る */
@@ -50,15 +54,15 @@
     animation: astronaut2Sparkle 1.1s ease-out 0.35s forwards;
 }
 
-/* ③④ 光った位置からゆっくり降下（左下へ・だんだん拡大） */
+/* ③④ 光った位置から画面中央へ近づく（だんだん拡大） */
 .astronaut2-stage {
     position: absolute;
-    top: 9%;
-    right: 11%;
+    left: 50%;
+    top: 50%;
     z-index: 1;
     opacity: 0;
     will-change: transform, opacity;
-    animation: astronaut2Descend 38s linear 1.15s forwards;
+    animation: astronaut2Approach 45s linear 1.15s forwards;
 }
 
 .astronaut2-sway {
@@ -82,7 +86,7 @@
         opacity: 1;
     }
 
-    90% {
+    91% {
         opacity: 1;
     }
 
@@ -108,42 +112,68 @@
     }
 }
 
-/* 前半はゆっくり、拡大してはみ出し始めた後半で加速して画面外へ */
-@keyframes astronaut2Descend {
+/* 右上の光から中央へ寄り、中央で拡大して近づいてくる */
+@keyframes astronaut2Approach {
     0% {
         opacity: 0;
-        transform: translate(0, 0) scale(0.32);
+        transform: translate(calc(-50% + 30vw), calc(-50% - 34vh)) scale(0.32);
     }
 
-    5% {
+    4% {
         opacity: 1;
-        transform: translate(-2vw, 2vh) scale(0.4);
+        transform: translate(calc(-50% + 28vw), calc(-50% - 30vh)) scale(0.4);
     }
 
-    50% {
+    21% {
         opacity: 1;
-        transform: translate(-32vw, 28vh) scale(1.8);
+        transform: translate(calc(-50% + 14vw), calc(-50% - 14vh)) scale(0.85);
     }
 
-    68% {
+    42% {
         opacity: 1;
-        transform: translate(-52vw, 48vh) scale(3.8);
+        transform: translate(-50%, -50%) scale(1.8);
     }
 
-    /* はみ出し始め: 加速しながらフェードアウト */
-    78% {
+    /* 中央到達後は早めに拡大 */
+    48% {
         opacity: 1;
-        transform: translate(-68vw, 62vh) scale(5.8);
+        transform: translate(-50%, -50%) scale(3.5);
     }
 
-    88% {
-        opacity: 0.55;
-        transform: translate(-82vw, 78vh) scale(7.8);
+    54% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(5.2);
+    }
+
+    60% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(6.6);
+    }
+
+    66% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(7.8);
+    }
+
+    69% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(11.2);
+    }
+
+    /* 右下へまっすぐ移動開始（77%よりさらに3秒早い ≈ 70%） */
+    70% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(12.2);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translate(calc(-50% + 58vw), calc(-50% + 52vh)) scale(14);
     }
 
     100% {
-        opacity: 0;
-        transform: translate(-92vw, 88vh) scale(9.5);
+        opacity: 1;
+        transform: translate(calc(-50% + 58vw), calc(-50% + 52vh)) scale(14);
     }
 }
 
@@ -180,33 +210,54 @@
         right: 10%;
     }
 
-    .astronaut2-stage {
-        top: 11%;
-        right: 8%;
-    }
-
-    @keyframes astronaut2Descend {
-        50% {
-            transform: translate(-34vw, 30vh) scale(1.6);
+    @keyframes astronaut2Approach {
+        0% {
+            transform: translate(calc(-50% + 26vw), calc(-50% - 30vh)) scale(0.32);
         }
 
-        68% {
-            transform: translate(-54vw, 50vh) scale(3.4);
+        4% {
+            transform: translate(calc(-50% + 24vw), calc(-50% - 26vh)) scale(0.4);
         }
 
-        78% {
+        42% {
+            transform: translate(-50%, -50%) scale(1.6);
+        }
+
+        48% {
+            transform: translate(-50%, -50%) scale(3.2);
+        }
+
+        54% {
+            transform: translate(-50%, -50%) scale(4.6);
+        }
+
+        60% {
+            transform: translate(-50%, -50%) scale(5.6);
+        }
+
+        66% {
             opacity: 1;
-            transform: translate(-70vw, 64vh) scale(5.2);
+            transform: translate(-50%, -50%) scale(6.8);
         }
 
-        88% {
-            opacity: 0.55;
-            transform: translate(-84vw, 80vh) scale(6.8);
+        69% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(9.2);
+        }
+
+        70% {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(10);
+        }
+
+        80% {
+            opacity: 1;
+            transform: translate(calc(-50% + 54vw), calc(-50% + 48vh)) scale(11.2);
         }
 
         100% {
-            opacity: 0;
-            transform: translate(-95vw, 92vh) scale(8.2);
+            opacity: 1;
+            transform: translate(calc(-50% + 54vw), calc(-50% + 48vh)) scale(11.2);
         }
     }
 }

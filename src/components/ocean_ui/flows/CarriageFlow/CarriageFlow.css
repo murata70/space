@@ -1,12 +1,15 @@
 .carriage-flow {
     position: fixed;
-    right: -440px;
+    top: 54%;
+    right: -545px;
+    z-index: 3;
     pointer-events: none;
     animation: carriageMove 12s linear forwards;
 }
 
 .carriage-image {
-    width: 285px;
+    width: 375px;
+    animation: carriageShake 0.2s steps(2, end) infinite;
 }
 
 @keyframes carriageMove {
@@ -16,5 +19,26 @@
 
     to {
         transform: translateX(-160vw);
+    }
+}
+
+/* 0.1秒: 少し上 → 0.1秒: 通常位置 */
+@keyframes carriageShake {
+    0% {
+        transform: translateY(-8px);
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .carriage-flow {
+        top: 58%;
+    }
+
+    .carriage-image {
+        width: 288px;
     }
 }
