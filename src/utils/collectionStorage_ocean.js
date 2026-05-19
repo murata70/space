@@ -1,31 +1,59 @@
 const STORAGE_KEY = "ocean_collections";
 
 /**
- * 取得済みコレクション一覧を取得
+ * データ取得（常に安全に配列で返す）
  */
 export const getOceanCollections = () => {
-  const data = localStorage.getItem(STORAGE_KEY);
-  return data ? JSON.parse(data) : [];
+  try {
+    const data = localStorage.getItem(STORAGE_KEY);
+    if (!data) return [];
+
+    const parsed = JSON.parse(data);
+
+    // 新形式対応
+    if (Array.isArray(parsed)) return parsed;
+    if (parsed?.items) return parsed.items;
+
+    return [];
+  } catch (e) {
+    console.warn("Ocean collections parse error:", e);
+    return [];
+  }
 };
 
 /**
- * コレクション追加
+ * 保存
  */
 export const saveOceanCollection = (item) => {
-  const current = getOceanCollections();
+  try {
+    const current = getOceanCollections();
 
-  // 重複防止
-  const exists = current.some((i) => i.id === item.id);
-  if (exists) return;
+    const exists = current.some((i) => i.id === item.id);
+    if (exists) return;
 
-  const updated = [...current, item];
+    const updated = [...current, item];
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    const completed = updated.length >= 11;
+
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        items: updated,
+        completed,
+      })
+    );
+  } catch (e) {
+    console.warn("Ocean save error:", e);
+  }
 };
 
 /**
- * 全削除（デバッグ用）
+ * クリア
  */
 export const clearOceanCollections = () => {
-  localStorage.removeItem(STORAGE_KEY);
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch (e) {
+    console.warn("Ocean clear error:", e);
+  }
 };

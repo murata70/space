@@ -16,43 +16,48 @@ const THEMES = [
 
 export default function Collection_ocean() {
   const navigate = useNavigate();
+
   const [owned, setOwned] = useState([]);
+  const [completed, setCompleted] = useState(false);
 
   useEffect(() => {
     const data = getOceanCollections();
-    setOwned(data);
+    const items = Array.isArray(data) ? data : data.items || [];
+
+    setOwned(items);
+    setCompleted(items.length >= collectionMaster_ocean.length);
   }, []);
 
   const isOwned = (id) => owned.some((item) => item.id === id);
 
   const handleThemeSelect = (themeId) => {
-    const current = THEMES.find(t => t.id === themeId);
-    const ok = window.confirm(`この壁紙（${current.name}）に設定しますか？`);
+    const current = THEMES.find((t) => t.id === themeId);
 
-    if (ok) {
-      if (themeId === "ocean") {
-        navigate("/wallpaper_ocean");
-      } else {
-        navigate("/wallpaper");
-      }
+    const ok = window.confirm(
+      `この壁紙（${current.name}）に設定しますか？`
+    );
+
+    if (!ok) return;
+
+    if (themeId === "ocean") {
+      navigate("/wallpaper_ocean");
+    } else {
+      navigate("/wallpaper");
     }
   };
 
   return (
-    <div
-      className="collection-wrap ocean-theme"
-      style={{
-        fontFamily: `"Yu Gothic", "Hiragino Sans", "Meiryo", sans-serif`,
-        WebkitFontSmoothing: "antialiased",
-        MozOsxFontSmoothing: "grayscale",
-        textRendering: "geometricPrecision",
-      }}
-    >
+    <div className="collection-wrap">
+
       <div className="collection-main">
 
-        <h1 className="title">OCEAN COLLECTION</h1>
+        <h1 className="title">COLLECTION</h1>
 
-        <div className="grid ocean-like-grid">
+        {completed && (
+          <div className="complete-badge">COMPLETE</div>
+        )}
+
+        <div className="grid">
           {collectionMaster_ocean.map((item) => {
             const unlocked = isOwned(item.id);
 
@@ -90,11 +95,13 @@ export default function Collection_ocean() {
 
       </div>
 
+      {/* Slideは完全にそのまま */}
       <Slide
         title="THEMES"
         items={THEMES}
         onSelect={handleThemeSelect}
       />
+
     </div>
   );
 }
