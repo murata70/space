@@ -1,9 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import collectionMaster from "../../../data/collectionMaster";
+import { saveCollection } from "../../../utils/collectionStorage";
 
-export default function FlowController() {
+export default function FlowController({ theme = "space" }) {
   const [currentFlow, setCurrentFlow] = useState(null);
+
   const usedIndexRef = useRef(null);
+  const currentItemRef = useRef(null);
 
   useEffect(() => {
     spawnNext();
@@ -12,12 +15,16 @@ export default function FlowController() {
   const spawnNext = () => {
     if (!collectionMaster.length) return;
 
-    let nextIndex = Math.floor(Math.random() * collectionMaster.length);
+    let nextIndex = Math.floor(
+      Math.random() * collectionMaster.length
+    );
 
     // ˜A‘±“¯‚¶–h~
     if (collectionMaster.length > 1) {
       while (nextIndex === usedIndexRef.current) {
-        nextIndex = Math.floor(Math.random() * collectionMaster.length);
+        nextIndex = Math.floor(
+          Math.random() * collectionMaster.length
+        );
       }
     }
 
@@ -25,15 +32,30 @@ export default function FlowController() {
 
     const selected = collectionMaster[nextIndex];
 
+    currentItemRef.current = selected;
+
     setCurrentFlow(() => selected.component);
   };
 
   const handleComplete = () => {
+    const item = currentItemRef.current;
+
+    if (item) {
+      saveCollection(
+        {
+          id: item.id,
+          name: item.name,
+          images: item.images,
+        },
+        theme
+      );
+    }
+
     setCurrentFlow(null);
 
     setTimeout(() => {
       spawnNext();
-    }, 1500); // ­‚µŠÔ‚ğ‹ó‚¯‚é
+    }, 1500);
   };
 
   if (!currentFlow) return null;

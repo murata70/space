@@ -17,21 +17,33 @@ const THEMES = [
 
 export default function Collection() {
     const navigate = useNavigate();
+
     const [owned, setOwned] = useState([]);
 
+    /*
+      保存済みコレクション取得
+    */
     useEffect(() => {
         const saved = getCollections();
+
+        console.log("saved collections:", saved);
+
         setOwned(saved);
     }, []);
 
-    // テーマが選択されたときの処理
+    /*
+      テーマ変更
+    */
     const handleThemeSelect = (themeId) => {
-        // 確認ポップアップを表示
-        const currentTheme = THEMES.find(t => t.id === themeId);
-        const confirmChange = window.confirm(`この壁紙（${currentTheme.name}）に設定しますか？`);
+        const currentTheme = THEMES.find(
+            (t) => t.id === themeId
+        );
+
+        const confirmChange = window.confirm(
+            `この壁紙（${currentTheme.name}）に設定しますか？`
+        );
 
         if (confirmChange) {
-            // themeId に応じて、App.jsx に設定したURLと完全に一致させて遷移
             if (themeId === "ocean") {
                 navigate("/wallpaper_ocean");
             } else {
@@ -42,13 +54,19 @@ export default function Collection() {
 
     return (
         <div className="collection-wrap">
+
             <div className="collection-main">
+
                 <StarField />
 
-                <h1 className="title">COLLECTION</h1>
+                <h1 className="title">
+                    COLLECTION
+                </h1>
 
                 <div className="grid">
+
                     {collectionMaster.map((item) => {
+
                         const unlocked = owned.some(
                             (o) => o.id === item.id
                         );
@@ -56,9 +74,13 @@ export default function Collection() {
                         return (
                             <div
                                 key={item.id}
-                                className={`card ${unlocked ? "unlocked" : "locked"
-                                    }`}
+                                className={`card ${
+                                    unlocked
+                                        ? "unlocked"
+                                        : "locked"
+                                }`}
                             >
+
                                 {unlocked ? (
                                     <>
                                         <img
@@ -72,11 +94,15 @@ export default function Collection() {
                                         </div>
                                     </>
                                 ) : (
-                                    <div className="unknown">?</div>
+                                    <div className="unknown">
+                                        ?
+                                    </div>
                                 )}
+
                             </div>
                         );
                     })}
+
                 </div>
 
                 <button
@@ -85,9 +111,15 @@ export default function Collection() {
                 >
                     ← WALLPAPER
                 </button>
+
             </div>
 
-            <Slide title="THEMES" items={THEMES} onSelect={handleThemeSelect} />
+            <Slide
+                title="THEMES"
+                items={THEMES}
+                onSelect={handleThemeSelect}
+            />
+
         </div>
     );
 }
