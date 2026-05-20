@@ -64,11 +64,16 @@
 }
 
 .app-floating-window .collection-wrap {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
     min-height: auto;
     height: auto;
-    max-width: min(1200px, 96%);
+    max-width: min(1280px, 96%);
     width: 100%;
     margin: 0 auto;
+    padding: 24px 0 24px 24px;
+    overflow: visible;
     background: #0a0a12;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.18);

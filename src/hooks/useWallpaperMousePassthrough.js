@@ -1,17 +1,30 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useElectronCursorPoll } from "./useElectronCursorPoll";
+import {
+    getSlideExpandedHitRect,
+    isPointInRect,
+} from "../utils/slideHitTest";
 
-function isPointInRect(x, y, rect) {
-    if (!rect) return false;
-    return (
-        x >= rect.left &&
-        x <= rect.right &&
-        y >= rect.top &&
-        y <= rect.bottom
-    );
+function isPointOverSelectorRect(clientX, clientY, selector, scope) {
+    const nodes = scope.querySelectorAll(selector);
+    for (const node of nodes) {
+        if (node.classList?.contains("slide-area--hover-expand")) {
+            const expanded = getSlideExpandedHitRect(node);
+            if (isPointInRect(clientX, clientY, expanded)) {
+                return true;
+            }
+        }
+
+        const rect = node.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0 && isPointInRect(clientX, clientY, rect)) {
+            return true;
+        }
+    }
+    return false;
 }
 
-/** elementFromPoint で透過領域判定（壁紙の座標系と一致） */
-function isOverInteractiveRegions(clientX, clientY, selectors, root) {
+/** elementFromPoint（通常ブラウザ用フォールバック） */
+function isOverInteractiveByElement(clientX, clientY, selectors, root) {
     const scope = root || document;
     const el = document.elementFromPoint(clientX, clientY);
     if (!el || !scope.contains(el)) return false;
@@ -22,8 +35,22 @@ function isOverInteractiveRegions(clientX, clientY, selectors, root) {
     return false;
 }
 
+function isOverInteractiveRegions(clientX, clientY, selectors, root) {
+    if (clientX == null || clientY == null) return false;
+
+    const scope = root || document;
+
+    for (const selector of selectors) {
+        if (isPointOverSelectorRect(clientX, clientY, selector, scope)) {
+            return true;
+        }
+    }
+
+    return isOverInteractiveByElement(clientX, clientY, selectors, root);
+}
+
 /**
- * 壁紙モード: mousemove（forward）で操作領域を検出し setIgnoreMouse でクリック可能にする
+ * 壁紙モード: カーソル位置で操作領域を検出し setIgnoreMouse でクリック可能にする
  */
 export function useWallpaperMousePassthrough(
     { passthroughSelectors, uiLayerHoveredSelectors = [] },
@@ -41,15 +68,11 @@ export function useWallpaperMousePassthrough(
         window.electron.setIgnoreMouse(!interactive);
     }, []);
 
-    useEffect(() => {
-        const hasElectron = typeof window.electron?.setIgnoreMouse === "function";
-
-        uiHoveredRef.current = false;
-        interactiveRef.current = false;
-        setIsUiLayerHovered(false);
-
-        const updateFromPoint = (clientX, clientY) => {
+    const updateFromPoint = useCallback(
+        (clientX, clientY) => {
             const root = rootRef?.current ?? null;
+            const hasElectron =
+                typeof window.electron?.setIgnoreMouse === "function";
 
             const interactive = isOverInteractiveRegions(
                 clientX,
@@ -77,7 +100,22 @@ export function useWallpaperMousePassthrough(
                     setIsUiLayerHovered(uiHover);
                 }
             }
-        };
+        },
+        [
+            rootRef,
+            passthroughSelectors,
+            uiLayerHoveredSelectors,
+            setMouseInteractive,
+        ]
+    );
+
+    useEffect(() => {
+        const hasElectron =
+            typeof window.electron?.setIgnoreMouse === "function";
+
+        uiHoveredRef.current = false;
+        interactiveRef.current = false;
+        setIsUiLayerHovered(false);
 
         const onMouseMove = (e) => updateFromPoint(e.clientX, e.clientY);
         const onPointerMove = (e) => updateFromPoint(e.clientX, e.clientY);
@@ -93,14 +131,13 @@ export function useWallpaperMousePassthrough(
                 setMouseInteractive(false);
             }
         };
-    }, [
-        passthroughKey,
-        uiHoverKey,
-        rootRef,
-        passthroughSelectors,
-        uiLayerHoveredSelectors,
-        setMouseInteractive,
-    ]);
+    }, [passthroughKey, uiHoverKey, updateFromPoint, setMouseInteractive]);
+
+    useElectronCursorPoll(
+        (x, y) => updateFromPoint(x, y),
+        typeof window.electron?.getCursorClientPoint === "function",
+        32
+    );
 
     useEffect(() => {
         if (isUiLayerHovered) {

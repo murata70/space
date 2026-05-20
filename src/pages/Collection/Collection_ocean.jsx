@@ -14,7 +14,10 @@ const COLLECTION_PASSTHROUGH = [
     ".app-floating-shell",
     ".collection-wrap",
     ".collection-main",
-    ".slide-wrapper--dock",
+    ".slide-wrapper--inline",
+    ".slide-area",
+    ".slide-tab",
+    ".slide-panel",
 ];
 
 const THEMES = [
@@ -103,10 +106,11 @@ export default function CollectionOcean() {
                     </button>
                 </div>
 
-                <div className="slide-wrapper--dock">
+                <div className="slide-wrapper--inline">
                     <Slide
                         title="THEMES"
                         items={THEMES}
+                        expandOnHover
                         onSelect={handleThemeSelect}
                     />
                 </div>

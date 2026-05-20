@@ -376,6 +376,25 @@ ipcMain.on('attach-wallpaper', () => {
 
 ipcMain.handle('get-display-layout', () => getPrimaryDisplayLayout());
 
+ipcMain.handle('get-cursor-client-point', () => {
+    if (!win) return { x: 0, y: 0, inWindow: false };
+
+    const point = screen.getCursorScreenPoint();
+    const bounds = win.getContentBounds();
+    const x = point.x - bounds.x;
+    const y = point.y - bounds.y;
+
+    return {
+        x,
+        y,
+        inWindow:
+            point.x >= bounds.x &&
+            point.x < bounds.x + bounds.width &&
+            point.y >= bounds.y &&
+            point.y < bounds.y + bounds.height,
+    };
+});
+
 ipcMain.on('update-hit-regions', (event, regions) => {
     normalizedHitRegions = Array.isArray(regions) ? regions : [];
     runHitTestTick();

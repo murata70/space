@@ -2,6 +2,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
     getDisplayLayout: () => ipcRenderer.invoke('get-display-layout'),
+    getCursorClientPoint: () => ipcRenderer.invoke('get-cursor-client-point'),
     onDisplayLayoutChanged: (callback) => {
         const handler = (_event, layout) => callback(layout);
         ipcRenderer.on('display-layout-changed', handler);
