@@ -1,25 +1,35 @@
-.passing-wrapper {
+.passing-car {
     position: fixed;
-    top: var(--ocean-lane-passing-top);
-    left: 100%;
-    width: var(--ocean-width-passing-wrap);
+    right: -220px;
+    top: 65%;
+    width: var(--ocean-width-main-car);
+    height: auto;
+    z-index: 50;
     pointer-events: none;
-    transform: translateY(-50%);
-    animation: passingMove 12s linear forwards;
+    animation: passing-car-move 12s linear forwards, passing-car-shake 0.2s steps(1) infinite;
 }
 
-@keyframes passingMove {
+@keyframes passing-car-move {
     from {
-        transform: translateY(-50%) translateX(0);
+        transform: translateX(0);
     }
 
     to {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
+        transform: translateX(calc(-100vw - 400px));
     }
 }
 
-.passing-car {
-    width: var(--ocean-width-passing-img);
-    height: auto;
-    user-select: none;
+/* ƒJƒNƒb‚Æ—h‚ê‚é */
+@keyframes passing-car-shake {
+    0% {
+        margin-top: 0px;
+    }
+
+    50% {
+        margin-top: -4px;
+    }
+
+    100% {
+        margin-top: 0px;
+    }
 }
