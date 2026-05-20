@@ -19,107 +19,92 @@ export default function Collection() {
     const navigate = useNavigate();
 
     const [owned, setOwned] = useState([]);
+    const [completed, setCompleted] = useState(false);
 
-    /*
-      保存済みコレクション取得
-    */
     useEffect(() => {
         const saved = getCollections();
+        const items = Array.isArray(saved) ? saved : saved?.items || [];
 
-        console.log("saved collections:", saved);
-
-        setOwned(saved);
+        setOwned(items);
+        setCompleted(items.length >= collectionMaster.length);
     }, []);
 
-    /*
-      テーマ変更
-    */
+    const isOwned = (id) => owned.some((item) => item.id === id);
+
     const handleThemeSelect = (themeId) => {
-        const currentTheme = THEMES.find(
-            (t) => t.id === themeId
+        const current = THEMES.find((t) => t.id === themeId);
+
+        const ok = window.confirm(
+            `この壁紙（${current.name}）に設定しますか？`
         );
 
-        const confirmChange = window.confirm(
-            `この壁紙（${currentTheme.name}）に設定しますか？`
-        );
+        if (!ok) return;
 
-        if (confirmChange) {
-            if (themeId === "ocean") {
-                navigate("/wallpaper_ocean");
-            } else {
-                navigate("/wallpaper");
-            }
+        if (themeId === "ocean") {
+            navigate("/collection_ocean");
+        } else if (themeId === "space") {
+            navigate("/collection");
+        } else {
+            navigate("/wallpaper");
         }
     };
 
     return (
         <div className="collection-wrap">
+            <StarField />
 
             <div className="collection-main">
+                <h1 className="title">COLLECTION</h1>
 
-                <StarField />
-
-                <h1 className="title">
-                    COLLECTION
-                </h1>
+                {completed && (
+                    <div className="complete-badge">COMPLETE</div>
+                )}
 
                 <div className="grid">
-
                     {collectionMaster.map((item) => {
-
-                        const unlocked = owned.some(
-                            (o) => o.id === item.id
-                        );
+                        const unlocked = isOwned(item.id);
 
                         return (
                             <div
                                 key={item.id}
-                                className={`card ${
-                                    unlocked
-                                        ? "unlocked"
-                                        : "locked"
-                                }`}
+                                className={`card ${unlocked ? "unlocked" : "locked"}`}
                             >
-
                                 {unlocked ? (
                                     <>
                                         <img
                                             src={item.images?.[0]}
                                             alt={item.name}
                                             className="collection-image"
+                                            draggable="false"
                                         />
-
                                         <div className="collection-name">
                                             {item.name}
                                         </div>
                                     </>
                                 ) : (
-                                    <div className="unknown">
-                                        ?
-                                    </div>
+                                    <div className="unknown">?</div>
                                 )}
-
                             </div>
                         );
                     })}
-
                 </div>
 
                 <button
+                    type="button"
                     className="back-btn"
                     onClick={() => navigate("/wallpaper")}
                 >
                     ← WALLPAPER
                 </button>
-
             </div>
 
-            <Slide
-                title="THEMES"
-                items={THEMES}
-                onSelect={handleThemeSelect}
-            />
-
+            <div className="slide-wrapper slide-wrapper--dock">
+                <Slide
+                    title="THEMES"
+                    items={THEMES}
+                    onSelect={handleThemeSelect}
+                />
+            </div>
         </div>
     );
 }

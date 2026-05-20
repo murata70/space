@@ -74,32 +74,13 @@
 }
 
 .back-btn {
-    margin-top: clamp(12px, 2vh, 20px);
+    margin-top: clamp(24px, 4vh, 36px);
     padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 16px);
-}
-
-/* 右側 Slide パネル（Collection_ocean 専用） */
-.slide-wrapper {
-    position: fixed;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 1000;
-    max-height: 100dvh;
 }
 
 @media (max-width: 768px) {
     .collection-wrap {
         flex-direction: column;
         padding-top: clamp(16px, 4vh, 32px);
-    }
-
-    .slide-wrapper {
-        position: relative;
-        right: auto;
-        top: auto;
-        transform: none;
-        width: 100%;
-        margin-top: 24px;
     }
 }

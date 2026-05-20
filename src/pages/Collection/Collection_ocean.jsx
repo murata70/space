@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 
 import "./Collection_ocean.css";
+import "../../components/ui/Slide/Slide_ocean.css";
 
 import Slide from "../../components/ui/Slide/Slide";
 
@@ -40,9 +41,11 @@ export default function Collection_ocean() {
     if (!ok) return;
 
     if (themeId === "ocean") {
-      navigate("/wallpaper_ocean");
+      navigate("/collection_ocean");
+    } else if (themeId === "space") {
+      navigate("/collection");
     } else {
-      navigate("/wallpaper");
+      navigate("/wallpaper_ocean");
     }
   };
 
@@ -95,12 +98,13 @@ export default function Collection_ocean() {
 
       </div>
 
-      {/* Slideは完全にそのまま */}
-      <Slide
-        title="THEMES"
-        items={THEMES}
-        onSelect={handleThemeSelect}
-      />
+      <div className="slide-wrapper slide-wrapper--dock">
+        <Slide
+          title="THEMES"
+          items={THEMES}
+          onSelect={handleThemeSelect}
+        />
+      </div>
 
     </div>
   );

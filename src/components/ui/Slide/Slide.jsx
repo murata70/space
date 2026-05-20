@@ -4,32 +4,41 @@ import { useState } from "react";
 const Slide = ({
     title = "THEMES",
     items = [],
-    width = 260,
-    tabWidth = 60,
     onSelect,
+    className = "",
+    style,
 }) => {
     const [open, setOpen] = useState(false);
 
+    const rootClass = ["slide-area", className].filter(Boolean).join(" ");
+
     return (
         <div
-            className="slide-area"
-            style={{ width: `${tabWidth}px` }}
+            className={rootClass}
+            style={style}
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >
-
-            {/* タブ */}
-            <div className="slide-tab">
+            <div
+                className="slide-tab"
+                role="button"
+                tabIndex={0}
+                aria-expanded={open}
+                aria-label={title}
+                onClick={() => setOpen((prev) => !prev)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setOpen((prev) => !prev);
+                    }
+                }}
+            >
                 {title}
             </div>
 
-            {/* パネル */}
             <div
                 className={`slide-panel ${open ? "open" : ""}`}
-                style={{
-                    width: `${width}px`,
-                    right: open ? `${tabWidth}px` : `-${width}px`,
-                }}
+                aria-hidden={!open}
             >
                 <h2 className="slide-title">{title}</h2>
 
@@ -37,13 +46,12 @@ const Slide = ({
                     <div
                         key={item.id}
                         className={`slide-item ${item.locked ? "locked" : ""}`}
-                        onClick={() => !item.locked && onSelect && onSelect(item.id)}
+                        onClick={() => !item.locked && onSelect?.(item.id)}
                     >
                         {item.name}
                     </div>
                 ))}
             </div>
-
         </div>
     );
 };
