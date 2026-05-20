@@ -13,7 +13,7 @@
 .cat-flow-orbit-wrapper {
     position: absolute;
     top: 25%; /* 漂い始めの高さ */
-    left: 100vw;
+    left: var(--space-vw);
     width: 140px;
     height: 140px;
     display: flex;

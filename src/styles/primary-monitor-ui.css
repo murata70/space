@@ -28,6 +28,20 @@
     max-width: 100%;
 }
 
+.primary-monitor-ui .rocket-position {
+    max-width: var(--space-vw, 100%);
+    left: clamp(32px, calc(var(--space-vw, 100vw) * 0.15), 240px);
+}
+
+.primary-monitor-ui .wallpaper-ui-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
 .app-floating-shell {
     z-index: 20;
 }

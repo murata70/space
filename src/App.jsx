@@ -38,9 +38,7 @@ function AppContent() {
     return (
         <>
             {showSpaceBackdrop && <SpaceWallpaperBackdrop />}
-            {showOceanBackdrop && (
-                <OceanWallpaperBackdrop baseUrl={baseUrl} />
-            )}
+            {showOceanBackdrop && <OceanWallpaperBackdrop />}
 
             <Routes>
                 <Route path="/" element={<Home baseUrl={baseUrl} />} />
@@ -51,7 +49,7 @@ function AppContent() {
 
                 <Route
                     path="/wallpaper_ocean"
-                    element={<WallpaperOcean baseUrl={baseUrl} />}
+                    element={<WallpaperOcean />}
                 />
                 <Route
                     path="/settings_ocean"

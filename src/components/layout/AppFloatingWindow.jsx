@@ -12,13 +12,12 @@ export default function AppFloatingWindow({
     passthroughSelectors = [".app-floating-window"],
 }) {
     const shellRef = useRef(null);
-    const primaryRef = useRef(null);
-    usePrimaryDisplayLayout(primaryRef);
+    const primaryLayoutRef = usePrimaryDisplayLayout();
     useWallpaperMousePassthrough({ passthroughSelectors }, shellRef);
 
     return (
         <div className="app-floating-shell" ref={shellRef}>
-            <div className="primary-monitor-ui" ref={primaryRef}>
+            <div className="primary-monitor-ui" ref={primaryLayoutRef}>
                 <div className="app-floating-window">{children}</div>
             </div>
         </div>

@@ -1,24 +1,18 @@
 .background-container {
-    position: fixed; /* 画面に固定 */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
-
     background-size: cover;
-    background-position: center;
+    background-position: center center;
     background-repeat: no-repeat;
-    /* CSSファイルから見た画像フォルダへの正しい相対パス指定（16:9） */
     background-image: url("../../../../public/assets/image/background_space/background_16x9.png");
-    /* 切り替え時のアニメーション */
     transition: background-image 0.5s ease-in-out;
 }
 
-/* 画面が4:3に近い（または縦長に近い）場合、画像を切り替える */
-@media (max-aspect-ratio: 4/3) {
+@container space (max-aspect-ratio: 4/3) {
     .background-container {
-        /* 4:3用の相対パス指定 */
         background-image: url("../../../../public/assets/image/background_space/background_4x3.png");
     }
 }

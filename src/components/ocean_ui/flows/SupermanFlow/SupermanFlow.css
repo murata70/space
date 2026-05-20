@@ -1,5 +1,5 @@
 ﻿/*.superman-flow-wrapper {
-    position: fixed;
+    position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
@@ -8,10 +8,10 @@
 
 /* ★本体（動き担当） */
 /*.superman-image-wrap {
-    position: fixed;
-    width: clamp(140px, 18vw, 320px);
+    position: absolute;
+    width: clamp(140px, calc(var(--ocean-vw) * 0.18), 320px);
     height: auto;
-    left: -30vw;
+    left: calc(var(--ocean-vw) * -0.3);
     top: 50%;
     will-change: left, top, transform;
     animation: supermanFlowMove 85s linear forwards;
@@ -42,98 +42,98 @@
 /* メイン移動（変更なし） */
 /*@keyframes supermanFlowMove {
     0% {
-        left: -30vw;
+        left: calc(var(--ocean-vw) * -0.3);
         top: 55%;
        transform: scaleX(-1) translateY(0px);
     }
 
     10% {
-        left: 45vw;
+        left: calc(var(--ocean-vw) * 0.45);
         top: 50%;
         transform: translateY(-50%) translateY(0px);
     }
 
     15% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(-10px);
     }
 
     20% {
-        left: 45vw;
+        left: calc(var(--ocean-vw) * 0.45);
         top: 50%;
         transform: translateY(-50%);
     }
 
     25% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(-8px);
     }
 
     30% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(8px);
     }
 
     35% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(-6px);
     }
 
     40% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(6px);
     }
 
     45% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(-5px);
     }
 
     50% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(5px);
     }
 
     55% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(-4px);
     }
 
     60% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(4px);
     }
 
     65% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(-3px);
     }
 
     70% {
-        left: 48vw;
+        left: calc(var(--ocean-vw) * 0.48);
         top: 50%;
         transform: translateY(-50%) translateY(3px);
     }
 
     75% {
-        left: 45vw;
+        left: calc(var(--ocean-vw) * 0.45);
         top: 50%;
         transform: translateY(-50%);
     }
 
     100% {
-        left: 120vw;
-        top: -20vh;
+        left: calc(var(--ocean-vw) * 1.2);
+        top: calc(var(--ocean-vh) * -0.2);
         transform: translateY(-50%) translateY(0px);
     }
 
@@ -141,7 +141,7 @@
 }*/
 
 .superman-flow-wrapper {
-    position: fixed;
+    position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
@@ -150,9 +150,9 @@
 
 /* ★移動担当だけ */
 .superman-image-wrap {
-    position: fixed;
-    width: clamp(110px, 14vw, 240px);
-    left: -30vw;
+    position: absolute;
+    width: clamp(110px, calc(var(--ocean-vw) * 0.14), 240px);
+    left: calc(var(--ocean-vw) * -0.3);
     top: 55%;
     will-change: left, top;
     animation: supermanFlowMove 85s linear forwards;
@@ -169,37 +169,37 @@
 /* ★メイン移動 */
 @keyframes supermanFlowMove {
     0% {
-        left: -30vw;
+        left: calc(var(--ocean-vw) * -0.3);
         top: 40%;
     }
 
     20% {
-        left: 10vw;
+        left: calc(var(--ocean-vw) * 0.1);
         top: 40%;
     }
     /* ゆっくり漂う */
     40% {
-        left: 14vw;
+        left: calc(var(--ocean-vw) * 0.14);
         top: 39%;
     }
 
     60% {
-        left: 28vw;
+        left: calc(var(--ocean-vw) * 0.28);
         top: 38%;
     }
     /* ★ここから一気に加速 */
     68% {
-        left: 85vw;
+        left: calc(var(--ocean-vw) * 0.85);
         top: 12%;
     }
     /*    85% {*/
-    /*        left: 105vw;
+    /*        left: calc(var(--ocean-vw) * 1.05);
         top: 0%;
     }*/
 
     100% {
-        left: 180vw;
-        top: -30vh;
+        left: calc(var(--ocean-vw) * 1.8);
+        top: calc(var(--ocean-vh) * -0.3);
         /*        transform: scale(0.7)*/
     }
 }

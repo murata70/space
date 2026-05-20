@@ -1,7 +1,4 @@
-import BackGround from "../ui/background_space/BackGround";
-import StarField from "../ui/StarField/StarField";
-import Planets from "../ui/Planets/Planets";
-import SpaceDust from "../ui/SpaceDust/SpaceDust";
+import SpaceBackgroundStage from "../ui/background_space/SpaceBackgroundStage";
 import FlowController from "../ui/flows/FlowController";
 import PrimaryMonitorBackdrop from "../layout/PrimaryMonitorBackdrop";
 
@@ -10,11 +7,9 @@ export default function SpaceWallpaperBackdrop() {
     return (
         <PrimaryMonitorBackdrop>
             <div className="wallpaper-backdrop wallpaper-backdrop--space">
-                <BackGround />
-                <StarField />
-                <Planets />
-                <SpaceDust />
-                <FlowController />
+                <SpaceBackgroundStage>
+                    <FlowController />
+                </SpaceBackgroundStage>
             </div>
         </PrimaryMonitorBackdrop>
     );

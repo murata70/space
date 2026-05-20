@@ -1,11 +1,19 @@
-/* レイアウトは本ファイルのみ（ocean_layout.css 非依存） */
+﻿/*
+ * main_car は ocean_bg 内の .ocean-main-car-layer に配置（road1 の直上 z-index:2）。
+ * top は .ocean-background-primary の高さ（100%）× ratio（小さいほど上）。
+ */
+.ocean-background-primary {
+    --main-car-top-ratio: 0.38;
+}
+
+.ocean-background-primary .main-car-position,
 .main-car-position {
-    position: fixed;
-    top: clamp(64.5%, 68.5vh, 73.5%);
-    left: clamp(40px, 20vw, 300px);
+    position: absolute;
+    top: calc(100% * var(--main-car-top-ratio, 0.38));
+    left: clamp(40px, calc(var(--ocean-vw, 100vw) * 0.2), 300px);
     transform: translateY(-50%);
-    z-index: 2;
-    max-width: 100vw;
+    max-width: var(--ocean-vw, 100vw);
+    pointer-events: auto;
 }
 
 .main-car-wrapper {
@@ -33,13 +41,13 @@
     }
 
     to {
-        transform: translateX(calc(100vw + 100%));
+        transform: translateX(calc(var(--ocean-vw, 100vw) + 100%));
     }
 }
 
 @keyframes carDashEnterFromLeft {
     from {
-        transform: translateX(calc(-100vw - 100%));
+        transform: translateX(calc(-1 * var(--ocean-vw, 100vw) - 100%));
     }
 
     to {
@@ -48,38 +56,38 @@
 }
 
 .main-car-image {
-    width: clamp(120px, 16vw, 230px);
+    width: clamp(120px, calc(var(--ocean-vw, 100vw) * 0.16), 230px);
     height: auto;
     object-fit: contain;
     pointer-events: auto;
 }
 
-@media (min-aspect-ratio: 21/9) {
+@container ocean (min-aspect-ratio: 21/9) {
     .main-car-position {
-        top: clamp(66.5%, 69.5vh, 74.5%);
+        --main-car-top-ratio: 0.39;
     }
 }
 
-@media (max-aspect-ratio: 4/3) {
+@container ocean (max-aspect-ratio: 4/3) {
     .main-car-position {
-        top: clamp(69.5%, 73.5vh, 79.5%);
+        --main-car-top-ratio: 0.43;
     }
 }
 
-@media (max-height: 600px) {
+@container ocean (max-height: 600px) {
     .main-car-position {
-        top: clamp(61.5%, 65.5vh, 69.5%);
+        --main-car-top-ratio: 0.35;
     }
 }
 
-@media (max-width: 768px) {
+@container ocean (max-width: 768px) {
     .main-car-position {
-        left: 16vw;
+        left: calc(var(--ocean-vw, 100vw) * 0.16);
     }
 }
 
-@media (max-width: 480px) {
+@container ocean (max-width: 480px) {
     .main-car-position {
-        left: 14vw;
+        left: calc(var(--ocean-vw, 100vw) * 0.14);
     }
 }

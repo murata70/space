@@ -1,10 +1,15 @@
-﻿import { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./Collection.css";
 
 import Slide from "../../components/ui/Slide/Slide";
 import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
+import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
+import {
+    useCollectionThemeSelect,
+    COLLECTION_THEMES,
+} from "../../hooks/useCollectionThemeSelect";
 
 import { getCollections } from "../../utils/collectionStorage";
 import collectionMaster from "../../data/collectionMaster";
@@ -18,16 +23,16 @@ const COLLECTION_PASSTHROUGH = [
     ".slide-area",
     ".slide-tab",
     ".slide-panel",
-];
-
-const THEMES = [
-    { id: "space", name: "宇宙" },
-    { id: "ocean", name: "海", locked: false },
-    { id: "forest", name: "未定", locked: true },
+    ".theme-confirm-overlay",
+    ".theme-confirm-dialog",
+    ".theme-confirm-btn",
+    ".theme-confirm-close",
 ];
 
 export default function Collection() {
     const navigate = useNavigate();
+    const { pendingTheme, requestTheme, confirmTheme, cancelTheme } =
+        useCollectionThemeSelect();
 
     const [owned, setOwned] = useState([]);
     const [completed, setCompleted] = useState(false);
@@ -41,22 +46,6 @@ export default function Collection() {
     }, []);
 
     const isOwned = (id) => owned.some((item) => item.id === id);
-
-    const handleThemeSelect = (themeId) => {
-        const current = THEMES.find((t) => t.id === themeId);
-
-        const ok = window.confirm(
-            `この壁紙（${current.name}）に設定しますか？`
-        );
-
-        if (!ok) return;
-
-        if (themeId === "ocean") {
-            navigate("/collection_ocean");
-        } else {
-            navigate("/collection");
-        }
-    };
 
     return (
         <AppFloatingWindow passthroughSelectors={COLLECTION_PASSTHROUGH}>
@@ -109,12 +98,19 @@ export default function Collection() {
                 <div className="slide-wrapper--inline">
                     <Slide
                         title="THEMES"
-                        items={THEMES}
+                        items={COLLECTION_THEMES}
                         expandOnHover
-                        onSelect={handleThemeSelect}
+                        onSelect={requestTheme}
                     />
                 </div>
             </div>
+
+            <ThemeConfirmDialog
+                open={Boolean(pendingTheme)}
+                themeName={pendingTheme?.name ?? ""}
+                onConfirm={confirmTheme}
+                onCancel={cancelTheme}
+            />
         </AppFloatingWindow>
     );
 }

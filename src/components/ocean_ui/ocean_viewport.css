@@ -1,0 +1,48 @@
+﻿/**
+ * 海テーマの参照ビューポート（Web版と同様に「1画面分」でスケール）
+ * ツインモニター時はメインモニター幅・高さ（--primary-width/height）を使う
+ */
+.wallpaper-ocean,
+.wallpaper-backdrop--ocean,
+.ocean-background-primary,
+.wallpaper-ocean .primary-monitor-ui {
+    --ocean-vw: var(--primary-width, 100vw);
+    --ocean-vh: var(--primary-height, 100vh);
+}
+
+/* 壁紙ページ: 仮想デスクトップ上のメインモニター矩形 */
+.wallpaper-ocean > .ocean-background-primary {
+    position: fixed;
+    left: var(--primary-offset-x, 0);
+    top: var(--primary-offset-y, 0);
+    width: var(--ocean-vw);
+    height: var(--ocean-vh);
+    overflow: hidden;
+    z-index: 0;
+    box-sizing: border-box;
+}
+
+/* 設定・コレクション背後: すでに primary 内に収まる */
+.wallpaper-backdrop--ocean .ocean-background-primary {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.ocean-background-primary {
+    container-type: size;
+    container-name: ocean;
+}
+
+.ocean-scene-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 3;
+}

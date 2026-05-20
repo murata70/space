@@ -4,14 +4,10 @@ import "./Wallpaper.css";
 import "../../styles/primary-monitor-ui.css";
 
 import Clock from "../../components/ui/Clock/Clock";
-import StarField from "../../components/ui/StarField/StarField";
-import Planets from "../../components/ui/Planets/Planets";
-import Rocket from "../../components/ui/Rocket/Rocket";
+import SpaceBackgroundStage from "../../components/ui/background_space/SpaceBackgroundStage";
 import FlowController from "../../components/ui/flows/FlowController";
-import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
-import BackGround from "../../components/ui/background_space/BackGround";
+import Rocket from "../../components/ui/Rocket/Rocket";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
-import { usePrimaryDisplayLayout } from "../../hooks/usePrimaryDisplayLayout";
 
 const WALLPAPER_PASSTHROUGH_SELECTORS = [
     ".top-ui",
@@ -23,7 +19,6 @@ const WALLPAPER_UI_HOVER_SELECTORS = [".top-ui"];
 const Wallpaper = () => {
     const navigate = useNavigate();
     const wallpaperRef = useRef(null);
-    usePrimaryDisplayLayout(wallpaperRef);
     const { isUiLayerHovered } = useWallpaperMousePassthrough(
         {
             passthroughSelectors: WALLPAPER_PASSTHROUGH_SELECTORS,
@@ -34,12 +29,9 @@ const Wallpaper = () => {
 
     return (
         <div className="wallpaper" ref={wallpaperRef}>
-            <BackGround />
-
-            <StarField />
-            <Planets />
-            <SpaceDust />
-            <FlowController />
+            <SpaceBackgroundStage>
+                <FlowController />
+            </SpaceBackgroundStage>
 
             <div className="primary-monitor-ui">
                 <Rocket />

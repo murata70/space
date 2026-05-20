@@ -103,7 +103,7 @@ export default function Planets() {
                     top: `${planet.top}%`,
                     width: `${planet.size}px`,
                     // 惑星の左端を画面右外へ置く
-                    left: "100vw",
+                    left: "100%",
                     "--planet-size": `${planet.size}px`,
                     animationDuration: `${FLOW_TIME}s`,
                 }}

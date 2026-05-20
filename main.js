@@ -119,6 +119,17 @@ function broadcastDisplayLayout() {
     win.webContents.send('display-layout-changed', getPrimaryDisplayLayout());
 }
 
+function boundsEqual(a, b) {
+    return (
+        a &&
+        b &&
+        a.x === b.x &&
+        a.y === b.y &&
+        a.width === b.width &&
+        a.height === b.height
+    );
+}
+
 function centerWindowOnPrimary(width, height) {
     const primary = screen.getPrimaryDisplay().bounds;
     return {
@@ -190,7 +201,10 @@ function syncWindowModeFromRoute() {
             attachAsWallpaper();
         } else {
             const virtual = getVirtualDesktopBounds();
-            win.setBounds(virtual);
+            const current = win.getBounds();
+            if (!boundsEqual(current, virtual)) {
+                win.setBounds(virtual);
+            }
             wallpaperMousePassthrough = true;
             applyMousePassthrough(true);
             broadcastDisplayLayout();
@@ -372,6 +386,10 @@ ipcMain.on('end-rocket-interaction', () => {
 
 ipcMain.on('attach-wallpaper', () => {
     attachAsWallpaper();
+});
+
+ipcMain.on('refresh-display-layout', () => {
+    broadcastDisplayLayout();
 });
 
 ipcMain.handle('get-display-layout', () => getPrimaryDisplayLayout());

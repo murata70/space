@@ -1,7 +1,7 @@
 ﻿/* RacingCarFlow.css */
 
 .racing-car-flow {
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
@@ -49,17 +49,17 @@
     }
 
     18.75% {
-        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
+        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
         top: var(--ocean-lane-racing-top);
     }
 
     25% {
-        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
+        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
         top: var(--ocean-lane-racing-parked-top);
     }
 
     87.5% {
-        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
+        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
         top: var(--ocean-lane-racing-parked-top);
     }
 
@@ -71,24 +71,24 @@
 
 @keyframes racingCarEngineVibeA {
     0%, 49.9% {
-        transform: translateY(clamp(-1px, -0.1vh, -1px));
+        transform: translateY(clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px));
         opacity: 1;
     }
 
     50%, 99.9% {
-        transform: translateY(clamp(1px, 0.1vh, 1px));
+        transform: translateY(clamp(1px, calc(var(--ocean-vh) * 0.1), 1px));
         opacity: 0;
     }
 }
 
 @keyframes racingCarEngineVibeB {
     0%, 49.9% {
-        transform: translateY(clamp(1px, 0.1vh, 1px));
+        transform: translateY(clamp(1px, calc(var(--ocean-vh) * 0.1), 1px));
         opacity: 0;
     }
 
     50%, 99.9% {
-        transform: translateY(clamp(-1px, -0.1vh, -1px));
+        transform: translateY(clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px));
         opacity: 1;
     }
 }

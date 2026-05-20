@@ -1,0 +1,96 @@
+/* ツインモニター時: メインモニター矩形内の中央に表示（:root の CSS 変数を利用） */
+.theme-confirm-overlay {
+    position: fixed;
+    left: var(--primary-offset-x, 0px);
+    top: var(--primary-offset-y, 0px);
+    width: var(--primary-width, 100vw);
+    height: var(--primary-height, 100vh);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.45);
+    pointer-events: auto;
+}
+
+.theme-confirm-dialog {
+    width: min(calc(var(--primary-width, 100vw) * 0.92), 420px);
+    background: #f5f5f5;
+    color: #222;
+    border-radius: 8px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    font-family: "Yu Gothic", "Meiryo", sans-serif;
+    pointer-events: auto;
+}
+
+.theme-confirm-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: #ffffff;
+    border-bottom: 1px solid #ddd;
+}
+
+.theme-confirm-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.theme-confirm-close {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: #e81123;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 0;
+}
+
+.theme-confirm-close:hover {
+    background: #c50f1f;
+}
+
+.theme-confirm-body {
+    padding: 20px 16px 12px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.theme-confirm-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 12px 16px 16px;
+}
+
+.theme-confirm-btn {
+    min-width: 88px;
+    padding: 8px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border: 1px solid #888;
+    border-radius: 4px;
+    background: #f0f0f0;
+    color: #222;
+}
+
+.theme-confirm-btn:hover {
+    background: #e4e4e4;
+}
+
+.theme-confirm-btn--primary {
+    border-color: #0078d4;
+    background: #0078d4;
+    color: #fff;
+}
+
+.theme-confirm-btn--primary:hover {
+    background: #106ebe;
+}

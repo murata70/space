@@ -10,6 +10,7 @@ contextBridge.exposeInMainWorld('electron', {
     },
     setIgnoreMouse: (ignore) => ipcRenderer.send('set-ignore-mouse', ignore),
     attachWallpaper: () => ipcRenderer.send('attach-wallpaper'),
+    refreshDisplayLayout: () => ipcRenderer.send('refresh-display-layout'),
     detachWallpaper: () => ipcRenderer.send('detach-wallpaper'),
     beginRocketInteraction: () => ipcRenderer.send('begin-rocket-interaction'),
     endRocketInteraction: () => ipcRenderer.send('end-rocket-interaction'),

@@ -2,7 +2,7 @@
 
 /* 画面全体ラッパー（レイアウトルールに準拠） */
 .futuristic-car-flow {
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
@@ -25,7 +25,7 @@
 
 /* 車体画像：既存のサイズ・質感を維持 */
 .futuristic-car-image {
-    width: clamp(240px, 35vw, 520px);
+    width: clamp(240px, calc(var(--ocean-vw) * 0.35), 520px);
     height: auto;
     filter: drop-shadow(0 0 12px rgba(0, 243, 255, 0.8)) drop-shadow(0 0 25px rgba(0, 243, 255, 0.4));
     user-select: none;
@@ -39,15 +39,15 @@
     }
     /* 1. 画面中央付近までスムーズに進入 */
     30% {
-        transform: translateY(0) translateX(-50vw);
+        transform: translateY(0) translateX(calc(var(--ocean-vw) * -0.5));
     }
     /* 2. 画面中央で一時停止 */
     50% {
-        transform: translateY(0) translateX(-50vw);
+        transform: translateY(0) translateX(calc(var(--ocean-vw) * -0.5));
     }
     /* 3. エンジンをふかすように少しだけ後退 */
     62% {
-        transform: translateY(0) translateX(-46vw);
+        transform: translateY(0) translateX(calc(var(--ocean-vw) * -0.46));
     }
     /* 4. 一気に加速して画面左外へ離脱 */
     85%, 100% {
@@ -62,7 +62,7 @@
     }
 
     .futuristic-car-image {
-        width: clamp(200px, 32vw, 380px);
+        width: clamp(200px, calc(var(--ocean-vw) * 0.32), 380px);
     }
 }
 

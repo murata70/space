@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { isWallpaperAttachedRoute } from "../constants/wallpaperRoutes";
 
 export function applyLayoutToElement(el, layout) {
@@ -10,16 +10,28 @@ export function applyLayoutToElement(el, layout) {
     el.style.setProperty("--primary-height", `${primary.height}px`);
 }
 
-/**
- * マルチモニター時、メインディスプレイの矩形を CSS 変数でルートに設定する。
- * .primary-monitor-ui がその範囲に UI を収める。
- */
-export function usePrimaryDisplayLayout(rootRef) {
-    useEffect(() => {
-        const root = rootRef?.current;
-        if (!root) return undefined;
+/** メインディスプレイ矩形を :root と任意要素へ反映 */
+export async function refreshPrimaryDisplayLayout(targetEl = null) {
+    const layout = await window.electron?.getDisplayLayout?.();
+    if (!layout) return layout;
+    applyLayoutToElement(document.documentElement, layout);
+    if (targetEl) applyLayoutToElement(targetEl, layout);
+    return layout;
+}
 
-        const apply = (layout) => applyLayoutToElement(root, layout);
+/**
+ * マルチモニター時、メインディスプレイの矩形を CSS 変数で設定する。
+ * callback ref でマウント後も確実に適用（ダイアログ等の条件付きマウント向け）。
+ */
+export function usePrimaryDisplayLayout() {
+    const [target, setTarget] = useState(null);
+    const ref = useCallback((node) => setTarget(node), []);
+
+    useEffect(() => {
+        const apply = (layout) => {
+            applyLayoutToElement(document.documentElement, layout);
+            if (target) applyLayoutToElement(target, layout);
+        };
 
         window.electron?.getDisplayLayout?.().then(apply);
 
@@ -34,7 +46,9 @@ export function usePrimaryDisplayLayout(rootRef) {
             unsubscribe?.();
             window.removeEventListener("resize", onResize);
         };
-    }, [rootRef]);
+    }, [target]);
+
+    return ref;
 }
 
 /** 壁紙モード中は :root にメインディスプレイ矩形を反映（全ルートで .primary-monitor-ui が使える） */

@@ -1,5 +1,5 @@
-.flag-banner-flow {
-    position: fixed;
+﻿.flag-banner-flow {
+    position: absolute;
     top: var(--ocean-lane-flag-banner-top);
     left: 100%;
     z-index: 3;

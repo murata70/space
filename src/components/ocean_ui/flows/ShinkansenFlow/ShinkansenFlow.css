@@ -1,5 +1,5 @@
-.shinkansen-flow {
-    position: fixed;
+﻿.shinkansen-flow {
+    position: absolute;
     top: var(--ocean-lane-passing-top);
     left: 100%;
     pointer-events: none;
