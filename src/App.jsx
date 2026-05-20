@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-// 【修正】インポートパスから "src/" を削除しました
+// 【修正】インポートパスから "src/" を削除しました 修正中
 import Home from "./pages/Home/Home";
 import Wallpaper from "./pages/Wallpaper/Wallpaper";
 import Settings from "./pages/Settings/Settings";
