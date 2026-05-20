@@ -1,3 +1,4 @@
+/* レイアウト・演出は本ファイルのみ（ocean_layout.css 非依存） */
 /* background_road2(z-index:4) より手前、UI(z-index:20) より奥 */
 .astronaut2-flow {
     position: fixed;
@@ -23,7 +24,7 @@
         rgba(0, 0, 0, 0.42) 70%
     );
     opacity: 0;
-    animation: astronaut2DarkFade 49s ease forwards;
+    animation: astronaut2DarkFade 35s ease forwards;
 }
 
 /* ② 空の右上がキラッと光る */
@@ -62,7 +63,7 @@
     z-index: 1;
     opacity: 0;
     will-change: transform, opacity;
-    animation: astronaut2Approach 45s linear 1.15s forwards;
+    animation: astronaut2Approach 31s linear 1.15s forwards;
 }
 
 .astronaut2-sway {
@@ -112,68 +113,58 @@
     }
 }
 
-/* 右上の光から中央へ寄り、中央で拡大して近づいてくる */
+/* 右上の光から中央へ寄り、拡大 → 約28sで右へ退場して画面外へ */
 @keyframes astronaut2Approach {
     0% {
         opacity: 0;
         transform: translate(calc(-50% + 30vw), calc(-50% - 34vh)) scale(0.32);
     }
 
-    4% {
+    6% {
         opacity: 1;
         transform: translate(calc(-50% + 28vw), calc(-50% - 30vh)) scale(0.4);
     }
 
-    21% {
+    31% {
         opacity: 1;
         transform: translate(calc(-50% + 14vw), calc(-50% - 14vh)) scale(0.85);
     }
 
-    42% {
+    61% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1.8);
     }
 
     /* 中央到達後は早めに拡大 */
-    48% {
+    70% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(3.5);
     }
 
-    54% {
+    79% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(5.2);
     }
 
-    60% {
+    85% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(6.6);
+        transform: translate(-50%, -50%) scale(7.5);
     }
 
-    66% {
+    /* フロー開始から約28s: 右へ退場開始 */
+    87% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(7.8);
+        transform: translate(-50%, -50%) scale(9);
     }
 
-    69% {
+    96% {
         opacity: 1;
-        transform: translate(-50%, -50%) scale(11.2);
-    }
-
-    /* 右下へまっすぐ移動開始（77%よりさらに3秒早い ≈ 70%） */
-    70% {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(12.2);
-    }
-
-    80% {
-        opacity: 1;
-        transform: translate(calc(-50% + 58vw), calc(-50% + 52vh)) scale(14);
+        transform: translate(calc(-50% + 72vw), -50%) scale(9);
     }
 
     100% {
         opacity: 1;
-        transform: translate(calc(-50% + 58vw), calc(-50% + 52vh)) scale(14);
+        transform: translate(calc(-50% + 118vw), -50%) scale(9);
     }
 }
 
@@ -210,49 +201,39 @@
             transform: translate(calc(-50% + 26vw), calc(-50% - 30vh)) scale(0.32);
         }
 
-        4% {
+        6% {
             transform: translate(calc(-50% + 24vw), calc(-50% - 26vh)) scale(0.4);
         }
 
-        42% {
+        61% {
             transform: translate(-50%, -50%) scale(1.6);
         }
 
-        48% {
+        70% {
             transform: translate(-50%, -50%) scale(3.2);
         }
 
-        54% {
+        79% {
             transform: translate(-50%, -50%) scale(4.6);
         }
 
-        60% {
-            transform: translate(-50%, -50%) scale(5.6);
+        85% {
+            transform: translate(-50%, -50%) scale(6.2);
         }
 
-        66% {
+        87% {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(6.8);
+            transform: translate(-50%, -50%) scale(7.5);
         }
 
-        69% {
+        96% {
             opacity: 1;
-            transform: translate(-50%, -50%) scale(9.2);
-        }
-
-        70% {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(10);
-        }
-
-        80% {
-            opacity: 1;
-            transform: translate(calc(-50% + 54vw), calc(-50% + 48vh)) scale(11.2);
+            transform: translate(calc(-50% + 68vw), -50%) scale(7.5);
         }
 
         100% {
             opacity: 1;
-            transform: translate(calc(-50% + 54vw), calc(-50% + 48vh)) scale(11.2);
+            transform: translate(calc(-50% + 112vw), -50%) scale(7.5);
         }
     }
 }

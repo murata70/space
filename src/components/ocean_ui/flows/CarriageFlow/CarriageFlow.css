@@ -1,6 +1,7 @@
+/* レイアウトは本ファイルのみ（ocean_layout.css 非依存） */
 .carriage-flow {
     position: fixed;
-    top: var(--ocean-lane-carriage-top);
+    top: clamp(69%, 73vh, 79%);
     left: 100%;
     z-index: 3;
     pointer-events: none;
@@ -9,7 +10,7 @@
 }
 
 .carriage-image {
-    width: var(--ocean-width-sm);
+    width: clamp(220px, 26vw, 330px);
     height: auto;
     animation: carriageShake 0.2s steps(2, end) infinite;
 }
@@ -20,7 +21,7 @@
     }
 
     to {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
+        transform: translateY(-50%) translateX(calc(-100vw - 100%));
     }
 }
 
@@ -32,5 +33,23 @@
 
     50% {
         transform: translateY(0);
+    }
+}
+
+@media (min-aspect-ratio: 21/9) {
+    .carriage-flow {
+        top: clamp(71%, 75vh, 81%);
+    }
+}
+
+@media (max-aspect-ratio: 4/3) {
+    .carriage-flow {
+        top: clamp(67%, 71vh, 77%);
+    }
+}
+
+@media (max-height: 600px) {
+    .carriage-flow {
+        top: clamp(65%, 67vh, 73%);
     }
 }
