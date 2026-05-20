@@ -1,4 +1,4 @@
-﻿import React from "react";
+﻿import React, { useState } from "react"; // 【修正】useState を追加
 import { useNavigate } from "react-router-dom";
 import "./Wallpaper.css";
 
@@ -12,18 +12,22 @@ import BackGround from "../../components/ui/background_space/BackGround";
 
 const Wallpaper = () => {
     const navigate = useNavigate();
+    // 【修正】マウスがUIエリアに乗っているかを管理する状態
+    const [isHovered, setIsHovered] = useState(false);
 
-    // UIエリアに入った時はクリックできるようにする
+    // UIエリア（時計やボタンの塊）に入った時
     const handleMouseEnter = () => {
+        setIsHovered(true);
         if (window.electron && window.electron.setIgnoreMouse) {
-            window.electron.setIgnoreMouse(false);
+            window.electron.setIgnoreMouse(false); // マウス透過解除（Electron側）
         }
     };
 
-    // UIエリアから出た時は背後のアイコン等に触れるよう透過する
+    // UIエリアから出た時
     const handleMouseLeave = () => {
+        setIsHovered(false);
         if (window.electron && window.electron.setIgnoreMouse) {
-            window.electron.setIgnoreMouse(true);
+            window.electron.setIgnoreMouse(true); // マウス透過（Electron側）
         }
     };
 
@@ -38,26 +42,31 @@ const Wallpaper = () => {
             <FlowController />
             <Rocket />
 
-            <div
-                className="top-ui"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
-                <Clock />
+            {/* 【修正】画面全体を覆うインタラクション用のレイヤーを追加。
+              hoveredクラスによって、css側で全体のpointer-eventsを切り替えます。
+            */}
+            <div className={`wallpaper-ui-layer ${isHovered ? "hovered" : ""}`}>
+                <div
+                    className="top-ui"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                >
+                    <Clock />
 
-                <div className="top-ui-actions">
-                    <button
-                        className="icon-btn"
-                        onClick={() => navigate("/collection")}
-                    >
-                        📁
-                    </button>
-                    <button
-                        className="icon-btn"
-                        onClick={() => navigate("/settings")}
-                    >
-                        ⚙️
-                    </button>
+                    <div className="top-ui-actions">
+                        <button
+                            className="icon-btn"
+                            onClick={() => navigate("/collection")}
+                        >
+                            📁
+                        </button>
+                        <button
+                            className="icon-btn"
+                            onClick={() => navigate("/settings")}
+                        >
+                            ⚙️
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
