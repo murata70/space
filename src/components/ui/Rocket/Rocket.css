@@ -42,6 +42,8 @@
     animation: rocketFloat 3s ease-in-out infinite;
     user-select: none;
     will-change: transform;
+    pointer-events: auto;
+    cursor: pointer;
 }
 
     /* ?u?[?X?g?? */

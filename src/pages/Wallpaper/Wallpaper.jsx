@@ -11,13 +11,17 @@ import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
 import BackGround from "../../components/ui/background_space/BackGround";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
-const WALLPAPER_INTERACTIVE_SELECTORS = [".top-ui", ".rocket-position"];
+const WALLPAPER_PASSTHROUGH_SELECTORS = [".top-ui", ".rocket-position"];
+const WALLPAPER_UI_HOVER_SELECTORS = [".top-ui"];
 
 const Wallpaper = () => {
     const navigate = useNavigate();
     const wallpaperRef = useRef(null);
-    const isHovered = useWallpaperMousePassthrough(
-        WALLPAPER_INTERACTIVE_SELECTORS,
+    const { isUiLayerHovered } = useWallpaperMousePassthrough(
+        {
+            passthroughSelectors: WALLPAPER_PASSTHROUGH_SELECTORS,
+            uiLayerHoveredSelectors: WALLPAPER_UI_HOVER_SELECTORS,
+        },
         wallpaperRef
     );
 
@@ -32,7 +36,7 @@ const Wallpaper = () => {
             <Rocket />
 
             <div
-                className={`wallpaper-ui-layer ${isHovered ? "hovered" : ""}`}
+                className={`wallpaper-ui-layer ${isUiLayerHovered ? "hovered" : ""}`}
             >
                 <div className="top-ui">
                     <Clock />

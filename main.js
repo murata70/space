@@ -6,6 +6,9 @@ const fs = require('fs');
 let win;
 let eaw;
 let db = null; // 初期値を明示的にnullに設定
+let normalizedHitRegions = [];
+let hitTestTimer = null;
+let wallpaperMousePassthrough = true;
 
 // 【修正】better-sqlite3 の読み込みと変数代入を完全に安全化
 try {
@@ -99,6 +102,61 @@ function createWindow() {
     });
 }
 
+function applyMousePassthrough(ignore) {
+    if (!win) return;
+    if (ignore) {
+        win.setIgnoreMouseEvents(true, { forward: true });
+    } else {
+        win.setIgnoreMouseEvents(false);
+    }
+}
+
+function isCursorOverHitRegions() {
+    if (!win || normalizedHitRegions.length === 0) return false;
+
+    const point = screen.getCursorScreenPoint();
+    const bounds = win.getContentBounds();
+    if (bounds.width <= 0 || bounds.height <= 0) return false;
+
+    const relX = (point.x - bounds.x) / bounds.width;
+    const relY = (point.y - bounds.y) / bounds.height;
+
+    if (relX < 0 || relX > 1 || relY < 0 || relY > 1) {
+        return false;
+    }
+
+    return normalizedHitRegions.some(
+        (r) =>
+            relX >= r.left &&
+            relX <= r.right &&
+            relY >= r.top &&
+            relY <= r.bottom
+    );
+}
+
+function runHitTestTick() {
+    if (!win || !wallpaperMousePassthrough) return;
+    const interactive = isCursorOverHitRegions();
+    applyMousePassthrough(!interactive);
+}
+
+function startHitTest() {
+    if (hitTestTimer) return;
+    wallpaperMousePassthrough = true;
+    hitTestTimer = setInterval(runHitTestTick, 32);
+    runHitTestTick();
+}
+
+function stopHitTest() {
+    if (hitTestTimer) {
+        clearInterval(hitTestTimer);
+        hitTestTimer = null;
+    }
+    normalizedHitRegions = [];
+    wallpaperMousePassthrough = false;
+    applyMousePassthrough(false);
+}
+
 // --- IPC通信 ---
 ipcMain.on('attach-wallpaper', () => {
     if (eaw && win) {
@@ -110,6 +168,7 @@ ipcMain.on('attach-wallpaper', () => {
             win.focus();
             win.setOpacity(1.0);
             win.show();
+            startHitTest();
         } catch (e) {
             console.error("壁紙化失敗:", e);
         }
@@ -118,14 +177,22 @@ ipcMain.on('attach-wallpaper', () => {
     }
 });
 
+ipcMain.on('update-hit-regions', (event, regions) => {
+    normalizedHitRegions = Array.isArray(regions) ? regions : [];
+    runHitTestTick();
+});
+
+ipcMain.on('start-hit-test', () => {
+    startHitTest();
+});
+
+ipcMain.on('stop-hit-test', () => {
+    stopHitTest();
+});
+
 ipcMain.on('set-ignore-mouse', (event, ignore) => {
-    if (win) {
-        if (ignore) {
-            win.setIgnoreMouseEvents(true, { forward: true });
-        } else {
-            win.setIgnoreMouseEvents(false);
-        }
-    }
+    if (hitTestTimer) return;
+    applyMousePassthrough(ignore);
 });
 
 ipcMain.handle('get-db-data', (event, query, params = []) => {

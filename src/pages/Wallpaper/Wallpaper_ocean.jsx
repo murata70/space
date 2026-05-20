@@ -10,13 +10,16 @@ import MainCar from "../../components/ocean_ui/main_car/main_car";
 import OceanFlowController from "../../components/ocean_ui/flows/OceanFlowController";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
-const OCEAN_INTERACTIVE_SELECTORS = [".top-ui", ".main-car-position"];
+const OCEAN_PASSTHROUGH_SELECTORS = [".top-ui", ".main-car-position"];
 
 const WallpaperOcean = ({ baseUrl }) => {
     const navigate = useNavigate();
     const wallpaperRef = useRef(null);
 
-    useWallpaperMousePassthrough(OCEAN_INTERACTIVE_SELECTORS, wallpaperRef);
+    useWallpaperMousePassthrough(
+        { passthroughSelectors: OCEAN_PASSTHROUGH_SELECTORS },
+        wallpaperRef
+    );
 
     return (
         <div className="wallpaper-ocean" ref={wallpaperRef}>

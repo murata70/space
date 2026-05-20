@@ -22,42 +22,96 @@ function isOverInteractiveRegions(clientX, clientY, selectors, root) {
     return false;
 }
 
+function collectNormalizedRegions(selectors, root) {
+    const scope = root || document;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    if (!w || !h) return [];
+
+    return selectors
+        .map((selector) => {
+            const el = scope.querySelector(selector);
+            if (!el) return null;
+            const r = el.getBoundingClientRect();
+            return {
+                left: r.left / w,
+                top: r.top / h,
+                right: r.right / w,
+                bottom: r.bottom / h,
+            };
+        })
+        .filter(Boolean);
+}
+
 /**
- * 壁紙モードのマウス透過を、操作可能領域の座標で切り替える。
- * setIgnoreMouseEvents(true, { forward: true }) では mouseenter が不安定なため、
- * mousemove / pointerdown でヒット判定する。
+ * 壁紙モードの操作領域を管理する。
+ * - passthroughSelectors: Electron のマウス透過を解除する領域（ボタン・ロケット等）
+ * - uiLayerHoveredSelectors: wallpaper-ui-layer の hovered を付ける領域（右上 UI のみ）
+ *
+ * Electron ではメインプロセスのカーソル監視で透過を切り替え（mousemove 非依存）。
  */
-export function useWallpaperMousePassthrough(selectors, rootRef = null) {
-    const [isInteractive, setIsInteractive] = useState(false);
-    const interactiveRef = useRef(false);
+export function useWallpaperMousePassthrough(
+    { passthroughSelectors, uiLayerHoveredSelectors = [] },
+    rootRef = null
+) {
+    const [isUiLayerHovered, setIsUiLayerHovered] = useState(false);
+    const uiHoveredRef = useRef(false);
+    const usesMainHitTest =
+        typeof window.electron?.updateHitRegions === "function";
 
-    const applyPassthrough = useCallback((interactive) => {
-        if (interactiveRef.current === interactive) return;
-        interactiveRef.current = interactive;
-        setIsInteractive(interactive);
-        if (typeof window.electron?.setIgnoreMouse === "function") {
-            window.electron.setIgnoreMouse(!interactive);
-        }
-    }, []);
+    const passthroughKey = passthroughSelectors.join("|");
+    const uiHoverKey = uiLayerHoveredSelectors.join("|");
 
-    const selectorsKey = selectors.join("|");
+    const publishRegions = useCallback(() => {
+        if (!usesMainHitTest) return;
+        const root = rootRef?.current ?? null;
+        const regions = collectNormalizedRegions(passthroughSelectors, root);
+        window.electron.updateHitRegions(regions);
+    }, [usesMainHitTest, passthroughKey, rootRef, passthroughSelectors]);
+
+    const applyRendererPassthrough = useCallback(
+        (interactive) => {
+            if (usesMainHitTest) return;
+            if (typeof window.electron?.setIgnoreMouse === "function") {
+                window.electron.setIgnoreMouse(!interactive);
+            }
+        },
+        [usesMainHitTest]
+    );
 
     useEffect(() => {
-        if (typeof window.electron?.setIgnoreMouse === "function") {
+        if (usesMainHitTest) {
+            window.electron.startHitTest?.();
+        } else if (typeof window.electron?.setIgnoreMouse === "function") {
             window.electron.setIgnoreMouse(true);
         }
-        interactiveRef.current = false;
-        setIsInteractive(false);
+
+        uiHoveredRef.current = false;
+        setIsUiLayerHovered(false);
 
         const updateFromPoint = (clientX, clientY) => {
             const root = rootRef?.current ?? null;
+
             const interactive = isOverInteractiveRegions(
                 clientX,
                 clientY,
-                selectors,
+                passthroughSelectors,
                 root
             );
-            applyPassthrough(interactive);
+            applyRendererPassthrough(interactive);
+
+            if (uiLayerHoveredSelectors.length > 0) {
+                const uiHover = isOverInteractiveRegions(
+                    clientX,
+                    clientY,
+                    uiLayerHoveredSelectors,
+                    root
+                );
+                if (uiHoveredRef.current !== uiHover) {
+                    uiHoveredRef.current = uiHover;
+                    setIsUiLayerHovered(uiHover);
+                }
+            }
         };
 
         const onMouseMove = (e) => updateFromPoint(e.clientX, e.clientY);
@@ -66,16 +120,34 @@ export function useWallpaperMousePassthrough(selectors, rootRef = null) {
         window.addEventListener("mousemove", onMouseMove);
         window.addEventListener("pointermove", onMouseMove);
         window.addEventListener("pointerdown", onPointerDown, true);
+        window.addEventListener("resize", publishRegions);
+
+        publishRegions();
+        const regionTimer = setInterval(publishRegions, 500);
 
         return () => {
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("pointermove", onMouseMove);
             window.removeEventListener("pointerdown", onPointerDown, true);
-            if (typeof window.electron?.setIgnoreMouse === "function") {
+            window.removeEventListener("resize", publishRegions);
+            clearInterval(regionTimer);
+
+            if (usesMainHitTest) {
+                window.electron.stopHitTest?.();
+            } else if (typeof window.electron?.setIgnoreMouse === "function") {
                 window.electron.setIgnoreMouse(false);
             }
         };
-    }, [selectorsKey, rootRef, applyPassthrough]);
+    }, [
+        passthroughKey,
+        uiHoverKey,
+        rootRef,
+        passthroughSelectors,
+        uiLayerHoveredSelectors,
+        applyRendererPassthrough,
+        publishRegions,
+        usesMainHitTest,
+    ]);
 
-    return isInteractive;
+    return { isUiLayerHovered };
 }
