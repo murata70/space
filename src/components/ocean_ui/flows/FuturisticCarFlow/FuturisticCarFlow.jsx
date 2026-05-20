@@ -15,7 +15,7 @@ export default function FuturisticCarFlow({ onComplete }) {
 
     return (
         <div className="futuristic-car-flow">
-            {/* imgへのアニメーション上書き強制を回避するため、外枠を一枚挟みます */}
+            {/* 移動アニメは .futuristic-car-body に付与。img 直付けだと transform が画像側で上書きされるためラッパーを挟む */}
             <div className="futuristic-car-body">
                 <img
                     src={`${publicUrl}/assets/ocean_image/collections/futuristic_car.png`}

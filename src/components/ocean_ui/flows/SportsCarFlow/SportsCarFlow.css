@@ -1,20 +1,23 @@
 .sports-car-flow {
     position: fixed;
-    right: -390px;
+    top: var(--ocean-lane-passing-top);
+    left: 100%;
     pointer-events: none;
+    transform: translateY(-50%);
     animation: sportsCarMove 9s linear forwards;
 }
 
 .sports-car-image {
-    width: 310px;
+    width: var(--ocean-width-sm);
+    height: auto;
 }
 
 @keyframes sportsCarMove {
     from {
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
 
     to {
-        transform: translateX(-180vw);
+        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
     }
 }

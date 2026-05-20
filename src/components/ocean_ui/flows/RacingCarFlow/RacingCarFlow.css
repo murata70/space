@@ -1,150 +1,94 @@
 ﻿/* RacingCarFlow.css */
 
-/* レイアウトルールに準拠した画面全体を覆う固定ラッパー */
 .racing-car-flow {
     position: fixed;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-    /* 背景画像より手前に表示させるため、4〜6の範囲で設定 */
     z-index: 6;
 }
 
-/* 車体を道路の適切な位置に単独で配置するスタイル */
 .racing-car-body {
     position: absolute;
-    /* 通常の走行位置を現在の指定よりも上に修正 */
-    top: 48%;
-    left: 100%; /* スタート地点を確実に画面の右外端にセット */
-    /* パフォーマンス最適化 */
-    will-change: transform;
-    /* 右から進入 → 中央で少し下に寄せて停車 → 道路終了に合わせて左へ去る一連のタイムライン */
+    top: var(--ocean-lane-racing-top);
+    left: 100%;
+    will-change: transform, top;
     animation: racingCarMove 8s linear forwards;
 }
 
-/* レーシングカー本体の大きさ設定と絶対配置化の担保 */
 .racing-car-container {
     position: relative;
-    width: 330px;
-    height: 180px; /* 車体サイズに応じた高さを確保 */
+    width: var(--ocean-width-sm);
+    height: auto;
 }
 
-/* 2枚の画像を重ねてエンジン風の小刻みな動きを表現するための共通スタイル */
 .racing-car-image-a,
 .racing-car-image-b {
     position: absolute;
     top: 0;
     left: 0;
-    width: 330px;
+    width: 100%;
     height: auto;
     will-change: transform, opacity;
 }
 
-/* 1番目の画像：0秒から即座に上下に震えながら表示 */
 .racing-car-image-a {
     animation: racingCarEngineVibeA 0.2s infinite linear;
 }
 
-/* 2番目の画像：0.1秒のディレイ（遅延）を入れて逆方向に震えながら表示 */
 .racing-car-image-b {
     animation: racingCarEngineVibeB 0.2s infinite linear;
     animation-delay: 0.1s;
 }
 
-/* 固有のアニメーション（右から進入、中央で少し下に寄せて停車、そのまま左へフェードアウトせず流れて去る） */
+/* 停車位置のオフセットは車幅の半分（固定 165px を廃止） */
 @keyframes racingCarMove {
     0% {
-        transform: translateX(0);
-        top: 48%;
+        transform: translateY(-50%) translateX(0);
+        top: var(--ocean-lane-racing-top);
     }
-    /* 1.5秒かけて画面中央（-50vw辺り）まで直進 */
+
     18.75% {
-        transform: translateX(calc(-50vw - 165px));
-        top: 48%;
+        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
+        top: var(--ocean-lane-racing-top);
     }
-    /* 0.5秒かけてスムーズに少し下へ車線を寄せて路肩に合わせる（前より上の位置をキープ） */
+
     25% {
-        transform: translateX(calc(-50vw - 165px));
-        top: 53%;
+        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
+        top: var(--ocean-lane-racing-parked-top);
     }
-    /* 道路のスクロールに同期して、その場にピタッと停車し続ける（約5秒間維持） */
+
     87.5% {
-        transform: translateX(calc(-50vw - 165px));
-        top: 53%;
+        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
+        top: var(--ocean-lane-racing-parked-top);
     }
-    /* 道路の終了に合わせて、フェードアウトせず左側へ等速で一気に走り去る */
+
     100% {
-        transform: translateX(calc(-100vw - 380px));
-        top: 53%;
+        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
+        top: var(--ocean-lane-racing-parked-top);
     }
 }
 
-/* エンジン駆動エフェクト用キーフレーム（Aパターン：不透明度の補間による透けを完全にシャットアウト） */
 @keyframes racingCarEngineVibeA {
     0%, 49.9% {
-        transform: translateY(-1px);
+        transform: translateY(clamp(-1px, -0.1vh, -1px));
         opacity: 1;
     }
 
     50%, 99.9% {
-        transform: translateY(1px);
+        transform: translateY(clamp(1px, 0.1vh, 1px));
         opacity: 0;
     }
 }
 
-/* エンジン駆動エフェクト用キーフレーム（Bパターン：Aと完全に反転させ、常にどちらか1枚のみがクッキリ映る状態を作る） */
 @keyframes racingCarEngineVibeB {
     0%, 49.9% {
-        transform: translateY(1px);
+        transform: translateY(clamp(1px, 0.1vh, 1px));
         opacity: 0;
     }
 
     50%, 99.9% {
-        transform: translateY(-1px);
+        transform: translateY(clamp(-1px, -0.1vh, -1px));
         opacity: 1;
-    }
-}
-
-/* レスポンシブ対応：画面の高さが低い（横長）場合の配置の微調整 */
-@media (max-height: 600px) {
-    .racing-car-body {
-        top: 45%;
-    }
-
-    .racing-car-container {
-        width: 280px;
-        height: 150px;
-    }
-
-    .racing-car-image-a,
-    .racing-car-image-b {
-        width: 280px;
-    }
-
-    @keyframes racingCarMove {
-        0% {
-            transform: translateX(0);
-            top: 45%;
-        }
-
-        18.75% {
-            transform: translateX(calc(-50vw - 140px));
-            top: 45%;
-        }
-
-        25% {
-            transform: translateX(calc(-50vw - 140px));
-            top: 50%;
-        }
-
-        87.5% {
-            transform: translateX(calc(-50vw - 140px));
-            top: 50%;
-        }
-
-        100% {
-            transform: translateX(calc(-100vw - 330px));
-            top: 50%;
-        }
     }
 }

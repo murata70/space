@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 80px;
+    padding-top: clamp(40px, 10vh, 80px);
     background: linear-gradient( to bottom, rgba(173, 216, 230, 0.9), rgba(0, 191, 255, 0.7) );
     background-size: 200% 200%;
     animation: waterWave 15s ease-in-out infinite alternate;
@@ -18,8 +18,8 @@
 /* コンテナ */
 .settings-page-container.ocean-theme {
     width: min(92vw, 520px);
-/*    min-height: 100vh;*/
-    margin: 0px auto 0;
+    /* min-height: 100vh は外す — コンテンツ量に応じた高さにし、小画面で下が切れないようにする */
+    margin: 0 auto;
     padding: 24px;
     display: flex;
     flex-direction: column;

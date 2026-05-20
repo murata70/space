@@ -1,20 +1,23 @@
 .superman-flow {
     position: fixed;
-    right: -330px;
+    top: var(--ocean-lane-passing-top);
+    left: 100%;
     pointer-events: none;
+    transform: translateY(-50%);
     animation: supermanMove 11s linear forwards;
 }
 
 .superman-image {
-    width: 240px;
+    width: var(--ocean-width-xs);
+    height: auto;
 }
 
 @keyframes supermanMove {
     from {
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
 
     to {
-        transform: translateX(-180vw);
+        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
     }
 }

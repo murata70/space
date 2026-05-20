@@ -29,10 +29,10 @@
 /* ② 空の右上がキラッと光る */
 .astronaut2-sparkle {
     position: absolute;
-    top: 10%;
-    right: 14%;
-    width: 20px;
-    height: 20px;
+    top: clamp(8%, 10vh, 12%);
+    right: clamp(10%, 14vw, 16%);
+    width: clamp(14px, 1.6vw, 20px);
+    height: clamp(14px, 1.6vw, 20px);
     background: #fff;
     clip-path: polygon(
         50% 0%,
@@ -180,36 +180,31 @@
 /* 移動中のゆらゆら（左右＋傾き） */
 @keyframes astronaut2Sway {
     0% {
-        transform: translateX(-48px) rotate(-9deg);
+        transform: translateX(clamp(-32px, -3vw, -48px)) rotate(-9deg);
     }
 
     20% {
-        transform: translateX(-22px) rotate(-4deg);
+        transform: translateX(clamp(-14px, -1.5vw, -22px)) rotate(-4deg);
     }
 
     40% {
-        transform: translateX(12px) rotate(2deg);
+        transform: translateX(clamp(8px, 1vw, 12px)) rotate(2deg);
     }
 
     60% {
-        transform: translateX(48px) rotate(9deg);
+        transform: translateX(clamp(32px, 3vw, 48px)) rotate(9deg);
     }
 
     80% {
-        transform: translateX(22px) rotate(4deg);
+        transform: translateX(clamp(14px, 1.5vw, 22px)) rotate(4deg);
     }
 
     100% {
-        transform: translateX(-48px) rotate(-9deg);
+        transform: translateX(clamp(-32px, -3vw, -48px)) rotate(-9deg);
     }
 }
 
 @media (max-width: 768px) {
-    .astronaut2-sparkle {
-        top: 12%;
-        right: 10%;
-    }
-
     @keyframes astronaut2Approach {
         0% {
             transform: translate(calc(-50% + 26vw), calc(-50% - 30vh)) scale(0.32);

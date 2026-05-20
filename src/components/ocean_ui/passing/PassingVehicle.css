@@ -1,22 +1,25 @@
 .passing-wrapper {
     position: fixed;
-    right: -340px;
-    width: 340px;
+    top: var(--ocean-lane-passing-top);
+    left: 100%;
+    width: var(--ocean-width-passing-wrap);
     pointer-events: none;
+    transform: translateY(-50%);
     animation: passingMove 12s linear forwards;
 }
 
 @keyframes passingMove {
     from {
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
 
     to {
-        transform: translateX(-140vw);
+        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
     }
 }
 
 .passing-car {
-    width: 240px;
+    width: var(--ocean-width-passing-img);
+    height: auto;
     user-select: none;
 }

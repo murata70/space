@@ -1,6 +1,6 @@
 .main-car-position {
     position: fixed;
-    top: 69%;
+    top: var(--ocean-main-car-top);
     left: clamp(40px, 20vw, 300px);
     transform: translateY(-50%);
     z-index: 2;
@@ -47,28 +47,20 @@
 }
 
 .main-car-image {
-    width: clamp(120px, 16vw, 230px);
+    width: var(--ocean-width-main-car);
     height: auto;
     object-fit: contain;
     pointer-events: auto;
 }
 
-@media (max-width: 1024px) {
-    .main-car-position {
-        top: 71%;
-    }
-}
-
 @media (max-width: 768px) {
     .main-car-position {
-        top: 77%;
         left: 16vw;
     }
 }
 
 @media (max-width: 480px) {
     .main-car-position {
-        top: 81%;
         left: 14vw;
     }
 }

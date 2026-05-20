@@ -1,0 +1,72 @@
+/**
+ * 海テーマ共通レイアウト（レスポンシブ）
+ *
+ * 背景は background-size: cover のため、解像度・アスペクト比で見え方が変わる。
+ * 車・コレクションは px 固定ではなく vh / vw / clamp で道路レーンに合わせる。
+ * 変数は .wallpaper-ocean に定義し、子コンポーネントから参照する。
+ */
+.wallpaper-ocean {
+    /* 通過車・横断コレクション（道路レーン） */
+    --ocean-lane-passing-top: clamp(52%, 55vh, 60%);
+    /* 馬車などやや上のレーン */
+    --ocean-lane-carriage-top: clamp(50%, 53vh, 58%);
+    /* レーシングカー */
+    --ocean-lane-racing-top: clamp(44%, 48vh, 52%);
+    --ocean-lane-racing-parked-top: clamp(48%, 52vh, 56%);
+    /* 近未来車（やや上空寄り） */
+    --ocean-lane-futuristic-top: clamp(26%, 30vh, 34%);
+    /* プレイヤー操作のメインカー */
+    --ocean-main-car-top: clamp(65%, 69vh, 74%);
+
+    /* 車体・オブジェクト幅 */
+    --ocean-width-xs: clamp(160px, 18vw, 240px);
+    --ocean-width-sm: clamp(220px, 26vw, 330px);
+    --ocean-width-md: clamp(280px, 34vw, 460px);
+    --ocean-width-lg: clamp(340px, 40vw, 500px);
+    --ocean-width-xl: clamp(420px, 48vw, 660px);
+    --ocean-width-passing-wrap: clamp(260px, 30vw, 340px);
+    --ocean-width-passing-img: clamp(170px, 22vw, 240px);
+    --ocean-width-main-car: clamp(120px, 16vw, 230px);
+
+    /* 左端まで流し切る距離（要素幅＋画面幅） */
+    --ocean-scroll-exit: calc(-100vw - 100%);
+}
+
+/* ウルトラワイド：cover で道路がやや下がるためレーンを微調整 */
+@media (min-aspect-ratio: 21/9) {
+    .wallpaper-ocean {
+        --ocean-lane-passing-top: clamp(54%, 57vh, 62%);
+        --ocean-lane-carriage-top: clamp(52%, 55vh, 60%);
+        --ocean-main-car-top: clamp(67%, 70vh, 75%);
+    }
+}
+
+/* 4:3 など縦長に近い画面 */
+@media (max-aspect-ratio: 4/3) {
+    .wallpaper-ocean {
+        --ocean-lane-passing-top: clamp(50%, 53vh, 56%);
+        --ocean-lane-carriage-top: clamp(48%, 51vh, 54%);
+        --ocean-main-car-top: clamp(70%, 74vh, 80%);
+    }
+}
+
+/* 横長・低いウィンドウ（ラップトップ等） */
+@media (max-height: 600px) {
+    .wallpaper-ocean {
+        --ocean-lane-passing-top: clamp(48%, 50vh, 54%);
+        --ocean-lane-carriage-top: clamp(46%, 48vh, 52%);
+        --ocean-lane-racing-top: clamp(40%, 43vh, 47%);
+        --ocean-lane-racing-parked-top: clamp(44%, 47vh, 51%);
+        --ocean-lane-futuristic-top: clamp(22%, 26vh, 30%);
+        --ocean-main-car-top: clamp(62%, 66vh, 70%);
+    }
+}
+
+/* OceanFlowController 用ラッパー（旧: JSX インライン style を CSS へ移行） */
+.ocean-flow-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    overflow: hidden;
+}

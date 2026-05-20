@@ -1,20 +1,23 @@
 .shinkansen-flow {
     position: fixed;
-    right: -660px;
+    top: var(--ocean-lane-passing-top);
+    left: 100%;
     pointer-events: none;
+    transform: translateY(-50%);
     animation: shinkansenMove 10s linear forwards;
 }
 
 .shinkansen-image {
-    width: 660px;
+    width: var(--ocean-width-xl);
+    height: auto;
 }
 
 @keyframes shinkansenMove {
     from {
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
 
     to {
-        transform: translateX(-220vw);
+        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
     }
 }

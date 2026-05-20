@@ -1,20 +1,23 @@
 .train-flow {
     position: fixed;
-    right: -555px;
+    top: var(--ocean-lane-passing-top);
+    left: 100%;
     pointer-events: none;
+    transform: translateY(-50%);
     animation: trainMove 14s linear forwards;
 }
 
 .train-image {
-    width: 500px;
+    width: var(--ocean-width-lg);
+    height: auto;
 }
 
 @keyframes trainMove {
     from {
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
 
     to {
-        transform: translateX(-200vw);
+        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
     }
 }

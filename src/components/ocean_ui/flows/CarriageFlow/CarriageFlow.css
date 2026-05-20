@@ -1,44 +1,36 @@
 .carriage-flow {
     position: fixed;
-    top: 54%;
-    right: -545px;
+    top: var(--ocean-lane-carriage-top);
+    left: 100%;
     z-index: 3;
     pointer-events: none;
+    transform: translateY(-50%);
     animation: carriageMove 12s linear forwards;
 }
 
 .carriage-image {
-    width: 375px;
+    width: var(--ocean-width-sm);
+    height: auto;
     animation: carriageShake 0.2s steps(2, end) infinite;
 }
 
 @keyframes carriageMove {
     from {
-        transform: translateX(0);
+        transform: translateY(-50%) translateX(0);
     }
 
     to {
-        transform: translateX(-160vw);
+        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
     }
 }
 
-/* 0.1秒: 少し上 → 0.1秒: 通常位置 */
+/* 0.1秒: 少し上 → 0.1秒: 通常位置（馬車の揺れ） */
 @keyframes carriageShake {
     0% {
-        transform: translateY(-8px);
+        transform: translateY(clamp(-4px, -0.6vh, -8px));
     }
 
     50% {
         transform: translateY(0);
-    }
-}
-
-@media (max-width: 768px) {
-    .carriage-flow {
-        top: 58%;
-    }
-
-    .carriage-image {
-        width: 288px;
     }
 }

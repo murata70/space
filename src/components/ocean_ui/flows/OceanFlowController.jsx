@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import collectionMaster_ocean from "../../../data/collectionMaster_ocean";
 import { saveOceanCollection } from "../../../utils/collectionStorage_ocean";
+import PassingVehicle from "../passing/PassingVehicle";
 
 const publicUrl = process.env.PUBLIC_URL || "";
 
@@ -100,20 +101,13 @@ export default function OceanFlowController() {
   const CollectionFlowComponent = currentCollectionFlow;
 
   return (
-    <div
-      className="ocean-flow-layer"
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 3,
-        pointerEvents: "none",
-        overflow: "hidden",
-      }}
-    >
+    <div className="ocean-flow-layer">
       {passingVehicles.map((v) => (
-        <div key={v.id}>
-          {/* ここはあなたの PassingVehicle に置き換え */}
-        </div>
+        <PassingVehicle
+          key={v.id}
+          image={v.image}
+          onComplete={() => handleVehicleComplete(v.id)}
+        />
       ))}
 
       {CollectionFlowComponent && (
