@@ -42,10 +42,8 @@ export default function Collection() {
 
         if (themeId === "ocean") {
             navigate("/collection_ocean");
-        } else if (themeId === "space") {
-            navigate("/collection");
         } else {
-            navigate("/wallpaper");
+            navigate("/collection");
         }
     };
 
@@ -67,7 +65,7 @@ export default function Collection() {
                         return (
                             <div
                                 key={item.id}
-                                className={`card ${unlocked ? "unlocked" : "locked"}`}
+                                className={`card ${unlocked ? "" : "locked"}`}
                             >
                                 {unlocked ? (
                                     <>
@@ -98,7 +96,7 @@ export default function Collection() {
                 </button>
             </div>
 
-            <div className="slide-wrapper slide-wrapper--dock">
+            <div className="slide-wrapper--dock">
                 <Slide
                     title="THEMES"
                     items={THEMES}
