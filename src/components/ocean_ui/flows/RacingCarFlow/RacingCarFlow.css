@@ -3,92 +3,192 @@
 .racing-car-flow {
     position: fixed;
     inset: 0;
-    pointer-events: none;
     overflow: hidden;
+    pointer-events: none;
     z-index: 6;
 }
 
+/* =========================
+   車本体
+========================= */
+
 .racing-car-body {
     position: absolute;
-    top: var(--ocean-lane-racing-top);
-    left: 100%;
-    will-change: transform, top;
-    animation: racingCarMove 8s linear forwards;
+    top: clamp(69%, 73vh, 79%);
+    left: 100%; /* ←これ戻す（超重要） */
+
+    transform: translateY(-50%);
+    animation: racingCarMove 5.2s linear forwards;
 }
+
+/* =========================
+   車コンテナ
+========================= */
 
 .racing-car-container {
     position: relative;
-    width: var(--ocean-width-sm);
+    width: clamp(220px, 24vw, 340px);
     height: auto;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.35));
 }
 
-.racing-car-image-a,
-.racing-car-image-b {
-    position: absolute;
-    top: 0;
-    left: 0;
+/* =========================
+   車画像
+========================= */
+
+.racing-car-image {
+    display: block;
     width: 100%;
     height: auto;
-    will-change: transform, opacity;
+    will-change: transform;
+    animation: racingCarEngineVibe 0.16s infinite ease-in-out;
 }
 
-.racing-car-image-a {
-    animation: racingCarEngineVibeA 0.2s infinite linear;
+/* =========================
+   スピードライン
+========================= */
+
+.racing-speed-lines {
+    position: absolute;
+    top: 50%;
+    right: 92%;
+    transform: translateY(-50%);
 }
 
-.racing-car-image-b {
-    animation: racingCarEngineVibeB 0.2s infinite linear;
-    animation-delay: 0.1s;
-}
+    .racing-speed-lines span {
+        display: block;
+        height: 3px;
+        margin: 12px 0;
+        border-radius: 999px;
+        background: linear-gradient( to left, rgba(255,255,255,0.8), rgba(255,255,255,0) );
+        filter: blur(1.5px);
+        transform-origin: right center;
+        animation: racingLinePulse 0.25s infinite alternate, racingLineAppear 8s forwards;
+    }
 
-/* 停車位置のオフセットは車幅の半分（固定 165px を廃止） */
+        .racing-speed-lines span:nth-child(1) {
+            width: 240px;
+        }
+
+        .racing-speed-lines span:nth-child(2) {
+            width: 170px;
+        }
+
+        .racing-speed-lines span:nth-child(3) {
+            width: 100px;
+        }
+
+/* =========================
+   車移動
+========================= */
+
 @keyframes racingCarMove {
+    /* 馬車と同じ右外スタート */
     0% {
         transform: translateY(-50%) translateX(0);
-        top: var(--ocean-lane-racing-top);
+    }
+    /* 超速で突っ込む（ここで勝負決まる） */
+    8% {
+        transform: translateY(-50%) translateX(-60vw) scaleY(0.985);
+    }
+    /* もう消える直前 */
+    100% {
+        transform: translateY(-50%) translateX(calc(-100vw - 140%)) scaleY(1.01);
+    }
+}
+
+/* =========================
+   エンジン振動
+========================= */
+
+@keyframes racingCarEngineVibe {
+
+    0% {
+        transform: rotate(-0.2deg);
     }
 
-    18.75% {
-        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
-        top: var(--ocean-lane-racing-top);
-    }
-
-    25% {
-        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
-        top: var(--ocean-lane-racing-parked-top);
-    }
-
-    87.5% {
-        transform: translateY(-50%) translateX(calc(-50vw - var(--ocean-width-sm) / 2));
-        top: var(--ocean-lane-racing-parked-top);
+    50% {
+        transform: rotate(0.2deg) translateY(-1px);
     }
 
     100% {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
-        top: var(--ocean-lane-racing-parked-top);
+        transform: rotate(-0.2deg);
     }
 }
 
-@keyframes racingCarEngineVibeA {
-    0%, 49.9% {
-        transform: translateY(clamp(-1px, -0.1vh, -1px));
+/* =========================
+   スピードライン脈動
+========================= */
+
+@keyframes racingLinePulse {
+
+    from {
+        transform: scaleX(0.9);
+        opacity: 0.4;
+    }
+
+    to {
+        transform: scaleX(1.05);
+        opacity: 0.85;
+    }
+}
+
+/* =========================
+   最初だけ線表示
+========================= */
+
+@keyframes racingLineAppear {
+
+    0% {
+        opacity: 0;
+    }
+
+    3% {
         opacity: 1;
     }
 
-    50%, 99.9% {
-        transform: translateY(clamp(1px, 0.1vh, 1px));
+    20% {
+        opacity: 1;
+    }
+
+    32% {
+        opacity: 0;
+    }
+
+    100% {
         opacity: 0;
     }
 }
 
-@keyframes racingCarEngineVibeB {
-    0%, 49.9% {
-        transform: translateY(clamp(1px, 0.1vh, 1px));
-        opacity: 0;
-    }
+/* =========================
+   ワイド画面
+========================= */
 
-    50%, 99.9% {
-        transform: translateY(clamp(-1px, -0.1vh, -1px));
-        opacity: 1;
+@media (min-aspect-ratio: 21/9) {
+
+    .racing-car-body {
+        top: clamp(71%, 75vh, 81%);
+    }
+}
+
+/* =========================
+   縦寄り画面
+========================= */
+
+@media (max-aspect-ratio: 4/3) {
+
+    .racing-car-body {
+        top: clamp(67%, 71vh, 77%);
+    }
+}
+
+/* =========================
+   低い画面
+========================= */
+
+@media (max-height: 600px) {
+
+    .racing-car-body {
+        top: clamp(65%, 67vh, 73%);
     }
 }

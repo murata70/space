@@ -6,7 +6,6 @@ const publicUrl = process.env.PUBLIC_URL || "";
 
 export default function RacingCarFlow({ onComplete }) {
     useEffect(() => {
-        // Šù‘¶‚Ì8000msi8•bj‚Ìƒ^ƒCƒ}[\‘¢‚ğˆÛ‚µ‚ÄI—¹Œã‚É”­‰Î
         const timer = setTimeout(() => {
             onComplete?.();
         }, 8000);
@@ -16,19 +15,21 @@ export default function RacingCarFlow({ onComplete }) {
 
     return (
         <div className="racing-car-flow">
-            {/* ˆÓ}‚µ‚È‚¢ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìã‘‚«‚ğ‰ñ”ğ‚·‚é‚½‚ßAŠO˜g‚ğˆê–‡‹²‚ñ‚ÅˆÊ’u§Œä‚µ‚Ü‚· */}
             <div className="racing-car-body">
-                {/* ƒXƒe[ƒg‚ğg‚í‚¸CSS‚ÌƒfƒBƒŒƒC‚Ì‚İ‚Å0.1•bŒğŒİ‚ÌƒGƒ“ƒWƒ“‹ì“®‚ğŒ©‚¹‚é‚½‚ß‚Ì•À—ñ”z’uƒRƒ“ƒeƒi */}
+
+                {/* ã‚¹ãƒ”ãƒ¼ãƒ‰ãƒ©ã‚¤ãƒ³ */}
+                <div className="racing-speed-lines">
+                    <span />
+                    <span />
+                    <span />
+                </div>
+
+                {/* è»Š */}
                 <div className="racing-car-container">
                     <img
                         src={`${publicUrl}/assets/ocean_image/collections/racing_car.png`}
-                        alt="racing car engine active"
-                        className="racing-car-image-a"
-                    />
-                    <img
-                        src={`${publicUrl}/assets/ocean_image/collections/racing_car.png`}
-                        alt="racing car engine pulse"
-                        className="racing-car-image-b"
+                        alt="racing car"
+                        className="racing-car-image"
                     />
                 </div>
             </div>
