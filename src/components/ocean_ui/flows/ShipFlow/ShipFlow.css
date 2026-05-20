@@ -1,23 +1,49 @@
-.ship-flow {
+
+
+    /*    top: var(--ocean-lane-passing-top);*/
+    .ship-flow {
     position: fixed;
-    top: var(--ocean-lane-passing-top);
-    left: 100%;
+    top: 20%;
+    left: -20%;
     pointer-events: none;
-    transform: translateY(-50%);
-    animation: shipMove 17s linear forwards;
+    animation: shipMove 40s linear forwards;
+    z-index: 3;
 }
 
 .ship-image {
     width: var(--ocean-width-md);
     height: auto;
+    transform: scaleX(-1);
+    animation: shipFloat 3.5s ease-in-out infinite;
 }
 
+
 @keyframes shipMove {
-    from {
-        transform: translateY(-50%) translateX(0);
+    0% {
+        left: -20%;
+        transform: scale(0.22);
     }
 
-    to {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
+    50% {
+        transform: scale(0.5);
+    }
+
+    100%{ 
+        left: 110%;
+        transform: scale(0.9);
+    }
+}
+
+@keyframes shipFloat {
+    0% {
+        transform: scaleX(-1) translateY(0px) rotate(-1deg);
+    }
+
+    50% {
+        transform: scaleX(-1) translateY(-8px) rotate(1deg);
+    }
+
+    100% {
+        transform: scaleX(-1) translateY(0px) rotate(-1deg);
     }
 }
