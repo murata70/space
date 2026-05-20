@@ -17,6 +17,7 @@
     pointer-events: auto;
     overflow: auto;
     background: transparent;
+    cursor: default;
 }
 
 /* 壁紙の上: 設定・コレクションを不透明なウィンドウとして表示 */

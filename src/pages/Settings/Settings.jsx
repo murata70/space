@@ -1,14 +1,19 @@
 /* ===== Settings.jsx ===== */
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Settings.css";
 import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
 import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
+import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
 
 const SETTINGS_PASSTHROUGH = [
     ".app-floating-window",
     ".app-floating-shell",
     ".settings-page-container",
+    ".theme-confirm-overlay",
+    ".theme-confirm-dialog",
+    ".theme-confirm-btn",
+    ".theme-confirm-close",
 ];
 
 const Settings = () => {
@@ -32,21 +37,55 @@ const Settings = () => {
     const [is24h, setIs24h] = useState(savedSettings.is24h ?? true);
     const [volume, setVolume] = useState(savedSettings.volume ?? 50);
     const [isWarping, setIsWarping] = useState(false);
+    const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    const [backDialogOpen, setBackDialogOpen] = useState(false);
+    const [homeDialogOpen, setHomeDialogOpen] = useState(false);
 
-    const handleSave = () => {
+    const persistSettings = () => {
         const settings = { muted, volume, sec, tz, is24h };
         localStorage.setItem("user_settings", JSON.stringify(settings));
-        alert("設定を保存しました！");
-        navigate("/wallpaper");
+    };
+
+    const handleSave = () => {
+        persistSettings();
+        setSaveDialogOpen(true);
+    };
+
+    const closeSettings = useCallback(() => {
+        setSaveDialogOpen(false);
+        setBackDialogOpen(false);
+        setHomeDialogOpen(false);
+        navigate("/wallpaper", { replace: true });
+        if (!window.location.hash.includes("/wallpaper")) {
+            window.location.hash = "#/wallpaper";
+        }
+    }, [navigate]);
+
+    const handleSaveDialogClose = () => {
+        closeSettings();
     };
 
     const handleBack = () => {
-        if (window.confirm("保存せずに戻りますか？")) {
-            navigate("/wallpaper");
-        }
+        setBackDialogOpen(true);
+    };
+
+    const handleBackConfirm = () => {
+        setBackDialogOpen(false);
+        navigate("/wallpaper", { replace: true });
     };
 
     const handleGoHome = () => {
+        setHomeDialogOpen(true);
+    };
+
+    const handleHomeSaveAndGo = () => {
+        persistSettings();
+        setHomeDialogOpen(false);
+        navigate("/");
+    };
+
+    const handleHomeGoWithoutSave = () => {
+        setHomeDialogOpen(false);
         navigate("/");
     };
 
@@ -56,7 +95,10 @@ const Settings = () => {
     };
 
     return (
-        <AppFloatingWindow passthroughSelectors={SETTINGS_PASSTHROUGH}>
+        <AppFloatingWindow
+            passthroughSelectors={SETTINGS_PASSTHROUGH}
+            onDismiss={closeSettings}
+        >
             <div className="settings-page-container space-theme">
                 <h2
                     className={`settings-title ${isWarping ? "warp-mode" : ""}`}
@@ -100,6 +142,32 @@ const Settings = () => {
                     </button>
                 </div>
             </div>
+
+            <ThemeConfirmDialog
+                open={saveDialogOpen}
+                message="設定を保存しました！"
+                showCancel={false}
+                onConfirm={handleSaveDialogClose}
+                onCancel={handleSaveDialogClose}
+            />
+
+            <ThemeConfirmDialog
+                open={backDialogOpen}
+                message="保存せずに戻りますか？"
+                confirmLabel="戻る"
+                cancelLabel="キャンセル"
+                onConfirm={handleBackConfirm}
+                onCancel={() => setBackDialogOpen(false)}
+            />
+
+            <ThemeConfirmDialog
+                open={homeDialogOpen}
+                message="保存しますか？"
+                confirmLabel="OK"
+                cancelLabel="キャンセル"
+                onConfirm={handleHomeSaveAndGo}
+                onCancel={handleHomeGoWithoutSave}
+            />
         </AppFloatingWindow>
     );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./Settings_ocean.css";
@@ -6,12 +6,17 @@ import "../../components/ui/SettingsPart/SettingsPart_ocean.css";
 
 import SettingsPart_ocean from "../../components/ui/SettingsPart/SettingsPart_ocean";
 import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
+import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
 
 const SETTINGS_PASSTHROUGH = [
     ".app-floating-window",
     ".app-floating-shell",
     ".settings-page-container",
     ".settings-page-wrapper",
+    ".theme-confirm-overlay",
+    ".theme-confirm-dialog",
+    ".theme-confirm-btn",
+    ".theme-confirm-close",
 ];
 
 const Settings_ocean = () => {
@@ -34,26 +39,63 @@ const Settings_ocean = () => {
     const [is24h, setIs24h] = useState(savedSettings.is24h ?? true);
     const [volume, setVolume] = useState(savedSettings.volume ?? 50);
     const [isWarping, setIsWarping] = useState(false);
+    const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    const [backDialogOpen, setBackDialogOpen] = useState(false);
+    const [homeDialogOpen, setHomeDialogOpen] = useState(false);
 
-    const handleSave = () => {
+    const persistSettings = () => {
         const settings = { muted, volume, sec, tz, is24h };
         localStorage.setItem("user_settings", JSON.stringify(settings));
-        alert("設定を保存しました！");
-        navigate("/wallpaper_ocean");
+    };
+
+    const handleSave = () => {
+        persistSettings();
+        setSaveDialogOpen(true);
+    };
+
+    const closeSettings = useCallback(() => {
+        setSaveDialogOpen(false);
+        setBackDialogOpen(false);
+        setHomeDialogOpen(false);
+        navigate("/wallpaper_ocean", { replace: true });
+        if (!window.location.hash.includes("/wallpaper_ocean")) {
+            window.location.hash = "#/wallpaper_ocean";
+        }
+    }, [navigate]);
+
+    const handleSaveDialogClose = () => {
+        closeSettings();
     };
 
     const handleBack = () => {
-        if (window.confirm("保存せずに戻りますか？")) {
-            navigate("/wallpaper_ocean");
-        }
+        setBackDialogOpen(true);
+    };
+
+    const handleBackConfirm = () => {
+        setBackDialogOpen(false);
+        navigate("/wallpaper_ocean", { replace: true });
     };
 
     const handleGoHome = () => {
+        setHomeDialogOpen(true);
+    };
+
+    const handleHomeSaveAndGo = () => {
+        persistSettings();
+        setHomeDialogOpen(false);
+        navigate("/");
+    };
+
+    const handleHomeGoWithoutSave = () => {
+        setHomeDialogOpen(false);
         navigate("/");
     };
 
     return (
-        <AppFloatingWindow passthroughSelectors={SETTINGS_PASSTHROUGH}>
+        <AppFloatingWindow
+            passthroughSelectors={SETTINGS_PASSTHROUGH}
+            onDismiss={closeSettings}
+        >
             <div className="settings-page-wrapper ocean-theme">
                 <div className="bubble-layer">
                     {[...Array(25)].map((_, i) => (
@@ -119,6 +161,32 @@ const Settings_ocean = () => {
                     </div>
                 </div>
             </div>
+
+            <ThemeConfirmDialog
+                open={saveDialogOpen}
+                message="設定を保存しました！"
+                showCancel={false}
+                onConfirm={handleSaveDialogClose}
+                onCancel={handleSaveDialogClose}
+            />
+
+            <ThemeConfirmDialog
+                open={backDialogOpen}
+                message="保存せずに戻りますか？"
+                confirmLabel="戻る"
+                cancelLabel="キャンセル"
+                onConfirm={handleBackConfirm}
+                onCancel={() => setBackDialogOpen(false)}
+            />
+
+            <ThemeConfirmDialog
+                open={homeDialogOpen}
+                message="保存しますか？"
+                confirmLabel="OK"
+                cancelLabel="キャンセル"
+                onConfirm={handleHomeSaveAndGo}
+                onCancel={handleHomeGoWithoutSave}
+            />
         </AppFloatingWindow>
     );
 };

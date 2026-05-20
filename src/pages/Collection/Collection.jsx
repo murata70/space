@@ -48,7 +48,10 @@ export default function Collection() {
     const isOwned = (id) => owned.some((item) => item.id === id);
 
     return (
-        <AppFloatingWindow passthroughSelectors={COLLECTION_PASSTHROUGH}>
+        <AppFloatingWindow
+            passthroughSelectors={COLLECTION_PASSTHROUGH}
+            onDismiss={() => navigate("/wallpaper")}
+        >
             <div className="collection-wrap">
                 <div className="collection-main">
                     <h1 className="title">COLLECTION</h1>

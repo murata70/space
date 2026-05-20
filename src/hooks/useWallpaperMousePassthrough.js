@@ -49,6 +49,24 @@ function isOverInteractiveRegions(clientX, clientY, selectors, root) {
     return isOverInteractiveByElement(clientX, clientY, selectors, root);
 }
 
+/** 確認ダイアログ表示中は座標ずれで透過に戻さない */
+function hasBlockingOverlay(root) {
+    const scope = root || document;
+    return Boolean(
+        scope.querySelector?.(".theme-confirm-overlay") ||
+        document.querySelector(".theme-confirm-overlay")
+    );
+}
+
+function setInteractiveState(interactiveRef, interactive, setMouseInteractive, hasElectron) {
+    if (interactiveRef.current !== interactive) {
+        interactiveRef.current = interactive;
+        if (hasElectron) {
+            setMouseInteractive(interactive);
+        }
+    }
+}
+
 /**
  * 壁紙モード: カーソル位置で操作領域を検出し setIgnoreMouse でクリック可能にする
  */
@@ -74,6 +92,16 @@ export function useWallpaperMousePassthrough(
             const hasElectron =
                 typeof window.electron?.setIgnoreMouse === "function";
 
+            if (hasBlockingOverlay(root)) {
+                setInteractiveState(
+                    interactiveRef,
+                    true,
+                    setMouseInteractive,
+                    hasElectron
+                );
+                return;
+            }
+
             const interactive = isOverInteractiveRegions(
                 clientX,
                 clientY,
@@ -81,12 +109,12 @@ export function useWallpaperMousePassthrough(
                 root
             );
 
-            if (interactiveRef.current !== interactive) {
-                interactiveRef.current = interactive;
-                if (hasElectron) {
-                    setMouseInteractive(interactive);
-                }
-            }
+            setInteractiveState(
+                interactiveRef,
+                interactive,
+                setMouseInteractive,
+                hasElectron
+            );
 
             if (uiLayerHoveredSelectors.length > 0) {
                 const uiHover = isOverInteractiveRegions(

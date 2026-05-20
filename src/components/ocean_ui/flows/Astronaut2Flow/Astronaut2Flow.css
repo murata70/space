@@ -1,7 +1,7 @@
 ﻿/* レイアウト・演出は本ファイルのみ（ocean_layout.css 非依存） */
 /* background_road2(z-index:4) より手前、UI(z-index:20) より奥 */
 .astronaut2-flow {
-    position: absolute;
+    position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
@@ -18,11 +18,7 @@
 .astronaut2-dark {
     position: absolute;
     inset: 0;
-    background: radial-gradient(
-        circle at 75% 18%,
-        rgba(0, 0, 0, 0.08),
-        rgba(0, 0, 0, 0.42) 70%
-    );
+    background: radial-gradient( circle at 75% 18%, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.42) 70% );
     opacity: 0;
     animation: astronaut2DarkFade 35s ease forwards;
 }
@@ -30,25 +26,13 @@
 /* ② 空の右上がキラッと光る */
 .astronaut2-sparkle {
     position: absolute;
-    top: clamp(8%, calc(var(--ocean-vh) * 0.1), 12%);
-    right: clamp(10%, calc(var(--ocean-vw) * 0.14), 16%);
-    width: clamp(14px, calc(var(--ocean-vw) * 0.016), 20px);
-    height: clamp(14px, calc(var(--ocean-vw) * 0.016), 20px);
+    top: clamp(8%, 10vh, 12%);
+    right: clamp(10%, 14vw, 16%);
+    width: clamp(14px, 1.6vw, 20px);
+    height: clamp(14px, 1.6vw, 20px);
     background: #fff;
-    clip-path: polygon(
-        50% 0%,
-        58% 38%,
-        100% 50%,
-        58% 62%,
-        50% 100%,
-        42% 62%,
-        0% 50%,
-        42% 38%
-    );
-    box-shadow:
-        0 0 14px rgba(255, 255, 255, 0.95),
-        0 0 28px rgba(200, 230, 255, 0.8),
-        0 0 56px rgba(150, 210, 255, 0.55);
+    clip-path: polygon( 50% 0%, 58% 38%, 100% 50%, 58% 62%, 50% 100%, 42% 62%, 0% 50%, 42% 38% );
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.95), 0 0 28px rgba(200, 230, 255, 0.8), 0 0 56px rgba(150, 210, 255, 0.55);
     opacity: 0;
     pointer-events: none;
     z-index: 2;
@@ -72,7 +56,7 @@
 
 .astronaut2-image {
     display: block;
-    width: clamp(52px, calc(var(--ocean-vw) * 0.07), 72px);
+    width: clamp(52px, 7vw, 72px);
     height: auto;
     filter: drop-shadow(0 0 10px rgba(180, 220, 255, 0.35));
     transform-origin: center center;
@@ -117,24 +101,23 @@
 @keyframes astronaut2Approach {
     0% {
         opacity: 0;
-        transform: translate(calc(-50% + calc(var(--ocean-vw) * 0.3)), calc(-50% - calc(var(--ocean-vh) * 0.34))) scale(0.32);
+        transform: translate(calc(-50% + 30vw), calc(-50% - 34vh)) scale(0.32);
     }
 
     6% {
         opacity: 1;
-        transform: translate(calc(-50% + calc(var(--ocean-vw) * 0.28)), calc(-50% - calc(var(--ocean-vh) * 0.3))) scale(0.4);
+        transform: translate(calc(-50% + 28vw), calc(-50% - 30vh)) scale(0.4);
     }
 
     31% {
         opacity: 1;
-        transform: translate(calc(-50% + calc(var(--ocean-vw) * 0.14)), calc(-50% - calc(var(--ocean-vh) * 0.14))) scale(0.85);
+        transform: translate(calc(-50% + 14vw), calc(-50% - 14vh)) scale(0.85);
     }
 
     61% {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1.8);
     }
-
     /* 中央到達後は早めに拡大 */
     70% {
         opacity: 1;
@@ -150,7 +133,6 @@
         opacity: 1;
         transform: translate(-50%, -50%) scale(7.5);
     }
-
     /* フロー開始から約28s: 右へ退場開始 */
     87% {
         opacity: 1;
@@ -159,50 +141,50 @@
 
     96% {
         opacity: 1;
-        transform: translate(calc(-50% + calc(var(--ocean-vw) * 0.72)), -50%) scale(9);
+        transform: translate(calc(-50% + 72vw), -50%) scale(9);
     }
 
     100% {
         opacity: 1;
-        transform: translate(calc(-50% + calc(var(--ocean-vw) * 1.18)), -50%) scale(9);
+        transform: translate(calc(-50% + 118vw), -50%) scale(9);
     }
 }
 
 /* 移動中のゆらゆら（左右＋傾き） */
 @keyframes astronaut2Sway {
     0% {
-        transform: translateX(clamp(-32px, calc(var(--ocean-vw) * -0.03), -48px)) rotate(-9deg);
+        transform: translateX(clamp(-32px, -3vw, -48px)) rotate(-9deg);
     }
 
     20% {
-        transform: translateX(clamp(-14px, calc(var(--ocean-vw) * -0.015), -22px)) rotate(-4deg);
+        transform: translateX(clamp(-14px, -1.5vw, -22px)) rotate(-4deg);
     }
 
     40% {
-        transform: translateX(clamp(8px, calc(var(--ocean-vw) * 0.01), 12px)) rotate(2deg);
+        transform: translateX(clamp(8px, 1vw, 12px)) rotate(2deg);
     }
 
     60% {
-        transform: translateX(clamp(32px, calc(var(--ocean-vw) * 0.03), 48px)) rotate(9deg);
+        transform: translateX(clamp(32px, 3vw, 48px)) rotate(9deg);
     }
 
     80% {
-        transform: translateX(clamp(14px, calc(var(--ocean-vw) * 0.015), 22px)) rotate(4deg);
+        transform: translateX(clamp(14px, 1.5vw, 22px)) rotate(4deg);
     }
 
     100% {
-        transform: translateX(clamp(-32px, calc(var(--ocean-vw) * -0.03), -48px)) rotate(-9deg);
+        transform: translateX(clamp(-32px, -3vw, -48px)) rotate(-9deg);
     }
 }
 
 @media (max-width: 768px) {
     @keyframes astronaut2Approach {
         0% {
-            transform: translate(calc(-50% + calc(var(--ocean-vw) * 0.26)), calc(-50% - calc(var(--ocean-vh) * 0.3))) scale(0.32);
+            transform: translate(calc(-50% + 26vw), calc(-50% - 30vh)) scale(0.32);
         }
 
         6% {
-            transform: translate(calc(-50% + calc(var(--ocean-vw) * 0.24)), calc(-50% - calc(var(--ocean-vh) * 0.26))) scale(0.4);
+            transform: translate(calc(-50% + 24vw), calc(-50% - 26vh)) scale(0.4);
         }
 
         61% {
@@ -228,12 +210,12 @@
 
         96% {
             opacity: 1;
-            transform: translate(calc(-50% + calc(var(--ocean-vw) * 0.68)), -50%) scale(7.5);
+            transform: translate(calc(-50% + 68vw), -50%) scale(7.5);
         }
 
         100% {
             opacity: 1;
-            transform: translate(calc(-50% + calc(var(--ocean-vw) * 1.12)), -50%) scale(7.5);
+            transform: translate(calc(-50% + 112vw), -50%) scale(7.5);
         }
     }
 }
