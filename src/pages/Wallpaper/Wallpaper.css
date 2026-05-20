@@ -56,7 +56,7 @@
 }
 
 /* ========================================
-   UIエリア
+   UIエリア（修正版）
 ======================================== */
 
 .top-ui {
@@ -71,15 +71,43 @@
     padding: clamp(8px, 1vw, 10px) clamp(10px, 1.5vw, 15px);
     border-radius: clamp(10px, 1.5vw, 12px);
     backdrop-filter: blur(6px);
-    z-index: 10;
+    /* z-indexを10から9999へ引き上げ、他の要素に隠されないようにします */
+    z-index: 9999;
     max-width: calc(100vw - 20px);
     box-sizing: border-box;
+    /* 確実にマウスイベントを通す設定 */
+    pointer-events: auto;
 }
 
-.top-ui-actions {
-    display: flex;
-    align-items: center;
-    gap: clamp(6px, 1vw, 10px);
+/* （既存のスタイルはそのまま残してください） */
+
+/* ========================================
+   【追加】画面全体のUI操作用レイヤー
+======================================== */
+.wallpaper-ui-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10;
+    /* 最初は画面全体でマウスイベントを「完全に無視」させて背後のデスクトップを触らせる */
+    pointer-events: none;
+}
+
+/* 右上の .top-ui 自体は常にマウスに反応できるようにしておく
+   （これがないとMouseEnterイベント自体が起きなくなります）
+*/
+.top-ui {
+    pointer-events: auto;
+}
+
+/* マウスが右上エリアに乗った瞬間、画面全体のレイヤーを「マウスに反応する状態」にする。
+   これによってElectron内のReactウィンドウ全体がクリックを受け付けるようになり、
+   クリックイベントがデスクトップに突き抜けず、ボタンが確実に押せるようになります。
+*/
+.wallpaper-ui-layer.hovered {
+    pointer-events: auto;
 }
 
 /* ========================================
@@ -96,6 +124,7 @@
     cursor: pointer;
     transition: background 0.2s, transform 0.2s;
     flex-shrink: 0;
+    pointer-events: auto !important; /* ボタン自身も確実にクリック可能にする */
 }
 
 /* hover対応デバイスのみ */

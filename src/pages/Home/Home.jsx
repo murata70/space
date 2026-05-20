@@ -9,44 +9,40 @@ import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
 const Home = () => {
     const navigate = useNavigate();
 
-    /* 保存済み設定を取得 */
+    /* 安全にlocalStorageから設定を取得（不整合対策） */
     let savedSettings = {};
-
     try {
-        savedSettings =
-            JSON.parse(localStorage.getItem("user_settings")) || {};
+        const rawData = localStorage.getItem("user_settings");
+        if (rawData) {
+            savedSettings = JSON.parse(rawData) || {};
+        }
     } catch (error) {
         console.error("設定の読み込み失敗", error);
     }
 
     /* timezone防御 */
-    if (savedSettings.tz === "Asia/Osaka") {
+    if (savedSettings && savedSettings.tz === "Asia/Osaka") {
         savedSettings.tz = "Asia/Tokyo";
     }
 
-    /* state */
-    const [muted, setMuted] =
-        useState(savedSettings.muted ?? false);
-
-    const [volume, setVolume] =
-        useState(savedSettings.volume ?? 50);
-
-    const [sec, setSec] =
-        useState(savedSettings.sec ?? true);
-
-    const [tz, setTz] =
-        useState(savedSettings.tz ?? "Asia/Tokyo");
-
-    const [is24h, setIs24h] =
-        useState(savedSettings.is24h ?? true);
+    /* state 初期値の安全なフォールバック */
+    const [muted, setMuted] = useState(savedSettings?.muted ?? false);
+    const [volume, setVolume] = useState(savedSettings?.volume ?? 50);
+    const [sec, setSec] = useState(savedSettings?.sec ?? true);
+    const [tz, setTz] = useState(savedSettings?.tz ?? "Asia/Tokyo");
+    const [is24h, setIs24h] = useState(savedSettings?.is24h ?? true);
 
     /* 初期設定：起動時は壁紙化しない（通常の操作ウィンドウ） */
     useEffect(() => {
         if (
             window.electron &&
-            window.electron.setIgnoreMouse
+            typeof window.electron.setIgnoreMouse === "function"
         ) {
-            window.electron.setIgnoreMouse(false);
+            // 描画のバグを防ぐため、わずかに遅延させて透過を解除
+            const timer = setTimeout(() => {
+                window.electron.setIgnoreMouse(false);
+            }, 50);
+            return () => clearTimeout(timer);
         }
     }, []);
 
@@ -61,26 +57,27 @@ const Home = () => {
             is24h
         };
 
-        localStorage.setItem(
-            "user_settings",
-            JSON.stringify(settings)
-        );
+        try {
+            localStorage.setItem("user_settings", JSON.stringify(settings));
+        } catch (e) {
+            console.error("設定の保存に失敗しました", e);
+        }
 
-        // 先にWallpaper画面へ遷移
-        navigate("/wallpaper");
+        // 【修正】Electron(HashRouter)環境下での確実なルーティングのため、相対パス指定に変更
+        navigate("wallpaper");
 
         // 遷移完了後のタイミングでデスクトップ壁紙に動的設定
         setTimeout(() => {
             if (
                 window.electron &&
-                window.electron.attachWallpaper
+                typeof window.electron.attachWallpaper === "function"
             ) {
                 window.electron.attachWallpaper();
             }
 
             if (
                 window.electron &&
-                window.electron.setIgnoreMouse
+                typeof window.electron.setIgnoreMouse === "function"
             ) {
                 window.electron.setIgnoreMouse(true);
             }
@@ -89,7 +86,7 @@ const Home = () => {
 
     return (
         <div className="home-wrapper">
- 
+
             {/* 星空背景 */}
             <StarField />
 

@@ -1,7 +1,7 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// yC³zBrowserRouter ‚©‚ç HashRouter ‚É•ÏX
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 
-// yC³zƒCƒ“ƒ|[ƒgƒpƒX‚©‚ç "src/" ‚ğíœ‚µ‚Ü‚µ‚½ C³’†
 import Home from "./pages/Home/Home";
 import Wallpaper from "./pages/Wallpaper/Wallpaper";
 import Settings from "./pages/Settings/Settings";
@@ -16,6 +16,7 @@ function App() {
     const baseUrl = window.location.origin || "";
 
     return (
+        // yC³zRouteriHashRouterj‚ğg—p
         <Router>
             <Routes>
                 {/* ƒz[ƒ€‰æ–Ê */}
