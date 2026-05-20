@@ -8,25 +8,22 @@
 .wallpaper-ocean {
     /* 通過車・横断コレクション（道路レーン） */
     --ocean-lane-passing-top: clamp(52%, 55vh, 60%);
-    /* 馬車などやや上のレーン */
-    --ocean-lane-carriage-top: clamp(50%, 53vh, 58%);
+    /* エンドクレジット（旗バナー） */
+    --ocean-lane-flag-banner-top: clamp(72%, 76vh, 82%);
     /* レーシングカー */
     --ocean-lane-racing-top: clamp(44%, 48vh, 52%);
     --ocean-lane-racing-parked-top: clamp(48%, 52vh, 56%);
     /* 近未来車（やや上空寄り） */
     --ocean-lane-futuristic-top: clamp(26%, 30vh, 34%);
-    /* プレイヤー操作のメインカー */
-    --ocean-main-car-top: clamp(65%, 69vh, 74%);
-
     /* 車体・オブジェクト幅 */
     --ocean-width-xs: clamp(160px, 18vw, 240px);
     --ocean-width-sm: clamp(220px, 26vw, 330px);
     --ocean-width-md: clamp(280px, 34vw, 460px);
     --ocean-width-lg: clamp(340px, 40vw, 500px);
     --ocean-width-xl: clamp(420px, 48vw, 660px);
+    --ocean-width-flag-banner: clamp(1040px, 98vw, 1680px);
     --ocean-width-passing-wrap: clamp(260px, 30vw, 340px);
     --ocean-width-passing-img: clamp(170px, 22vw, 240px);
-    --ocean-width-main-car: clamp(120px, 16vw, 230px);
 
     /* 左端まで流し切る距離（要素幅＋画面幅） */
     --ocean-scroll-exit: calc(-100vw - 100%);
@@ -36,8 +33,8 @@
 @media (min-aspect-ratio: 21/9) {
     .wallpaper-ocean {
         --ocean-lane-passing-top: clamp(54%, 57vh, 62%);
-        --ocean-lane-carriage-top: clamp(52%, 55vh, 60%);
-        --ocean-main-car-top: clamp(67%, 70vh, 75%);
+        --ocean-lane-flag-banner-top: clamp(74%, 78vh, 84%);
+        --ocean-width-flag-banner: clamp(1080px, 99vw, 1720px);
     }
 }
 
@@ -45,8 +42,8 @@
 @media (max-aspect-ratio: 4/3) {
     .wallpaper-ocean {
         --ocean-lane-passing-top: clamp(50%, 53vh, 56%);
-        --ocean-lane-carriage-top: clamp(48%, 51vh, 54%);
-        --ocean-main-car-top: clamp(70%, 74vh, 80%);
+        --ocean-lane-flag-banner-top: clamp(70%, 74vh, 80%);
+        --ocean-width-flag-banner: clamp(980px, 96vw, 1560px);
     }
 }
 
@@ -54,11 +51,11 @@
 @media (max-height: 600px) {
     .wallpaper-ocean {
         --ocean-lane-passing-top: clamp(48%, 50vh, 54%);
-        --ocean-lane-carriage-top: clamp(46%, 48vh, 52%);
+        --ocean-lane-flag-banner-top: clamp(68%, 70vh, 76%);
+        --ocean-width-flag-banner: clamp(920px, 94vw, 1440px);
         --ocean-lane-racing-top: clamp(40%, 43vh, 47%);
         --ocean-lane-racing-parked-top: clamp(44%, 47vh, 51%);
         --ocean-lane-futuristic-top: clamp(22%, 26vh, 30%);
-        --ocean-main-car-top: clamp(62%, 66vh, 70%);
     }
 }
 

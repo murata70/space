@@ -1,6 +1,7 @@
+/* レイアウトは本ファイルのみ（ocean_layout.css 非依存） */
 .main-car-position {
     position: fixed;
-    top: var(--ocean-main-car-top);
+    top: clamp(64.5%, 68.5vh, 73.5%);
     left: clamp(40px, 20vw, 300px);
     transform: translateY(-50%);
     z-index: 2;
@@ -47,10 +48,28 @@
 }
 
 .main-car-image {
-    width: var(--ocean-width-main-car);
+    width: clamp(120px, 16vw, 230px);
     height: auto;
     object-fit: contain;
     pointer-events: auto;
+}
+
+@media (min-aspect-ratio: 21/9) {
+    .main-car-position {
+        top: clamp(66.5%, 69.5vh, 74.5%);
+    }
+}
+
+@media (max-aspect-ratio: 4/3) {
+    .main-car-position {
+        top: clamp(69.5%, 73.5vh, 79.5%);
+    }
+}
+
+@media (max-height: 600px) {
+    .main-car-position {
+        top: clamp(61.5%, 65.5vh, 69.5%);
+    }
 }
 
 @media (max-width: 768px) {

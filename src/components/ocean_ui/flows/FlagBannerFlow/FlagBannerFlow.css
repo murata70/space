@@ -1,14 +1,15 @@
 .flag-banner-flow {
     position: fixed;
-    top: var(--ocean-lane-passing-top);
+    top: var(--ocean-lane-flag-banner-top);
     left: 100%;
+    z-index: 3;
     pointer-events: none;
     transform: translateY(-50%);
     animation: flagBannerMove 15s linear forwards;
 }
 
 .flag-banner-image {
-    width: var(--ocean-width-md);
+    width: var(--ocean-width-flag-banner);
     height: auto;
 }
 
