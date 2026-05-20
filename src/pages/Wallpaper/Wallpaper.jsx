@@ -1,4 +1,4 @@
-﻿import React, { useState } from "react"; // 【修正】useState を追加
+﻿import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Wallpaper.css";
 
@@ -9,31 +9,20 @@ import Rocket from "../../components/ui/Rocket/Rocket";
 import FlowController from "../../components/ui/flows/FlowController";
 import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
 import BackGround from "../../components/ui/background_space/BackGround";
+import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
+
+const WALLPAPER_INTERACTIVE_SELECTORS = [".top-ui", ".rocket-position"];
 
 const Wallpaper = () => {
     const navigate = useNavigate();
-    // 【修正】マウスがUIエリアに乗っているかを管理する状態
-    const [isHovered, setIsHovered] = useState(false);
-
-    // UIエリア（時計やボタンの塊）に入った時
-    const handleMouseEnter = () => {
-        setIsHovered(true);
-        if (window.electron && window.electron.setIgnoreMouse) {
-            window.electron.setIgnoreMouse(false); // マウス透過解除（Electron側）
-        }
-    };
-
-    // UIエリアから出た時
-    const handleMouseLeave = () => {
-        setIsHovered(false);
-        if (window.electron && window.electron.setIgnoreMouse) {
-            window.electron.setIgnoreMouse(true); // マウス透過（Electron側）
-        }
-    };
+    const wallpaperRef = useRef(null);
+    const isHovered = useWallpaperMousePassthrough(
+        WALLPAPER_INTERACTIVE_SELECTORS,
+        wallpaperRef
+    );
 
     return (
-        <div className="wallpaper">
-            {/* 背景画像コンポーネント */}
+        <div className="wallpaper" ref={wallpaperRef}>
             <BackGround />
 
             <StarField />
@@ -42,15 +31,10 @@ const Wallpaper = () => {
             <FlowController />
             <Rocket />
 
-            {/* 【修正】画面全体を覆うインタラクション用のレイヤーを追加。
-              hoveredクラスによって、css側で全体のpointer-eventsを切り替えます。
-            */}
-            <div className={`wallpaper-ui-layer ${isHovered ? "hovered" : ""}`}>
-                <div
-                    className="top-ui"
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                >
+            <div
+                className={`wallpaper-ui-layer ${isHovered ? "hovered" : ""}`}
+            >
+                <div className="top-ui">
                     <Clock />
 
                     <div className="top-ui-actions">
