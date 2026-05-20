@@ -64,9 +64,10 @@ function resolveStartUrl() {
 }
 
 const HOME_WINDOW = { width: 1000, height: 700 };
-const WALLPAPER_ROUTES = new Set(['/wallpaper', '/wallpaper_ocean']);
-const APP_WINDOW_ROUTES = new Set([
-    '/',
+/** 壁紙を張ったままにするルート（設定・コレクション含む） */
+const WALLPAPER_ATTACHED_ROUTES = new Set([
+    '/wallpaper',
+    '/wallpaper_ocean',
     '/settings',
     '/collection',
     '/settings_ocean',
@@ -184,18 +185,20 @@ function syncWindowModeFromRoute() {
 
     const route = getHashRoute();
 
-    if (WALLPAPER_ROUTES.has(route)) {
+    if (WALLPAPER_ATTACHED_ROUTES.has(route)) {
         if (!win.wallpaperState?.isAttached) {
             attachAsWallpaper();
         } else {
             const virtual = getVirtualDesktopBounds();
             win.setBounds(virtual);
+            wallpaperMousePassthrough = true;
+            applyMousePassthrough(true);
             broadcastDisplayLayout();
         }
         return;
     }
 
-    if (APP_WINDOW_ROUTES.has(route)) {
+    if (route === '/') {
         ensureNormalAppWindow();
     }
 }

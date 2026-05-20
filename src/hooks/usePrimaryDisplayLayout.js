@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import { isWallpaperAttachedRoute } from "../constants/wallpaperRoutes";
 
-function applyLayoutToElement(el, layout) {
+export function applyLayoutToElement(el, layout) {
     if (!el || !layout?.primary) return;
     const { primary } = layout;
     el.style.setProperty("--primary-offset-x", `${primary.offsetX}px`);
@@ -34,4 +35,38 @@ export function usePrimaryDisplayLayout(rootRef) {
             window.removeEventListener("resize", onResize);
         };
     }, [rootRef]);
+}
+
+/** 壁紙モード中は :root にメインディスプレイ矩形を反映（全ルートで .primary-monitor-ui が使える） */
+export function useAppPrimaryDisplayLayout(pathname) {
+    const enabled = isWallpaperAttachedRoute(pathname);
+
+    useEffect(() => {
+        if (!enabled) return undefined;
+
+        const apply = (layout) =>
+            applyLayoutToElement(document.documentElement, layout);
+
+        window.electron?.getDisplayLayout?.().then(apply);
+
+        const unsubscribe = window.electron?.onDisplayLayoutChanged?.(apply);
+
+        const onResize = () => {
+            window.electron?.getDisplayLayout?.().then(apply);
+        };
+        window.addEventListener("resize", onResize);
+
+        return () => {
+            unsubscribe?.();
+            window.removeEventListener("resize", onResize);
+        };
+    }, [enabled, pathname]);
+}
+
+/** ルート変更時にメインプロセスへ壁紙モードを再同期 */
+export function useWallpaperRouteSync(pathname) {
+    useEffect(() => {
+        if (!isWallpaperAttachedRoute(pathname)) return;
+        window.electron?.attachWallpaper?.();
+    }, [pathname]);
 }

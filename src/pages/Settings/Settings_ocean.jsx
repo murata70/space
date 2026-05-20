@@ -5,12 +5,19 @@ import "./Settings_ocean.css";
 import "../../components/ui/SettingsPart/SettingsPart_ocean.css";
 
 import SettingsPart_ocean from "../../components/ui/SettingsPart/SettingsPart_ocean";
+import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
+
+const SETTINGS_PASSTHROUGH = [
+    ".app-floating-window",
+    ".app-floating-shell",
+    ".settings-page-container",
+    ".settings-page-wrapper",
+];
 
 const Settings_ocean = () => {
     const navigate = useNavigate();
 
     let savedSettings = {};
-
     try {
         savedSettings = JSON.parse(localStorage.getItem("user_settings")) || {};
     } catch (error) {
@@ -46,70 +53,73 @@ const Settings_ocean = () => {
     };
 
     return (
-        <div className="settings-page-wrapper ocean-theme">
+        <AppFloatingWindow passthroughSelectors={SETTINGS_PASSTHROUGH}>
+            <div className="settings-page-wrapper ocean-theme">
+                <div className="bubble-layer">
+                    {[...Array(25)].map((_, i) => (
+                        <span
+                            key={i}
+                            className="bubble"
+                            style={{
+                                left: `${Math.random() * 100}%`,
+                                animationDuration: `${6 + Math.random() * 8}s`,
+                                animationDelay: `${Math.random() * 5}s`,
+                                width: `${10 + Math.random() * 25}px`,
+                                height: `${10 + Math.random() * 25}px`,
+                            }}
+                        />
+                    ))}
+                </div>
 
-            <div className="bubble-layer">
-                {[...Array(25)].map((_, i) => (
-                    <span
-                        key={i}
-                        className="bubble"
-                        style={{
-                            left: `${Math.random() * 100}%`,
-                            animationDuration: `${6 + Math.random() * 8}s`,
-                            animationDelay: `${Math.random() * 5}s`,
-                            width: `${10 + Math.random() * 25}px`,
-                            height: `${10 + Math.random() * 25}px`,
+                <div className="settings-page-container ocean-theme">
+                    <h2
+                        className={`settings-title ${isWarping ? "warp-mode" : ""}`}
+                        onClick={() => {
+                            setIsWarping(true);
+                            setTimeout(() => setIsWarping(false), 5000);
                         }}
+                    >
+                        OCEAN SETTINGS
+                    </h2>
+
+                    <SettingsPart_ocean
+                        muted={muted}
+                        setMuted={setMuted}
+                        volume={volume}
+                        setVolume={setVolume}
+                        sec={sec}
+                        setSec={setSec}
+                        is24h={is24h}
+                        setIs24h={setIs24h}
+                        tz={tz}
+                        setTz={setTz}
                     />
-                ))}
-            </div>
 
-            <div className="settings-page-container ocean-theme">
-                <h2
-                    className={`settings-title ${isWarping ? "warp-mode" : ""}`}
-                    onClick={() => {
-                        setIsWarping(true);
-                        setTimeout(() => setIsWarping(false), 5000);
-                    }}
-                >
-                    OCEAN SETTINGS
-                </h2>
+                    <div className="button-group">
+                        <button
+                            className="settings-btn primaryBtn"
+                            onClick={handleSave}
+                        >
+                            登録（保存）
+                        </button>
 
-                <SettingsPart_ocean
-                    muted={muted}
-                    setMuted={setMuted}
-                    volume={volume}
-                    setVolume={setVolume}
-                    sec={sec}
-                    setSec={setSec}
-                    is24h={is24h}
-                    setIs24h={setIs24h}
-                    tz={tz}
-                    setTz={setTz}
-                />
+                        <button
+                            className="settings-btn backBtn"
+                            onClick={handleBack}
+                        >
+                            ← 壁紙へ戻る🌊
+                        </button>
 
-                <div className="button-group">
-                    <button className="settings-btn primaryBtn" onClick={handleSave}>
-                        登録（保存）
-                    </button>
-
-                    <button className="settings-btn backBtn" onClick={handleBack}>
-                        ← 壁紙へ戻る🌊
-                    </button>
-
-                    <button className="settings-btn homeBtn" onClick={handleGoHome}>
-                        🏠 ホームへ
-                    </button>
-
-                    {/*<button*/}
-                    {/*    className="settings-btn debugBtn"*/}
-                    {/*    onClick={() => navigate("/settings")}*/}
-                    {/*>*/}
-                    {/*    🌌 宇宙Settingsへ（デバッグ）*/}
-                    {/*</button>*/}
+                        <button
+                            className="settings-btn homeBtn"
+                            onClick={handleGoHome}
+                        >
+                            🏠 ホームへ
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </AppFloatingWindow>
     );
 };
 

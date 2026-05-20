@@ -27,3 +27,16 @@
     position: absolute;
     max-width: 100%;
 }
+
+.app-floating-shell {
+    z-index: 20;
+}
+
+.app-floating-shell .primary-monitor-ui {
+    z-index: 21;
+    pointer-events: none;
+}
+
+.app-floating-shell .app-floating-window {
+    pointer-events: auto;
+}
