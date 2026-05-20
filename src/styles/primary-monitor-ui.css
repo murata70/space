@@ -1,0 +1,29 @@
+/* メインモニター内だけに UI を載せる（背景レイヤーは壁紙全体のまま） */
+.primary-monitor-ui {
+    position: fixed;
+    left: var(--primary-offset-x, 0px);
+    top: var(--primary-offset-y, 0px);
+    width: var(--primary-width, 100vw);
+    height: var(--primary-height, 100vh);
+    z-index: 15;
+    pointer-events: none;
+    overflow: visible;
+    box-sizing: border-box;
+}
+
+.primary-monitor-ui .wallpaper-ui-layer {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+}
+
+.primary-monitor-ui .top-ui {
+    position: absolute;
+}
+
+.primary-monitor-ui .rocket-position,
+.primary-monitor-ui .main-car-position {
+    position: absolute;
+    max-width: 100%;
+}

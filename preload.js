@@ -1,6 +1,12 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electron', {
+    getDisplayLayout: () => ipcRenderer.invoke('get-display-layout'),
+    onDisplayLayoutChanged: (callback) => {
+        const handler = (_event, layout) => callback(layout);
+        ipcRenderer.on('display-layout-changed', handler);
+        return () => ipcRenderer.removeListener('display-layout-changed', handler);
+    },
     setIgnoreMouse: (ignore) => ipcRenderer.send('set-ignore-mouse', ignore),
     attachWallpaper: () => ipcRenderer.send('attach-wallpaper'),
     detachWallpaper: () => ipcRenderer.send('detach-wallpaper'),

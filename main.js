@@ -63,6 +63,71 @@ function resolveStartUrl() {
     return 'http://localhost:3000';
 }
 
+const HOME_WINDOW = { width: 1000, height: 700 };
+const WALLPAPER_ROUTES = new Set(['/wallpaper', '/wallpaper_ocean']);
+const APP_WINDOW_ROUTES = new Set([
+    '/',
+    '/settings',
+    '/collection',
+    '/settings_ocean',
+    '/collection_ocean',
+]);
+
+function getVirtualDesktopBounds() {
+    const displays = screen.getAllDisplays();
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+
+    displays.forEach((display) => {
+        const { x, y, width, height } = display.bounds;
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x + width);
+        maxY = Math.max(maxY, y + height);
+    });
+
+    return {
+        x: minX,
+        y: minY,
+        width: maxX - minX,
+        height: maxY - minY,
+    };
+}
+
+function getPrimaryDisplayLayout() {
+    const virtual = getVirtualDesktopBounds();
+    const primary = screen.getPrimaryDisplay().bounds;
+
+    return {
+        virtual,
+        primary: {
+            x: primary.x,
+            y: primary.y,
+            width: primary.width,
+            height: primary.height,
+            offsetX: primary.x - virtual.x,
+            offsetY: primary.y - virtual.y,
+        },
+    };
+}
+
+function broadcastDisplayLayout() {
+    if (!win?.webContents) return;
+    win.webContents.send('display-layout-changed', getPrimaryDisplayLayout());
+}
+
+function centerWindowOnPrimary(width, height) {
+    const primary = screen.getPrimaryDisplay().bounds;
+    return {
+        x: Math.round(primary.x + (primary.width - width) / 2),
+        y: Math.round(primary.y + (primary.height - height) / 2),
+        width,
+        height,
+    };
+}
+
 function ensureNormalAppWindow() {
     if (!win) return;
 
@@ -80,10 +145,59 @@ function ensureNormalAppWindow() {
     win.setSkipTaskbar?.(false);
     win.setAlwaysOnTop(false);
     win.setResizable(false);
-    win.setBounds({ width: 1000, height: 700 });
-    win.center();
+    win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
     win.show();
     win.focus();
+    broadcastDisplayLayout();
+}
+
+function attachAsWallpaper() {
+    if (!eaw || !win) {
+        console.warn('壁紙化モジュール、またはウィンドウが有効ではありません。');
+        return false;
+    }
+
+    try {
+        const virtual = getVirtualDesktopBounds();
+        win.setResizable(true);
+        win.setBounds(virtual);
+        win.setSkipTaskbar(true);
+        eaw.attach(win, {
+            transparent: true,
+            forwardMouseInput: true,
+            forwardKeyboardInput: false,
+        });
+        win.setOpacity(1.0);
+        win.show();
+        wallpaperMousePassthrough = true;
+        applyMousePassthrough(true);
+        broadcastDisplayLayout();
+        return true;
+    } catch (err) {
+        console.error('壁紙化失敗:', err);
+        return false;
+    }
+}
+
+function syncWindowModeFromRoute() {
+    if (!win) return;
+
+    const route = getHashRoute();
+
+    if (WALLPAPER_ROUTES.has(route)) {
+        if (!win.wallpaperState?.isAttached) {
+            attachAsWallpaper();
+        } else {
+            const virtual = getVirtualDesktopBounds();
+            win.setBounds(virtual);
+            broadcastDisplayLayout();
+        }
+        return;
+    }
+
+    if (APP_WINDOW_ROUTES.has(route)) {
+        ensureNormalAppWindow();
+    }
 }
 
 function initDatabase() {
@@ -149,26 +263,22 @@ function createWindow() {
 
     win.loadURL(startUrl);
 
-    win.webContents.on('did-finish-load', () => {
-        const route = getHashRoute();
-        if (route === '/' || route === '') {
-            ensureNormalAppWindow();
-        }
-    });
+    win.webContents.on('did-finish-load', () => syncWindowModeFromRoute());
+    win.webContents.on('did-navigate-in-page', () => syncWindowModeFromRoute());
 
-    // 【修正】万が一React側が応答しなくても、1.5秒後に強制的にウィンドウを表示させる安全タイマー
     const forceShowTimeout = setTimeout(() => {
         if (win && !win.isVisible()) {
-            console.warn("ready-to-show が発火しなかったため、強制表示します。");
-            win.center();
+            console.warn('ready-to-show が発火しなかったため、強制表示します。');
+            win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
             win.show();
         }
     }, 1500);
 
     win.once('ready-to-show', () => {
         clearTimeout(forceShowTimeout);
-        win.center();
+        win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
         win.show();
+        syncWindowModeFromRoute();
     });
 }
 
@@ -258,32 +368,10 @@ ipcMain.on('end-rocket-interaction', () => {
 });
 
 ipcMain.on('attach-wallpaper', () => {
-    if (eaw && win) {
-        try {
-            const { bounds } = screen.getPrimaryDisplay();
-            win.setResizable(true);
-            win.setBounds({
-                x: bounds.x,
-                y: bounds.y,
-                width: bounds.width,
-                height: bounds.height,
-            });
-            eaw.attach(win, {
-                transparent: true,
-                forwardMouseInput: true,
-                forwardKeyboardInput: false,
-            });
-            win.setOpacity(1.0);
-            win.show();
-            wallpaperMousePassthrough = true;
-            applyMousePassthrough(true);
-        } catch (e) {
-            console.error("壁紙化失敗:", e);
-        }
-    } else {
-        console.warn("壁紙化モジュール、またはウィンドウが有効ではありません。");
-    }
+    attachAsWallpaper();
 });
+
+ipcMain.handle('get-display-layout', () => getPrimaryDisplayLayout());
 
 ipcMain.on('update-hit-regions', (event, regions) => {
     normalizedHitRegions = Array.isArray(regions) ? regions : [];
@@ -330,6 +418,15 @@ ipcMain.on('quit-app', () => app.quit());
 app.whenReady().then(() => {
     initDatabase();
     createWindow();
+
+    screen.on('display-metrics-changed', () => {
+        if (!win) return;
+        if (win.wallpaperState?.isAttached) {
+            win.setBounds(getVirtualDesktopBounds());
+        }
+        broadcastDisplayLayout();
+        syncWindowModeFromRoute();
+    });
 });
 
 app.on('window-all-closed', () => {
