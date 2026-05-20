@@ -9,10 +9,147 @@
     justify-content: center;
     align-items: flex-start;
     padding-top: clamp(40px, 10vh, 80px);
-    background: linear-gradient( to bottom, rgba(173, 216, 230, 0.9), rgba(0, 191, 255, 0.7) );
-    background-size: 200% 200%;
+/*    background: radial-gradient( circle at top left, rgba(255,255,255,0.35), transparent 30% ), linear-gradient( 160deg, #bde9ff 0%, #89d8ff 20%, #58c7ef 45%, #2ea6d7 70%, #1f7fb8 100% );*/
+    
+    
+    background:linear-gradient( 180deg, #bde9ff 0%, #58c7ef 55%, #2ea6d7 75%, #f3dfb2 100% );
+    
+    
+    background-size: 300% 300%;
     animation: waterWave 15s ease-in-out infinite alternate;
     backdrop-filter: blur(2px);
+    position: relative;
+    overflow: hidden;
+}
+
+    /* 波 */
+    /*.settings-page-wrapper.ocean-theme::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 200%;
+        height: 220px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='white' fill-opacity='0.18' d='M0,160L60,170.7C120,181,240,203,360,197.3C480,192,600,160,720,144C840,128,960,128,1080,149.3C1200,171,1320,213,1380,234.7L1440,256L1440,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: repeat-x;
+        background-size: 50% 100%;
+        opacity: 0.7;
+        animation: waveMove 18s linear infinite;
+        pointer-events: none;
+    }*/
+
+    /* 波打ち際 */
+    /*.settings-page-wrapper.ocean-theme::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 260px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='white' fill-opacity='0.35' d='M0,224L48,208C96,192,192,160,288,165.3C384,171,480,213,576,224C672,235,768,213,864,186.7C960,160,1056,128,1152,133.3C1248,139,1344,181,1392,202.7L1440,224L1440,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-size: cover;
+        opacity: 0.65;
+        animation: shorelineWave 8s ease-in-out infinite alternate;
+        pointer-events: none;
+        filter: blur(2px);
+    }*/
+
+/*@keyframes shorelineWave {
+    0% {
+        transform: translateY(0px);
+    }
+
+    100% {
+        transform: translateY(12px);
+    }
+}*/
+
+
+
+
+/*@keyframes waveMove {
+    0% {
+        transform: translateY(0px) scaleY(1);
+    }
+
+    50% {
+        transform: translateY(12px) scaleY(1.03);
+    }
+
+    100% {
+        transform: translateY(0px) scaleY(1);
+    }
+}*/
+
+
+    /* 波の光 */
+    /*.settings-page-wrapper.ocean-theme::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-radial-gradient( circle at 50% 50%, rgba(255,255,255,0.10) 0px, rgba(255,255,255,0.04) 12px, transparent 24px );
+        opacity: 0.35;
+        animation: oceanLight 18s linear infinite;
+        pointer-events: none;
+    }*/
+
+@keyframes oceanLight {
+    0% {
+        transform: translateX(0px) translateY(0px);
+    }
+
+    50% {
+        transform: translateX(-20px) translateY(10px);
+    }
+
+    100% {
+        transform: translateX(0px) translateY(0px);
+    }
+}
+
+/* ===== 泡レイヤー ===== */
+
+.bubble-layer {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 泡 */
+.bubble {
+    position: absolute;
+    bottom: -80px;
+    width: 3px !important;
+    /*height: 4px !important;*/
+    border-radius: 50%;
+    background: radial-gradient( circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,255,255,0.15) 60%, rgba(255,255,255,0.05) );
+    opacity: 0.6;
+    animation-name: bubbleFloat;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+@keyframes bubbleFloat {
+    0% {
+        transform: translateY(0) translateX(0) scale(0.8);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: translateY(-50vh) translateX(20px) scale(1);
+    }
+
+    100% {
+        transform: translateY(-110vh) translateX(-20px) scale(1.15);
+        opacity: 0;
+    }
 }
 
 /* コンテナ */
@@ -25,14 +162,14 @@
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
-    background: linear-gradient(to bottom, rgba(173,216,230,0.6), rgba(0,191,255,0.5));
+    background: rgba(255,255,255,0.14);
     background-size: 200% 200%;
     animation: containerWave 12s ease-in-out infinite alternate;
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(14px);
     position: relative;
     overflow: hidden;
     z-index: 10;
-    border: 1px solid rgba(150, 200, 255, 0.3);
+    border: 1px solid rgba(255,255,255,0.28);
 }
 
 /* ゆらぎアニメーション（背景） */
@@ -87,7 +224,7 @@
 
 /* タイトル */
 .settings-page-container.ocean-theme .settings-title {
-    color: #2b3a42;
+    color: #33cc33;
     text-shadow: 0 0 8px rgba(0,120,255,0.4);
     text-align: center;
     width: 100%;
@@ -181,7 +318,7 @@
 }
 
     .settings-page-container.ocean-theme .text-btn.active {
-        color: #1e88e5;
+       color: #ffffff;
     }
 
 /* ===== mute button ===== */
@@ -200,35 +337,35 @@
     flex-direction: column; /* 縦並び */
     align-items: center; /* 中央揃え */
     gap: 9px;
+    width: 100%;
 }
 
 /* ===== 共通ボタンスタイル ===== */
 .settings-page-container.ocean-theme .settings-btn {
-    width: min(100%, 320px);
+    width: 320px;
+    max-width: 100%;
     padding: 15px 20px;
     border-radius: 10px;
     font-weight: bold;
     transition: 0.2s;
     cursor: pointer;
-    color: inherit; /* 個別で上書き */
-    background: inherit; /* 個別で上書き */
+    color: inherit;
+    background: inherit;
+    display: block;
 }
 
 /* ===== 個別ボタン色指定 ===== */
 .settings-page-container.ocean-theme .primaryBtn {
-    background: rgba(30, 136, 229, 0.6) !important; /* 柔らかめ青 */
-    color: #ffffff;
-    border: 1px solid rgba(21, 101, 192, 0.6);
+    background: linear-gradient( 180deg, rgba(40,140,255,0.55), rgba(0,90,200,0.45) ) !important;
+    border: 1px solid rgba(180,220,255,0.35);
 }
 
     .settings-page-container.ocean-theme .primaryBtn:hover {
-        background: #1565c0;
+        background: linear-gradient( 180deg, rgba(60,160,255,0.7), rgba(0,110,220,0.55) ) !important;
     }
 
 .settings-page-container.ocean-theme .backBtn {
-    background: rgba(102, 187, 255, 0.5) !important; /* 浅い水色 */
-    color: #ffffff;
-    border: 1px solid rgba(79, 195, 247, 0.5);
+    background: linear-gradient( 180deg, rgba(120,220,255,0.45), rgba(70,180,255,0.35) ) !important;
 }
 
     .settings-page-container.ocean-theme .backBtn:hover {
@@ -236,9 +373,7 @@
     }
 
 .settings-page-container.ocean-theme .homeBtn {
-    background: rgba(100, 200, 160, 0.5) !important; /* 海藻っぽいグリーン寄り */
-    color: #ffffff;
-    border: 1px solid rgba(67, 160, 71, 0.5);
+    background: linear-gradient( 180deg, rgba(110,240,210,0.45), rgba(40,180,150,0.35) ) !important;
 }
 
     .settings-page-container.ocean-theme .homeBtn:hover {

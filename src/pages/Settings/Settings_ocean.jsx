@@ -47,6 +47,23 @@ const Settings_ocean = () => {
 
     return (
         <div className="settings-page-wrapper ocean-theme">
+
+            <div className="bubble-layer">
+                {[...Array(25)].map((_, i) => (
+                    <span
+                        key={i}
+                        className="bubble"
+                        style={{
+                            left: `${Math.random() * 100}%`,
+                            animationDuration: `${6 + Math.random() * 8}s`,
+                            animationDelay: `${Math.random() * 5}s`,
+                            width: `${10 + Math.random() * 25}px`,
+                            height: `${10 + Math.random() * 25}px`,
+                        }}
+                    />
+                ))}
+            </div>
+
             <div className="settings-page-container ocean-theme">
                 <h2
                     className={`settings-title ${isWarping ? "warp-mode" : ""}`}
@@ -84,12 +101,12 @@ const Settings_ocean = () => {
                         🏠 ホームへ
                     </button>
 
-                    <button
-                        className="settings-btn debugBtn"
-                        onClick={() => navigate("/settings")}
-                    >
-                        🌌 宇宙Settingsへ（デバッグ）
-                    </button>
+                    {/*<button*/}
+                    {/*    className="settings-btn debugBtn"*/}
+                    {/*    onClick={() => navigate("/settings")}*/}
+                    {/*>*/}
+                    {/*    🌌 宇宙Settingsへ（デバッグ）*/}
+                    {/*</button>*/}
                 </div>
             </div>
         </div>
