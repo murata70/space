@@ -11,7 +11,11 @@ import SpaceDust from "../../components/ui/SpaceDust/SpaceDust";
 import BackGround from "../../components/ui/background_space/BackGround";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
-const WALLPAPER_PASSTHROUGH_SELECTORS = [".top-ui", ".rocket-position"];
+const WALLPAPER_PASSTHROUGH_SELECTORS = [
+    ".top-ui",
+    ".rocket-position",
+    ".rocket-wrapper",
+];
 const WALLPAPER_UI_HOVER_SELECTORS = [".top-ui"];
 
 const Wallpaper = () => {

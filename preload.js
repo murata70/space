@@ -3,6 +3,9 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('electron', {
     setIgnoreMouse: (ignore) => ipcRenderer.send('set-ignore-mouse', ignore),
     attachWallpaper: () => ipcRenderer.send('attach-wallpaper'),
+    detachWallpaper: () => ipcRenderer.send('detach-wallpaper'),
+    beginRocketInteraction: () => ipcRenderer.send('begin-rocket-interaction'),
+    endRocketInteraction: () => ipcRenderer.send('end-rocket-interaction'),
     updateHitRegions: (regions) => ipcRenderer.send('update-hit-regions', regions),
     startHitTest: () => ipcRenderer.send('start-hit-test'),
     stopHitTest: () => ipcRenderer.send('stop-hit-test'),

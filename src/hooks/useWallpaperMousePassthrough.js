@@ -10,45 +10,20 @@ function isPointInRect(x, y, rect) {
     );
 }
 
+/** elementFromPoint で透過領域判定（壁紙の座標系と一致） */
 function isOverInteractiveRegions(clientX, clientY, selectors, root) {
     const scope = root || document;
+    const el = document.elementFromPoint(clientX, clientY);
+    if (!el || !scope.contains(el)) return false;
+
     for (const selector of selectors) {
-        const el = scope.querySelector(selector);
-        if (!el) continue;
-        if (isPointInRect(clientX, clientY, el.getBoundingClientRect())) {
-            return true;
-        }
+        if (el.closest(selector)) return true;
     }
     return false;
 }
 
-function collectNormalizedRegions(selectors, root) {
-    const scope = root || document;
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    if (!w || !h) return [];
-
-    return selectors
-        .map((selector) => {
-            const el = scope.querySelector(selector);
-            if (!el) return null;
-            const r = el.getBoundingClientRect();
-            return {
-                left: r.left / w,
-                top: r.top / h,
-                right: r.right / w,
-                bottom: r.bottom / h,
-            };
-        })
-        .filter(Boolean);
-}
-
 /**
- * 壁紙モードの操作領域を管理する。
- * - passthroughSelectors: Electron のマウス透過を解除する領域（ボタン・ロケット等）
- * - uiLayerHoveredSelectors: wallpaper-ui-layer の hovered を付ける領域（右上 UI のみ）
- *
- * Electron ではメインプロセスのカーソル監視で透過を切り替え（mousemove 非依存）。
+ * 壁紙モード: mousemove（forward）で操作領域を検出し setIgnoreMouse でクリック可能にする
  */
 export function useWallpaperMousePassthrough(
     { passthroughSelectors, uiLayerHoveredSelectors = [] },
@@ -56,37 +31,21 @@ export function useWallpaperMousePassthrough(
 ) {
     const [isUiLayerHovered, setIsUiLayerHovered] = useState(false);
     const uiHoveredRef = useRef(false);
-    const usesMainHitTest =
-        typeof window.electron?.updateHitRegions === "function";
+    const interactiveRef = useRef(false);
 
     const passthroughKey = passthroughSelectors.join("|");
     const uiHoverKey = uiLayerHoveredSelectors.join("|");
 
-    const publishRegions = useCallback(() => {
-        if (!usesMainHitTest) return;
-        const root = rootRef?.current ?? null;
-        const regions = collectNormalizedRegions(passthroughSelectors, root);
-        window.electron.updateHitRegions(regions);
-    }, [usesMainHitTest, passthroughKey, rootRef, passthroughSelectors]);
-
-    const applyRendererPassthrough = useCallback(
-        (interactive) => {
-            if (usesMainHitTest) return;
-            if (typeof window.electron?.setIgnoreMouse === "function") {
-                window.electron.setIgnoreMouse(!interactive);
-            }
-        },
-        [usesMainHitTest]
-    );
+    const setMouseInteractive = useCallback((interactive) => {
+        if (typeof window.electron?.setIgnoreMouse !== "function") return;
+        window.electron.setIgnoreMouse(!interactive);
+    }, []);
 
     useEffect(() => {
-        if (usesMainHitTest) {
-            window.electron.startHitTest?.();
-        } else if (typeof window.electron?.setIgnoreMouse === "function") {
-            window.electron.setIgnoreMouse(true);
-        }
+        const hasElectron = typeof window.electron?.setIgnoreMouse === "function";
 
         uiHoveredRef.current = false;
+        interactiveRef.current = false;
         setIsUiLayerHovered(false);
 
         const updateFromPoint = (clientX, clientY) => {
@@ -98,7 +57,13 @@ export function useWallpaperMousePassthrough(
                 passthroughSelectors,
                 root
             );
-            applyRendererPassthrough(interactive);
+
+            if (interactiveRef.current !== interactive) {
+                interactiveRef.current = interactive;
+                if (hasElectron) {
+                    setMouseInteractive(interactive);
+                }
+            }
 
             if (uiLayerHoveredSelectors.length > 0) {
                 const uiHover = isOverInteractiveRegions(
@@ -115,27 +80,17 @@ export function useWallpaperMousePassthrough(
         };
 
         const onMouseMove = (e) => updateFromPoint(e.clientX, e.clientY);
-        const onPointerDown = (e) => updateFromPoint(e.clientX, e.clientY);
+        const onPointerMove = (e) => updateFromPoint(e.clientX, e.clientY);
 
-        window.addEventListener("mousemove", onMouseMove);
-        window.addEventListener("pointermove", onMouseMove);
-        window.addEventListener("pointerdown", onPointerDown, true);
-        window.addEventListener("resize", publishRegions);
-
-        publishRegions();
-        const regionTimer = setInterval(publishRegions, 500);
+        window.addEventListener("mousemove", onMouseMove, { passive: true });
+        window.addEventListener("pointermove", onPointerMove, { passive: true });
 
         return () => {
             window.removeEventListener("mousemove", onMouseMove);
-            window.removeEventListener("pointermove", onMouseMove);
-            window.removeEventListener("pointerdown", onPointerDown, true);
-            window.removeEventListener("resize", publishRegions);
-            clearInterval(regionTimer);
+            window.removeEventListener("pointermove", onPointerMove);
 
-            if (usesMainHitTest) {
-                window.electron.stopHitTest?.();
-            } else if (typeof window.electron?.setIgnoreMouse === "function") {
-                window.electron.setIgnoreMouse(false);
+            if (hasElectron) {
+                setMouseInteractive(false);
             }
         };
     }, [
@@ -144,10 +99,14 @@ export function useWallpaperMousePassthrough(
         rootRef,
         passthroughSelectors,
         uiLayerHoveredSelectors,
-        applyRendererPassthrough,
-        publishRegions,
-        usesMainHitTest,
+        setMouseInteractive,
     ]);
+
+    useEffect(() => {
+        if (isUiLayerHovered) {
+            setMouseInteractive(true);
+        }
+    }, [isUiLayerHovered, setMouseInteractive]);
 
     return { isUiLayerHovered };
 }
