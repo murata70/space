@@ -1,35 +1,77 @@
 ﻿/* FuturisticCarFlow.css */
 
-/* 画面全体ラッパー（inset: 0）。z-index 6 は background_road2(z-index:4) より手前に出すため */
+/* 画面全体ラッパー（レイアウトルールに準拠） */
 .futuristic-car-flow {
     position: fixed;
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-    z-index: 6;
+    z-index: 5; /* 4〜6の範囲内に配置 */
 }
 
-/* 車体：右端外から道路レーン上を横断（共通トークン --ocean-lane-futuristic-top） */
+/* 
+  車体ラッパー:
+  さらに「もう少しだけ上」の走行ラインに合わせるため、
+  ベースの加算値を「+4%」に引き上げて微調整しました。
+*/
 .futuristic-car-body {
     position: absolute;
-    top: var(--ocean-lane-futuristic-top);
+    top: calc(var(--ocean-lane-futuristic-top) + 4%);
     left: 100%;
     will-change: transform;
-    animation: futuristicCarDriveMove 9s linear forwards;
+    /* 11秒間で「進入 -> 中央停止 -> 後退 -> 急加速離脱」の既存演出をそのまま維持 */
+    animation: futuristicCarDriveMove 11s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
+/* 車体画像：既存のサイズ・質感を維持 */
 .futuristic-car-image {
-    width: clamp(220px, 36vw, 560px);
+    width: clamp(240px, 35vw, 520px);
     height: auto;
-    filter: drop-shadow(0 0 12px rgba(0, 243, 255, 0.9)) drop-shadow(0 0 25px rgba(0, 243, 255, 0.5));
+    filter: drop-shadow(0 0 12px rgba(0, 243, 255, 0.8)) drop-shadow(0 0 25px rgba(0, 243, 255, 0.4));
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
+/* アニメーション：既存の動き・速度（いい感じの挙動）を100%維持 */
 @keyframes futuristicCarDriveMove {
-    from {
-        transform: translateY(-50%) translateX(0);
+    0% {
+        transform: translateY(0) translateX(0);
+    }
+    /* 1. 画面中央付近までスムーズに進入 */
+    30% {
+        transform: translateY(0) translateX(-50vw);
+    }
+    /* 2. 画面中央で一時停止 */
+    50% {
+        transform: translateY(0) translateX(-50vw);
+    }
+    /* 3. エンジンをふかすように少しだけ後退 */
+    62% {
+        transform: translateY(0) translateX(-46vw);
+    }
+    /* 4. 一気に加速して画面左外へ離脱 */
+    85%, 100% {
+        transform: translateY(0) translateX(calc(var(--ocean-scroll-exit) - 200px));
+    }
+}
+
+/* レスポンシブ対応：各解像度でも浮き沈みせず、調整した高さの比率をキープ */
+@media (max-width: 1024px) {
+    .futuristic-car-body {
+        top: calc(var(--ocean-lane-futuristic-top) + 5%);
     }
 
-    to {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
+    .futuristic-car-image {
+        width: clamp(200px, 32vw, 380px);
+    }
+}
+
+@media (max-width: 768px) {
+    .futuristic-car-body {
+        top: calc(var(--ocean-lane-futuristic-top) + 6%);
+    }
+
+    .futuristic-car-image {
+        width: 180px;
     }
 }

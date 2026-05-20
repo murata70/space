@@ -4,21 +4,23 @@ import "./SupermanFlow.css";
 const publicUrl = process.env.PUBLIC_URL || "";
 
 export default function SupermanFlow({ onComplete }) {
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onComplete?.();
-    }, 11000);
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (onComplete) onComplete();
+        }, 85000);
 
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+        return () => clearTimeout(timer);
+    }, [onComplete]);
 
-  return (
-    <div className="superman-flow">
-      <img
-        src={`${publicUrl}/assets/ocean_image/collections/superman.png`}
-        alt="superman"
-        className="superman-image"
-      />
-    </div>
-  );
+    return (
+        <div className="superman-flow-wrapper">
+            <div className="superman-image-wrap">
+                <img
+                    className="superman-flow-image"
+                    src={`${publicUrl}/assets/image/collections/superman.png`}
+                    alt="superman"
+                />
+            </div>
+        </div>
+    );
 }

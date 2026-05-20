@@ -1,17 +1,41 @@
+﻿/* VintageCarFlow.css */
+
+/* 画面全体ラッパー（レイアウトルールに準拠） */
 .vintage-car-flow {
     position: fixed;
-    top: var(--ocean-lane-passing-top);
-    left: 100%;
+    inset: 0;
     pointer-events: none;
-    transform: translateY(-50%);
-    animation: vintageCarMove 12s linear forwards;
+    overflow: hidden;
+    z-index: 5; /* 4〜6の範囲内に配置 */
 }
 
+/* 
+  車体コンテナ: 
+  位置はそのまま：確定した完璧な走行ライン基準（+15.5%）を100%維持しています。
+  18秒かけて画面を水平に横断する、優雅な移動アニメーションを適用します。
+*/
+.vintage-car-body {
+    position: absolute;
+    top: calc(var(--ocean-lane-passing-top) + 15.5%); /* 確定した道路位置基準をそのままキープ */
+    left: 100%;
+    will-change: transform;
+    transform: translateY(-50%);
+    animation: vintageCarMove 18s linear forwards;
+}
+
+/* 
+  車体画像:
+  上下の動きを完全に止め、一切揺れない静かな水平移動に変更しました。
+*/
 .vintage-car-image {
     width: var(--ocean-width-sm);
     height: auto;
+    display: block;
+    user-select: none;
+    -webkit-user-drag: none;
 }
 
+/* 横移動アニメーション（車よりのんびり、ゆったりと通り抜ける） */
 @keyframes vintageCarMove {
     from {
         transform: translateY(-50%) translateX(0);
@@ -19,5 +43,18 @@
 
     to {
         transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
+    }
+}
+
+/* レスポンシブ対応：各画面解像度でも確定ライン基準の比率を綺麗に維持 */
+@media (max-width: 1024px) {
+    .vintage-car-body {
+        top: calc(var(--ocean-lane-passing-top) + 16.5%);
+    }
+}
+
+@media (max-width: 768px) {
+    .vintage-car-body {
+        top: calc(var(--ocean-lane-passing-top) + 17.5%);
     }
 }

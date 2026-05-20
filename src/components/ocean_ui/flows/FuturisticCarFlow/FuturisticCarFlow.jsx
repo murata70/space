@@ -6,21 +6,25 @@ const publicUrl = process.env.PUBLIC_URL || "";
 
 export default function FuturisticCarFlow({ onComplete }) {
     useEffect(() => {
-        const timer = setTimeout(() => {
-            onComplete?.();
-        }, 9000);
+        // アニメーション全体の時間（11秒）と完全に同期させてonCompleteを呼び出す
+        const futuristicCarTimer = setTimeout(() => {
+            if (onComplete) onComplete();
+        }, 11000);
 
-        return () => clearTimeout(timer);
+        return () => {
+            clearTimeout(futuristicCarTimer);
+        };
     }, [onComplete]);
 
     return (
         <div className="futuristic-car-flow">
-            {/* 移動アニメは .futuristic-car-body に付与。img 直付けだと transform が画像側で上書きされるためラッパーを挟む */}
+            {/* 既存の構造を維持し、移動アニメーションをこのラッパーに適用 */}
             <div className="futuristic-car-body">
                 <img
                     src={`${publicUrl}/assets/ocean_image/collections/futuristic_car.png`}
                     alt="futuristic car"
                     className="futuristic-car-image"
+                    draggable="false"
                 />
             </div>
         </div>
