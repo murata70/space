@@ -10,13 +10,12 @@
     --ocean-vh: var(--primary-height, 100vh);
 }
 
-/* 壁紙ページ: 仮想デスクトップ上のメインモニター矩形 */
+/* 壁紙ページ: ウィンドウ＝メインモニター1画面分 */
 .wallpaper-ocean > .ocean-background-primary {
-    position: fixed;
-    left: var(--primary-offset-x, 0);
-    top: var(--primary-offset-y, 0);
-    width: var(--ocean-vw);
-    height: var(--ocean-vh);
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
     z-index: 0;
     box-sizing: border-box;

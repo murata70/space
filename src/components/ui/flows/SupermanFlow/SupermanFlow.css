@@ -1,22 +1,20 @@
 .superman-flow-wrapper {
-    position: fixed;
+    position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
     z-index: 30;
 }
 
-/* 本体 */
 .superman-image-wrap {
-    position: fixed;
-    left: -20vw;
+    position: absolute;
+    left: calc(var(--space-vw, 100vw) * -0.15);
     top: 58%;
-    width: 140px;
+    width: clamp(96px, calc(var(--space-vw, 100vw) * 0.12), 160px);
     z-index: 30;
     animation: supermanMove 18s linear forwards;
 }
 
-/* 画像 */
 .superman-flow-image {
     display: block;
     width: 100%;
@@ -25,21 +23,17 @@
     animation: supermanFloat 0.2s infinite alternate;
 }
 
-/* 横移動 */
 @keyframes supermanMove {
-
     from {
-        left: -15vw;
+        left: calc(var(--space-vw, 100vw) * -0.15);
     }
 
     to {
-        left: 110vw;
+        left: calc(var(--space-vw, 100vw) * 1.1);
     }
 }
 
-/* 揺れ */
 @keyframes supermanFloat {
-
     from {
         transform: scaleX(-1) translateY(0px);
     }

@@ -9,7 +9,7 @@ export default function SupermanFlow({ onComplete }) {
             if (onComplete) {
                 onComplete();
             }
-        }, 85000);
+        }, 18000);
 
         return () => clearTimeout(timer);
     }, [onComplete]);

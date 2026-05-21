@@ -71,42 +71,23 @@ const WALLPAPER_ATTACHED_ROUTES = new Set([
     '/collection_ocean',
 ]);
 
-function getVirtualDesktopBounds() {
-    const displays = screen.getAllDisplays();
-    let minX = Infinity;
-    let minY = Infinity;
-    let maxX = -Infinity;
-    let maxY = -Infinity;
-
-    displays.forEach((display) => {
-        const { x, y, width, height } = display.bounds;
-        minX = Math.min(minX, x);
-        minY = Math.min(minY, y);
-        maxX = Math.max(maxX, x + width);
-        maxY = Math.max(maxY, y + height);
-    });
-
-    return {
-        x: minX,
-        y: minY,
-        width: maxX - minX,
-        height: maxY - minY,
-    };
+/** 壁紙モードのウィンドウはメインモニターだけを覆う */
+function getWallpaperWindowBounds() {
+    return screen.getPrimaryDisplay().bounds;
 }
 
 function getPrimaryDisplayLayout() {
-    const virtual = getVirtualDesktopBounds();
     const primary = screen.getPrimaryDisplay().bounds;
 
     return {
-        virtual,
+        virtual: { ...primary },
         primary: {
             x: primary.x,
             y: primary.y,
             width: primary.width,
             height: primary.height,
-            offsetX: primary.x - virtual.x,
-            offsetY: primary.y - virtual.y,
+            offsetX: 0,
+            offsetY: 0,
         },
     };
 }
@@ -177,9 +158,9 @@ function attachAsWallpaper() {
     }
 
     try {
-        const virtual = getVirtualDesktopBounds();
+        const wallpaperBounds = getWallpaperWindowBounds();
         win.setResizable(true);
-        win.setBounds(virtual);
+        win.setBounds(wallpaperBounds);
         win.setSkipTaskbar(true);
         eaw.attach(win, {
             transparent: true,
@@ -219,10 +200,10 @@ function syncWindowModeFromRoute() {
         if (!win.wallpaperState?.isAttached) {
             attachAsWallpaper();
         } else {
-            const virtual = getVirtualDesktopBounds();
+            const wallpaperBounds = getWallpaperWindowBounds();
             const current = win.getBounds();
-            if (!boundsEqual(current, virtual)) {
-                win.setBounds(virtual);
+            if (!boundsEqual(current, wallpaperBounds)) {
+                win.setBounds(wallpaperBounds);
             }
             wallpaperMousePassthrough = true;
             applyMousePassthrough(true);
@@ -343,6 +324,18 @@ ipcMain.handle('get-cursor-client-point', () => {
 // アプリケーションのライフサイクル
 app.whenReady().then(() => {
     createWindow();
+
+    screen.on('display-metrics-changed', () => {
+        if (!win || win.isDestroyed()) return;
+        if (win.wallpaperState?.isAttached) {
+            const wallpaperBounds = getWallpaperWindowBounds();
+            const current = win.getBounds();
+            if (!boundsEqual(current, wallpaperBounds)) {
+                win.setBounds(wallpaperBounds);
+            }
+        }
+        broadcastDisplayLayout();
+    });
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow();

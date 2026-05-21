@@ -151,19 +151,19 @@
 /* ★移動担当だけ */
 .superman-image-wrap {
     position: absolute;
-    width: clamp(110px, calc(var(--ocean-vw) * 0.14), 240px);
+    width: clamp(96px, calc(var(--ocean-vw) * 0.12), 160px);
     left: calc(var(--ocean-vw) * -0.3);
     top: 55%;
     will-change: left, top;
     animation: supermanFlowMove 85s linear forwards;
 }
 
-/* ★画像は反転のみ */
 .superman-flow-image {
+    display: block;
     width: 100%;
+    height: auto;
     transform: scaleX(-1);
-    will-change: transform;
-    animation: supermanFlowMove 85s linear forwards;
+    animation: supermanFloat 2.5s ease-in-out infinite;
 }
 
 /* ★メイン移動 */
