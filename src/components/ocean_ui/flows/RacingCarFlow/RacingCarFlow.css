@@ -15,8 +15,7 @@
 .racing-car-body {
     position: absolute;
     top: clamp(69%, 73vh, 79%);
-    left: 100%; /* ←これ戻す（超重要） */
-
+    left: 100%;
     transform: translateY(-50%);
     animation: racingCarMove 5.2s linear forwards;
 }
@@ -29,7 +28,7 @@
     position: relative;
     width: clamp(220px, 24vw, 340px);
     height: auto;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.35));
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.35));
 }
 
 /* =========================
@@ -60,7 +59,7 @@
         height: 3px;
         margin: 12px 0;
         border-radius: 999px;
-        background: linear-gradient( to left, rgba(255,255,255,0.8), rgba(255,255,255,0) );
+        background: linear-gradient( to left, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) );
         filter: blur(1.5px);
         transform-origin: right center;
         animation: racingLinePulse 0.25s infinite alternate, racingLineAppear 8s forwards;
@@ -83,15 +82,15 @@
 ========================= */
 
 @keyframes racingCarMove {
-    /* 馬車と同じ右外スタート */
+    /* 右外から登場 */
     0% {
         transform: translateY(-50%) translateX(0);
     }
-    /* 超速で突っ込む（ここで勝負決まる） */
+    /* 一気に突っ込む */
     8% {
         transform: translateY(-50%) translateX(-60vw) scaleY(0.985);
     }
-    /* もう消える直前 */
+    /* 左へ抜ける */
     100% {
         transform: translateY(-50%) translateX(calc(-100vw - 140%)) scaleY(1.01);
     }
@@ -104,27 +103,34 @@
 @keyframes racingCarEngineVibe {
 
     0% {
-        transform: rotate(-0.2deg);
+        transform: rotate(-0.2deg) translateY(0);
     }
 
     50% {
         transform: rotate(0.2deg) translateY(-1px);
     }
 
-    18.75% {
-        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
-        top: var(--ocean-lane-racing-top);
+    100% {
+        transform: rotate(-0.2deg) translateY(0);
+    }
+}
+
+/* =========================
+   スピードライン点滅
+========================= */
+
+@keyframes racingLinePulse {
+
+    0% {
+        opacity: 0.35;
+        transform: scaleX(0.9);
     }
 
-    25% {
-        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
-        top: var(--ocean-lane-racing-parked-top);
+    100% {
+        opacity: 1;
+        transform: scaleX(1);
     }
-
-    87.5% {
-        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
-        top: var(--ocean-lane-racing-parked-top);
-    }
+}
 
 /* =========================
    最初だけ線表示
@@ -140,14 +146,24 @@
         opacity: 1;
     }
 
+    100% {
+        opacity: 1;
+    }
+}
+
+/* =========================
+   Engine Vibe A
+========================= */
+
 @keyframes racingCarEngineVibeA {
+
     0%, 49.9% {
-        transform: translateY(clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px));
+        transform: translateY( clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px) );
         opacity: 1;
     }
 
     50%, 99.9% {
-        transform: translateY(clamp(1px, calc(var(--ocean-vh) * 0.1), 1px));
+        transform: translateY( clamp(1px, calc(var(--ocean-vh) * 0.1), 1px) );
         opacity: 0;
     }
 }
@@ -163,14 +179,19 @@
     }
 }
 
+/* =========================
+   Engine Vibe B
+========================= */
+
 @keyframes racingCarEngineVibeB {
+
     0%, 49.9% {
-        transform: translateY(clamp(1px, calc(var(--ocean-vh) * 0.1), 1px));
+        transform: translateY( clamp(1px, calc(var(--ocean-vh) * 0.1), 1px) );
         opacity: 0;
     }
 
     50%, 99.9% {
-        transform: translateY(clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px));
+        transform: translateY( clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px) );
         opacity: 1;
     }
 }
