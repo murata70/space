@@ -1,240 +1,50 @@
-/*.superman-flow-wrapper {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 5;
-}*/
-
-/* ★本体（動き担当） */
-/*.superman-image-wrap {
-    position: fixed;
-    width: clamp(140px, 18vw, 320px);
-    height: auto;
-    left: -30vw;
-    top: 50%;
-    will-change: left, top, transform;
-    animation: supermanFlowMove 85s linear forwards;
-}*/
-
-/* ★追加：反転専用レイヤー */
-/*.superman-flow-image {*/
-    /* 反転はここでは禁止（上書きされるため） */
-/*}*/
-
-/* ★新規：画像だけ反転するラッパー */
-/*.superman-flow-image {
-    transform: none;
-}*/
-
-/* 実際の解決：疑似要素ではなく filter を使う */
-/*.superman-flow-image {
-    filter: none;
-}*/
-
-/* ✔ 最重要：ここで画像だけ反転 */
-/*.superman-flow-image {
-    -webkit-transform: scaleX(-1);
-    transform: scaleX(-1);
-    animation: supermanFloat 2.5s ease-in-out infinite;
-}*/
-
-/* メイン移動（変更なし） */
-/*@keyframes supermanFlowMove {
-    0% {
-        left: -30vw;
-        top: 55%;
-       transform: scaleX(-1) translateY(0px);
-    }
-
-    10% {
-        left: 45vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(0px);
-    }
-
-    15% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(-10px);
-    }
-
-    20% {
-        left: 45vw;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    25% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(-8px);
-    }
-
-    30% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(8px);
-    }
-
-    35% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(-6px);
-    }
-
-    40% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(6px);
-    }
-
-    45% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(-5px);
-    }
-
-    50% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(5px);
-    }
-
-    55% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(-4px);
-    }
-
-    60% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(4px);
-    }
-
-    65% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(-3px);
-    }
-
-    70% {
-        left: 48vw;
-        top: 50%;
-        transform: translateY(-50%) translateY(3px);
-    }
-
-    75% {
-        left: 45vw;
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    100% {
-        left: 120vw;
-        top: -20vh;
-        transform: translateY(-50%) translateY(0px);
-    }
-
-
-}*/
-
 .superman-flow-wrapper {
     position: fixed;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    z-index: 5;
+    z-index: 30;
 }
 
-/* ★移動担当だけ */
+/* 本体 */
 .superman-image-wrap {
     position: fixed;
-    width: clamp(110px, 14vw, 240px);
-    left: -30vw;
-    top: 55%;
-    will-change: left, top;
-    animation: supermanFlowMove 85s linear forwards;
+    left: -20vw;
+    top: 58%;
+    width: 140px;
+    z-index: 30;
+    animation: supermanMove 18s linear forwards;
 }
 
-/* ★画像は反転のみ */
+/* 画像 */
 .superman-flow-image {
+    display: block;
     width: 100%;
+    height: auto;
     transform: scaleX(-1);
-    will-change: transform;
-    animation: supermanFlowMove 85s linear forwards;
+    animation: supermanFloat 0.2s infinite alternate;
 }
 
-/* ★メイン移動 */
-@keyframes supermanFlowMove {
-    0% {
-        left: -30vw;
-        top: 40%;
+/* 横移動 */
+@keyframes supermanMove {
+
+    from {
+        left: -15vw;
     }
 
-    20% {
-        left: 10vw;
-        top: 40%;
-    }
-
-    /* ゆっくり漂う */
-    40% {
-        left: 14vw;
-        top: 39%;
-    }
-
-    60% {
-        left: 28vw;
-        top: 38%;
-    }
-
-    /* ★ここから一気に加速 */
-    68% {
-        left: 85vw;
-        top: 12%;
-    }
-
-/*    85% {*/
-/*        left: 105vw;
-        top: 0%;
-    }*/
-
-    100% {
-        left: 180vw;
-        top: -30vh;
-/*        transform: scale(0.7)*/
+    to {
+        left: 110vw;
     }
 }
 
-/* ★上下ふわふわ */
+/* 揺れ */
 @keyframes supermanFloat {
 
-    0% {
+    from {
         transform: scaleX(-1) translateY(0px);
     }
 
-    15% {
-        transform: scaleX(-1) translateY(-8px);
-    }
-
-    30% {
-        transform: scaleX(-1) translateY(6px);
-    }
-
-    45% {
-        transform: scaleX(-1) translateY(-10px);
-    }
-
-    60% {
-        transform: scaleX(-1) translateY(5px);
-    }
-
-    75% {
-        transform: scaleX(-1) translateY(-6px);
-    }
-
-    100% {
-        transform: scaleX(-1) translateY(0px);
+    to {
+        transform: scaleX(-1) translateY(-4px);
     }
 }

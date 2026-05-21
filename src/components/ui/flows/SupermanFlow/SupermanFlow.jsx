@@ -6,7 +6,9 @@ const publicUrl = process.env.PUBLIC_URL || "";
 export default function SupermanFlow({ onComplete }) {
     useEffect(() => {
         const timer = setTimeout(() => {
-            if (onComplete) onComplete();
+            if (onComplete) {
+                onComplete();
+            }
         }, 85000);
 
         return () => clearTimeout(timer);
@@ -19,6 +21,7 @@ export default function SupermanFlow({ onComplete }) {
                     className="superman-flow-image"
                     src={`${publicUrl}/assets/image/collections/superman.png`}
                     alt="superman"
+                    draggable="false"
                 />
             </div>
         </div>

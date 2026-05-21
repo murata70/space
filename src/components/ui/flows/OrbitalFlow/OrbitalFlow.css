@@ -6,57 +6,68 @@
     inset: 0;
     pointer-events: none;
     overflow: hidden;
-    z-index: 5; /* 規定の 4〜6 範囲内 */
+    z-index: 5;
 }
 
-/* 人工衛星本体：巨大サイズで視認性を向上 */
+/* 人工衛星本体 */
 .orbital-flow-unit {
     position: absolute;
-    /* topはJSX側のインラインスタイルで動的に適用 */
-    left: var(--space-vw);
+    /* 右画面外から開始 */
+    left: 100vw;
     width: 550px;
     height: auto;
-    will-change: transform;
-    /* 右から左へ一直線にゆっくり進む（infiniteは禁止） */
+    will-change: transform, opacity;
+    /* 右から左へ */
     animation: orbitalPassMove 35s linear forwards;
-    /* メタリックな質感を出すための発光と、わずかな傾きで宇宙空間を表現 */
+    /* 発光 */
     filter: drop-shadow(0 0 15px rgba(0, 200, 255, 0.3));
-    transform: rotate(-5deg);
     user-select: none;
     -webkit-user-drag: none;
 }
 
-/* 直線移動アニメーション */
+/* 移動アニメーション */
 @keyframes orbitalPassMove {
+
     0% {
-        /* 初期位置：右端の外側。わずかな傾きを維持 */
         transform: translateX(0) translateY(0px) rotate(-5deg);
+        opacity: 1;
     }
 
     20% {
         transform: translateX(calc(-20vw - 120px)) translateY(-12px) rotate(-4deg);
+        opacity: 1;
     }
 
     40% {
         transform: translateX(calc(-40vw - 240px)) translateY(8px) rotate(-6deg);
+        opacity: 1;
     }
 
     60% {
         transform: translateX(calc(-60vw - 360px)) translateY(-10px) rotate(-5deg);
+        opacity: 1;
     }
 
     80% {
         transform: translateX(calc(-80vw - 480px)) translateY(6px) rotate(-4deg);
+        opacity: 1;
+    }
+
+    96% {
+        transform: translateX(calc(-96vw - 820px)) translateY(2px) rotate(-5deg);
+        opacity: 1;
     }
 
     100% {
-        /* 終点：左端の外側まで。画像サイズ(550px)＋画面幅分移動 */
-        transform: translateX(calc(-var(--space-vw) - 600px)) translateY(0px) rotate(-5deg)
+        /* 左の完全外 */
+        transform: translateX(calc(-100vw - 900px)) translateY(0px) rotate(-5deg);
+        opacity: 0;
     }
 }
 
-/*ふわふわ*/
+/* ふわふわ */
 @keyframes orbitalFloatMove {
+
     0% {
         transform: translateY(0px) rotate(-5deg);
     }
@@ -79,18 +90,5 @@
 
     100% {
         transform: translateY(0px) rotate(-5deg);
-    }
-}
-
-/* レスポンシブ対応 */
-@media (max-width: 1024px) {
-    .orbital-flow-unit {
-        width: 400px;
-    }
-}
-
-@media (max-width: 768px) {
-    .orbital-flow-unit {
-        width: 280px;
     }
 }
