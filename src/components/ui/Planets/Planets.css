@@ -4,7 +4,7 @@
 ========================= */
 
 .planet-layer {
-    position: fixed;
+    position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
@@ -35,7 +35,7 @@
     }
 
     to {
-        transform: translateX( calc( -var(--space-vw) - var(--planet-size, 200px) ) );
+        transform: translateX(calc(-1 * var(--space-vw, 100vw) - var(--planet-size, 200px)));
     }
 }
 
