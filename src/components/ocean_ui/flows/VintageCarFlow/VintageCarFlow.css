@@ -2,7 +2,7 @@
 
 /* 画面全体ラッパー（レイアウトルールに準拠） */
 .vintage-car-flow {
-    position: fixed;
+    position: absolute;
     inset: 0;
     pointer-events: none;
     overflow: hidden;

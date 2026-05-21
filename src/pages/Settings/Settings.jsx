@@ -1,86 +1,109 @@
 /* ===== Settings.jsx ===== */
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./Settings.css"
-import StarField from "../../components/ui/StarField/StarField";
+import "./Settings.css";
 import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
+import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
+import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
+
+const SETTINGS_PASSTHROUGH = [
+    ".app-floating-window",
+    ".app-floating-shell",
+    ".settings-page-container",
+    ".theme-confirm-overlay",
+    ".theme-confirm-dialog",
+    ".theme-confirm-btn",
+    ".theme-confirm-close",
+];
 
 const Settings = () => {
     const navigate = useNavigate();
 
-    /* 保存済み設定を取得 */
-        let savedSettings = {};
-
+    let savedSettings = {};
     try {
         savedSettings =
             JSON.parse(localStorage.getItem("user_settings")) || {};
     } catch (error) {
         console.error("設定の読み込み失敗", error);
     }
-    /* 東京から大阪に自動変換 */
+
     if (savedSettings.tz === "Asia/Osaka") {
         savedSettings.tz = "Asia/Tokyo";
     }
 
-    /* state */
-    const [muted, setMuted] =
-        useState(savedSettings.muted ?? false);
+    const [muted, setMuted] = useState(savedSettings.muted ?? false);
+    const [sec, setSec] = useState(savedSettings.sec ?? true);
+    const [tz, setTz] = useState(savedSettings.tz ?? "Asia/Tokyo");
+    const [is24h, setIs24h] = useState(savedSettings.is24h ?? true);
+    const [volume, setVolume] = useState(savedSettings.volume ?? 50);
+    const [isWarping, setIsWarping] = useState(false);
+    const [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    const [backDialogOpen, setBackDialogOpen] = useState(false);
+    const [homeDialogOpen, setHomeDialogOpen] = useState(false);
 
-    const [sec, setSec] =
-        useState(savedSettings.sec ?? true);
-
-    const [tz, setTz] =
-        useState(savedSettings.tz ?? "Asia/Tokyo");
-
-    const [is24h, setIs24h] =
-        useState(savedSettings.is24h ?? true);
-
-    const [volume, setVolume] = useState(
-        savedSettings.volume ?? 50
-    );
-
-    /* 保存 */
-    const handleSave = () => {
-        const settings = {
-            muted,
-            volume,
-            sec,
-            tz,
-            is24h
-        };
+    const persistSettings = () => {
+        const settings = { muted, volume, sec, tz, is24h };
         localStorage.setItem("user_settings", JSON.stringify(settings));
-        alert("設定を保存しました！");
-        navigate("/wallpaper");
     };
-    //戻る(壁紙へ)
-    const handleBack = () => {
-        if (window.confirm("保存せずに戻りますか？")) {
-            navigate("/wallpaper");
+
+    const handleSave = () => {
+        persistSettings();
+        setSaveDialogOpen(true);
+    };
+
+    const closeSettings = useCallback(() => {
+        setSaveDialogOpen(false);
+        setBackDialogOpen(false);
+        setHomeDialogOpen(false);
+        navigate("/wallpaper", { replace: true });
+        if (!window.location.hash.includes("/wallpaper")) {
+            window.location.hash = "#/wallpaper";
         }
+    }, [navigate]);
+
+    const handleSaveDialogClose = () => {
+        closeSettings();
     };
-    //Homeに戻る
+
+    const handleBack = () => {
+        setBackDialogOpen(true);
+    };
+
+    const handleBackConfirm = () => {
+        setBackDialogOpen(false);
+        navigate("/wallpaper", { replace: true });
+    };
+
     const handleGoHome = () => {
+        setHomeDialogOpen(true);
+    };
+
+    const handleHomeSaveAndGo = () => {
+        persistSettings();
+        setHomeDialogOpen(false);
         navigate("/");
     };
-    /* 遊び部分 */
-    const [isWarping, setIsWarping] = useState(false);
+
+    const handleHomeGoWithoutSave = () => {
+        setHomeDialogOpen(false);
+        navigate("/");
+    };
+
     const handleTitleClick = () => {
         setIsWarping(true);
-        // 1秒後にアニメーション状態を解除
         setTimeout(() => setIsWarping(false), 1000);
     };
 
     return (
-        <>
-            <StarField />
-
-            {/* 遊び部分 */}
-            {/* 【修正箇所】CSSと名前を統一 */}
+        <AppFloatingWindow
+            passthroughSelectors={SETTINGS_PASSTHROUGH}
+            onDismiss={closeSettings}
+        >
             <div className="settings-page-container space-theme">
                 <h2
                     className={`settings-title ${isWarping ? "warp-mode" : ""}`}
                     onClick={handleTitleClick}
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    style={{ cursor: "pointer", userSelect: "none" }}
                 >
                     SPACE SETTINGS
                 </h2>
@@ -98,29 +121,54 @@ const Settings = () => {
                     setTz={setTz}
                 />
 
-                {/* ボタン群の配置を整理 */}
                 <div className="button-group">
-                    <button className="settings-btn primaryBtn" onClick={handleSave}>
+                    <button
+                        className="settings-btn primaryBtn"
+                        onClick={handleSave}
+                    >
                         登録（保存）
                     </button>
-                    <button className="settings-btn backBtn" onClick={handleBack}>
+                    <button
+                        className="settings-btn backBtn"
+                        onClick={handleBack}
+                    >
                         ← 壁紙へ戻る🚀
                     </button>
-                    <button className="settings-btn homeBtn" onClick={handleGoHome}>
+                    <button
+                        className="settings-btn homeBtn"
+                        onClick={handleGoHome}
+                    >
                         🏠 ホームへ
                     </button>
-
-                    {/*<button*/}
-                    {/*    className="settings-btn oceanBtn"*/}
-                    {/*    onClick={() => navigate("/settings_ocean")}*/}
-                    {/*>*/}
-                    {/*    🌊 OCEAN SETTINGSへ*/}
-                    {/*</button>*/}
-
                 </div>
-
             </div>
-        </>
+
+            <ThemeConfirmDialog
+                open={saveDialogOpen}
+                message="設定を保存しました！"
+                showCancel={false}
+                onConfirm={handleSaveDialogClose}
+                onCancel={handleSaveDialogClose}
+            />
+
+            <ThemeConfirmDialog
+                open={backDialogOpen}
+                message="保存せずに戻りますか？"
+                confirmLabel="戻る"
+                cancelLabel="キャンセル"
+                onConfirm={handleBackConfirm}
+                onCancel={() => setBackDialogOpen(false)}
+            />
+
+            <ThemeConfirmDialog
+                open={homeDialogOpen}
+                message="保存しますか？"
+                confirmLabel="OK"
+                cancelLabel="キャンセル"
+                onConfirm={handleHomeSaveAndGo}
+                onCancel={handleHomeGoWithoutSave}
+            />
+        </AppFloatingWindow>
     );
 };
 

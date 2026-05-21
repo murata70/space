@@ -1,9 +1,10 @@
-.ship-flow {
-    position: fixed;
-    /* 少し下 */
-    top: 44%;
-    /* 左外スタート */
-    left: -30%;
+
+
+    /*    top: var(--ocean-lane-passing-top);*/
+    .ship-flow {
+    position: absolute;
+    top: 20%;
+    left: -20%;
     pointer-events: none;
     transform: translateY(-50%);
     /* 少し長めでゆったり */

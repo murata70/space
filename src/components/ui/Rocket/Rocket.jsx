@@ -15,19 +15,11 @@ const turboEffects = [
 
 export default function Rocket() {
     const publicUrl = process.env.PUBLIC_URL || "";
-
-    // ブースト中
     const [boosting, setBoosting] = useState(false);
-
-    // 通常炎表示
     const [showNormal, setShowNormal] = useState(true);
-
-    // 炎切り替え
     const [frame, setFrame] = useState(0);
-
     const boostTimeout = useRef(null);
 
-    // 炎アニメ
     useEffect(() => {
         const interval = setInterval(() => {
             setFrame((prev) => (prev + 1) % 2);
@@ -36,58 +28,90 @@ export default function Rocket() {
         return () => clearInterval(interval);
     }, []);
 
-    // 長押し開始
     const handleBoostStart = () => {
         clearTimeout(boostTimeout.current);
         setBoosting(true);
-        // 通常炎を消す
         setShowNormal(false);
+        window.electron?.setIgnoreMouse?.(false);
+        window.electron?.beginRocketInteraction?.();
     };
 
-    // 長押し終了
     const handleBoostEnd = () => {
-        // ターボ炎を即消す
         setBoosting(false);
-        // 0.2秒後に通常炎表示
         boostTimeout.current = setTimeout(() => {
             setShowNormal(true);
         }, 200);
+        window.electron?.endRocketInteraction?.();
+    };
+
+    const handlePointerDown = (e) => {
+        if (e.button !== undefined && e.button !== 0) return;
+        handleBoostStart();
+        try {
+            e.currentTarget.setPointerCapture(e.pointerId);
+        } catch {
+            /* ignore */
+        }
+    };
+
+    const handlePointerUp = (e) => {
+        handleBoostEnd();
+        try {
+            if (e.currentTarget.hasPointerCapture?.(e.pointerId)) {
+                e.currentTarget.releasePointerCapture(e.pointerId);
+            }
+        } catch {
+            /* ignore */
+        }
+    };
+
+    const handlePointerLeave = () => {
+        if (!boosting) return;
+        handleBoostEnd();
+    };
+
+    const handlePointerEnter = () => {
+        window.electron?.setIgnoreMouse?.(false);
     };
 
     return (
         <div className="rocket-position">
             <div
-                className="rocket-wrapper"
-                onMouseDown={handleBoostStart}
-                onMouseUp={handleBoostEnd}
-                onMouseLeave={handleBoostEnd}
+                className={`rocket-wrapper${boosting ? " boosting" : ""}`}
+                onPointerEnter={handlePointerEnter}
+                onPointerDown={handlePointerDown}
+                onPointerUp={handlePointerUp}
+                onPointerLeave={handlePointerLeave}
+                onPointerCancel={handlePointerUp}
             >
                 <div className="engine-box">
-                    {/* ターボ炎 */}
                     {boosting && (
                         <img
                             src={`${publicUrl}/${turboEffects[frame]}`}
                             alt="turbo"
                             className="engine-effect turbo"
+                            draggable="false"
                         />
                     )}
 
-                    {/* 通常炎 */}
                     {!boosting && showNormal && (
                         <img
                             src={`${publicUrl}/${normalEffects[frame]}`}
                             alt="normal"
                             className="engine-effect"
+                            draggable="false"
                         />
                     )}
                 </div>
 
-                {/* ロケット */}
                 <img
-                    src={`${publicUrl}/assets/image/rocket/rocket 1.png`}
+                    src={`${publicUrl}/assets/image/rocket/rocket1.png`}
                     alt="rocket"
                     className="rocket-image"
                     draggable="false"
+                    onError={(e) => {
+                        e.currentTarget.src = `${publicUrl}/assets/image/rocket/rocket 1.png`;
+                    }}
                 />
             </div>
         </div>

@@ -1,4 +1,4 @@
-/* レイアウト・演出は本ファイルのみ（ocean_layout.css 非依存） */
+﻿/* レイアウト・演出は本ファイルのみ（ocean_layout.css 非依存） */
 /* background_road2(z-index:4) より手前、UI(z-index:20) より奥 */
 .astronaut2-flow {
     position: fixed;
@@ -18,11 +18,7 @@
 .astronaut2-dark {
     position: absolute;
     inset: 0;
-    background: radial-gradient(
-        circle at 75% 18%,
-        rgba(0, 0, 0, 0.08),
-        rgba(0, 0, 0, 0.42) 70%
-    );
+    background: radial-gradient( circle at 75% 18%, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.42) 70% );
     opacity: 0;
     animation: astronaut2DarkFade 35s ease forwards;
 }
@@ -35,20 +31,8 @@
     width: clamp(14px, 1.6vw, 20px);
     height: clamp(14px, 1.6vw, 20px);
     background: #fff;
-    clip-path: polygon(
-        50% 0%,
-        58% 38%,
-        100% 50%,
-        58% 62%,
-        50% 100%,
-        42% 62%,
-        0% 50%,
-        42% 38%
-    );
-    box-shadow:
-        0 0 14px rgba(255, 255, 255, 0.95),
-        0 0 28px rgba(200, 230, 255, 0.8),
-        0 0 56px rgba(150, 210, 255, 0.55);
+    clip-path: polygon( 50% 0%, 58% 38%, 100% 50%, 58% 62%, 50% 100%, 42% 62%, 0% 50%, 42% 38% );
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.95), 0 0 28px rgba(200, 230, 255, 0.8), 0 0 56px rgba(150, 210, 255, 0.55);
     opacity: 0;
     pointer-events: none;
     z-index: 2;
@@ -134,7 +118,6 @@
         opacity: 1;
         transform: translate(-50%, -50%) scale(1.8);
     }
-
     /* 中央到達後は早めに拡大 */
     70% {
         opacity: 1;
@@ -150,7 +133,6 @@
         opacity: 1;
         transform: translate(-50%, -50%) scale(7.5);
     }
-
     /* フロー開始から約28s: 右へ退場開始 */
     87% {
         opacity: 1;

@@ -32,6 +32,191 @@ try {
     console.error("eaw load error:", e);
 }
 
+function getBuildIndexUrl() {
+    const buildIndex = path.join(__dirname, 'build', 'index.html');
+    if (!fs.existsSync(buildIndex)) return null;
+    return url.format({
+        pathname: buildIndex,
+        protocol: 'file:',
+        slashes: true,
+    });
+}
+
+/** npm start 併用時のみ ELECTRON_DEV=1 で localhost:3000 を使う */
+function resolveStartUrl() {
+    const buildUrl = getBuildIndexUrl();
+    const useDevServer =
+        !app.isPackaged && process.env.ELECTRON_DEV === '1';
+
+    if (app.isPackaged) {
+        return buildUrl;
+    }
+    if (useDevServer) {
+        return 'http://localhost:3000';
+    }
+    if (buildUrl) {
+        return `${buildUrl}#/`;
+    }
+    console.warn(
+        'build/index.html がありません。npm run build を実行してください。'
+    );
+    return 'http://localhost:3000';
+}
+
+const HOME_WINDOW = { width: 1000, height: 700 };
+/** 壁紙を張ったままにするルート（設定・コレクション含む） */
+const WALLPAPER_ATTACHED_ROUTES = new Set([
+    '/wallpaper',
+    '/wallpaper_ocean',
+    '/settings',
+    '/collection',
+    '/settings_ocean',
+    '/collection_ocean',
+]);
+
+function getVirtualDesktopBounds() {
+    const displays = screen.getAllDisplays();
+    let minX = Infinity;
+    let minY = Infinity;
+    let maxX = -Infinity;
+    let maxY = -Infinity;
+
+    displays.forEach((display) => {
+        const { x, y, width, height } = display.bounds;
+        minX = Math.min(minX, x);
+        minY = Math.min(minY, y);
+        maxX = Math.max(maxX, x + width);
+        maxY = Math.max(maxY, y + height);
+    });
+
+    return {
+        x: minX,
+        y: minY,
+        width: maxX - minX,
+        height: maxY - minY,
+    };
+}
+
+function getPrimaryDisplayLayout() {
+    const virtual = getVirtualDesktopBounds();
+    const primary = screen.getPrimaryDisplay().bounds;
+
+    return {
+        virtual,
+        primary: {
+            x: primary.x,
+            y: primary.y,
+            width: primary.width,
+            height: primary.height,
+            offsetX: primary.x - virtual.x,
+            offsetY: primary.y - virtual.y,
+        },
+    };
+}
+
+function broadcastDisplayLayout() {
+    if (!win?.webContents) return;
+    win.webContents.send('display-layout-changed', getPrimaryDisplayLayout());
+}
+
+function boundsEqual(a, b) {
+    return (
+        a &&
+        b &&
+        a.x === b.x &&
+        a.y === b.y &&
+        a.width === b.width &&
+        a.height === b.height
+    );
+}
+
+function centerWindowOnPrimary(width, height) {
+    const primary = screen.getPrimaryDisplay().bounds;
+    return {
+        x: Math.round(primary.x + (primary.width - width) / 2),
+        y: Math.round(primary.y + (primary.height - height) / 2),
+        width,
+        height,
+    };
+}
+
+function ensureNormalAppWindow() {
+    if (!win) return;
+
+    stopHitTest();
+    applyMousePassthrough(false);
+
+    if (eaw && win.wallpaperState?.isAttached) {
+        try {
+            eaw.detach(win);
+        } catch (e) {
+            console.error('壁紙解除失敗:', e);
+        }
+    }
+
+    win.setSkipTaskbar?.(false);
+    win.setAlwaysOnTop(false);
+    win.setResizable(false);
+    win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
+    win.show();
+    win.focus();
+    broadcastDisplayLayout();
+}
+
+function attachAsWallpaper() {
+    if (!eaw || !win) {
+        console.warn('壁紙化モジュール、またはウィンドウが有効ではありません。');
+        return false;
+    }
+
+    try {
+        const virtual = getVirtualDesktopBounds();
+        win.setResizable(true);
+        win.setBounds(virtual);
+        win.setSkipTaskbar(true);
+        eaw.attach(win, {
+            transparent: true,
+            forwardMouseInput: true,
+            forwardKeyboardInput: false,
+        });
+        win.setOpacity(1.0);
+        win.show();
+        wallpaperMousePassthrough = true;
+        applyMousePassthrough(true);
+        broadcastDisplayLayout();
+        return true;
+    } catch (err) {
+        console.error('壁紙化失敗:', err);
+        return false;
+    }
+}
+
+function syncWindowModeFromRoute() {
+    if (!win) return;
+
+    const route = getHashRoute();
+
+    if (WALLPAPER_ATTACHED_ROUTES.has(route)) {
+        if (!win.wallpaperState?.isAttached) {
+            attachAsWallpaper();
+        } else {
+            const virtual = getVirtualDesktopBounds();
+            const current = win.getBounds();
+            if (!boundsEqual(current, virtual)) {
+                win.setBounds(virtual);
+            }
+            wallpaperMousePassthrough = true;
+            applyMousePassthrough(true);
+            broadcastDisplayLayout();
+        }
+        return;
+    }
+
+    if (route === '/') {
+        ensureNormalAppWindow();
+    }
+}
+
 function initDatabase() {
     // db が正常に初期化されていない場合はログを出して安全にスキップ
     if (!db) {
@@ -63,6 +248,7 @@ function createWindow() {
         width: 1000,
         height: 700,
         transparent: true,
+        backgroundColor: '#050816',
         frame: false,
         show: false, // ready-to-show で表示
         resizable: false,
@@ -73,32 +259,43 @@ function createWindow() {
         }
     });
 
-    const isDev = process.env.NODE_ENV === 'development' || !app.isPackaged;
+    const startUrl = resolveStartUrl();
+    let loadFallbackAttempted = false;
 
-    // Reactのポートが3000番であることを想定
-    const startUrl = isDev
-        ? 'http://localhost:3000'
-        : url.format({
-            pathname: path.join(__dirname, 'build', 'index.html'),
-            protocol: 'file:',
-            slashes: true
-        });
+    win.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
+        if (loadFallbackAttempted) return;
+        const fallback = getBuildIndexUrl();
+        if (
+            fallback &&
+            validatedURL &&
+            validatedURL.startsWith('http://localhost')
+        ) {
+            loadFallbackAttempted = true;
+            console.warn(
+                `開発サーバー接続失敗 (${errorDescription}, code=${errorCode})。build を読み込みます。`
+            );
+            win.loadURL(`${fallback}#/`);
+        }
+    });
 
     win.loadURL(startUrl);
 
-    // 【修正】万が一React側が応答しなくても、1.5秒後に強制的にウィンドウを表示させる安全タイマー
+    win.webContents.on('did-finish-load', () => syncWindowModeFromRoute());
+    win.webContents.on('did-navigate-in-page', () => syncWindowModeFromRoute());
+
     const forceShowTimeout = setTimeout(() => {
         if (win && !win.isVisible()) {
-            console.warn("ready-to-show が発火しなかったため、強制表示します。");
-            win.center();
+            console.warn('ready-to-show が発火しなかったため、強制表示します。');
+            win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
             win.show();
         }
     }, 1500);
 
     win.once('ready-to-show', () => {
         clearTimeout(forceShowTimeout);
-        win.center();
+        win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
         win.show();
+        syncWindowModeFromRoute();
     });
 }
 
@@ -157,24 +354,63 @@ function stopHitTest() {
     applyMousePassthrough(false);
 }
 
-// --- IPC通信 ---
-ipcMain.on('attach-wallpaper', () => {
-    if (eaw && win) {
-        try {
-            const { width, height } = screen.getPrimaryDisplay().bounds;
-            win.setResizable(true);
-            win.setBounds({ x: 0, y: 0, width, height });
-            eaw.attach(win);
-            win.focus();
-            win.setOpacity(1.0);
-            win.show();
-            startHitTest();
-        } catch (e) {
-            console.error("壁紙化失敗:", e);
+function getHashRoute() {
+    if (!win?.webContents) return '/';
+    try {
+        const hash = new URL(win.webContents.getURL()).hash || '#/';
+        let route = decodeURIComponent(hash.slice(1)) || '/';
+        if (!route.startsWith('/')) {
+            route = `/${route}`;
         }
-    } else {
-        console.warn("壁紙化モジュール、またはウィンドウが有効ではありません。");
+        const trimmed = route.replace(/\/+$/, '');
+        return trimmed || '/';
+    } catch {
+        return '/';
     }
+}
+
+// --- IPC通信 ---
+ipcMain.on('detach-wallpaper', () => {
+    ensureNormalAppWindow();
+});
+
+ipcMain.on('begin-rocket-interaction', () => {
+    applyMousePassthrough(false);
+});
+
+ipcMain.on('end-rocket-interaction', () => {
+    if (wallpaperMousePassthrough) {
+        applyMousePassthrough(true);
+    }
+});
+
+ipcMain.on('attach-wallpaper', () => {
+    attachAsWallpaper();
+});
+
+ipcMain.on('refresh-display-layout', () => {
+    broadcastDisplayLayout();
+});
+
+ipcMain.handle('get-display-layout', () => getPrimaryDisplayLayout());
+
+ipcMain.handle('get-cursor-client-point', () => {
+    if (!win) return { x: 0, y: 0, inWindow: false };
+
+    const point = screen.getCursorScreenPoint();
+    const bounds = win.getContentBounds();
+    const x = point.x - bounds.x;
+    const y = point.y - bounds.y;
+
+    return {
+        x,
+        y,
+        inWindow:
+            point.x >= bounds.x &&
+            point.x < bounds.x + bounds.width &&
+            point.y >= bounds.y &&
+            point.y < bounds.y + bounds.height,
+    };
 });
 
 ipcMain.on('update-hit-regions', (event, regions) => {
@@ -190,8 +426,11 @@ ipcMain.on('stop-hit-test', () => {
     stopHitTest();
 });
 
-ipcMain.on('set-ignore-mouse', (event, ignore) => {
-    if (hitTestTimer) return;
+ipcMain.on('set-ignore-mouse', (_event, ignore) => {
+    if (!wallpaperMousePassthrough) {
+        applyMousePassthrough(ignore);
+        return;
+    }
     applyMousePassthrough(ignore);
 });
 
@@ -219,6 +458,15 @@ ipcMain.on('quit-app', () => app.quit());
 app.whenReady().then(() => {
     initDatabase();
     createWindow();
+
+    screen.on('display-metrics-changed', () => {
+        if (!win) return;
+        if (win.wallpaperState?.isAttached) {
+            win.setBounds(getVirtualDesktopBounds());
+        }
+        broadcastDisplayLayout();
+        syncWindowModeFromRoute();
+    });
 });
 
 app.on('window-all-closed', () => {

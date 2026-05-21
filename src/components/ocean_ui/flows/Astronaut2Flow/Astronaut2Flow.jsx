@@ -31,90 +31,90 @@ const OFFSCREEN_AREA_RATIO = 0.8;
  * 終了時に onComplete を呼び、次のコレクション／フローへ進める。
  */
 export default function Astronaut2Flow({ onComplete }) {
-  // createPortal 用（SSR／初回描画では body が無いのでマウント後に portal）
-  const [mounted, setMounted] = useState(false);
-  // 終了後は CSS で非表示（astronaut2-flow--ended）
-  const [ended, setEnded] = useState(false);
-  // 退場判定・IntersectionObserver 用
-  const imgRef = useRef(null);
-  // タイマーと Observer の両方から finishFlow が二重に走らないようにする
-  const completedRef = useRef(false);
+    // createPortal 用（SSR／初回描画では body が無いのでマウント後に portal）
+    const [mounted, setMounted] = useState(false);
+    // 終了後は CSS で非表示（astronaut2-flow--ended）
+    const [ended, setEnded] = useState(false);
+    // 退場判定・IntersectionObserver 用
+    const imgRef = useRef(null);
+    // タイマーと Observer の両方から finishFlow が二重に走らないようにする
+    const completedRef = useRef(false);
 
-  /** 演出終了処理（親へ完了通知・レイヤーを隠す） */
-  const finishFlow = useCallback(() => {
-    if (completedRef.current) return;
-    completedRef.current = true;
-    setEnded(true);
-    onComplete?.();
-  }, [onComplete]);
+    /** 演出終了処理（親へ完了通知・レイヤーを隠す） */
+    const finishFlow = useCallback(() => {
+        if (completedRef.current) return;
+        completedRef.current = true;
+        setEnded(true);
+        onComplete?.();
+    }, [onComplete]);
 
-  // クライアントでマウント完了後に portal を有効化
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+    // クライアントでマウント完了後に portal を有効化
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
-  // 最大尺に達したら必ず終了（画面外検知が間に合わない場合のフォールバック）
-  useEffect(() => {
-    const timer = setTimeout(finishFlow, FLOW_DURATION_MS);
-    return () => clearTimeout(timer);
-  }, [finishFlow]);
+    // 最大尺に達したら必ず終了（画面外検知が間に合わない場合のフォールバック）
+    useEffect(() => {
+        const timer = setTimeout(finishFlow, FLOW_DURATION_MS);
+        return () => clearTimeout(timer);
+    }, [finishFlow]);
 
-  /**
-   * 右退場フェーズ以降、宇宙人が十分画面外に出たら早めに finishFlow する。
-   * CSS の 87% キーフレーム（約28s）と EXIT_START_RATIO を揃えている。
-   */
-  useEffect(() => {
-    const img = imgRef.current;
-    if (!img) return;
+    /**
+     * 右退場フェーズ以降、宇宙人が十分画面外に出たら早めに finishFlow する。
+     * CSS の 87% キーフレーム（約28s）と EXIT_START_RATIO を揃えている。
+     */
+    useEffect(() => {
+        const img = imgRef.current;
+        if (!img) return;
 
-    let exitPhase = false;
-    const exitEnableTimer = setTimeout(() => {
-      exitPhase = true;
-    }, APPROACH_DELAY_MS + APPROACH_DURATION_MS * EXIT_START_RATIO);
+        let exitPhase = false;
+        const exitEnableTimer = setTimeout(() => {
+            exitPhase = true;
+        }, APPROACH_DELAY_MS + APPROACH_DURATION_MS * EXIT_START_RATIO);
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!exitPhase || completedRef.current) return;
-        const visibleRatio = entry.intersectionRatio;
-        if (visibleRatio <= 1 - OFFSCREEN_AREA_RATIO) {
-          finishFlow();
-        }
-      },
-      { threshold: [0, 0.1, 0.2, 0.25, 0.5, 0.75, 1] }
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (!exitPhase || completedRef.current) return;
+                const visibleRatio = entry.intersectionRatio;
+                if (visibleRatio <= 1 - OFFSCREEN_AREA_RATIO) {
+                    finishFlow();
+                }
+            },
+            { threshold: [0, 0.1, 0.2, 0.25, 0.5, 0.75, 1] }
+        );
+
+        observer.observe(img);
+
+        return () => {
+            clearTimeout(exitEnableTimer);
+            observer.disconnect();
+        };
+    }, [mounted, finishFlow]);
+
+    // 壁紙の DOM 階層の外（body 直下）に重ねて表示
+    const flow = (
+        <div
+            className={`astronaut2-flow${ended ? " astronaut2-flow--ended" : ""}`}
+        >
+            {/* ① 画面全体を少し暗くする */}
+            <div className="astronaut2-dark" aria-hidden="true" />
+            {/* ② 空の右上がキラッと光る */}
+            <div className="astronaut2-sparkle" aria-hidden="true" />
+            {/* ③④ 宇宙人の接近・拡大・右退場（アニメは CSS） */}
+            <div className="astronaut2-stage">
+                <div className="astronaut2-sway">
+                    <img
+                        ref={imgRef}
+                        src={`${publicUrl}/assets/ocean_image/collections/astronaut2.png`}
+                        alt="astronaut2"
+                        className="astronaut2-image"
+                    />
+                </div>
+            </div>
+        </div>
     );
 
-    observer.observe(img);
+    if (!mounted) return null;
 
-    return () => {
-      clearTimeout(exitEnableTimer);
-      observer.disconnect();
-    };
-  }, [mounted, finishFlow]);
-
-  // 壁紙の DOM 階層の外（body 直下）に重ねて表示
-  const flow = (
-    <div
-      className={`astronaut2-flow${ended ? " astronaut2-flow--ended" : ""}`}
-    >
-      {/* ① 画面全体を少し暗くする */}
-      <div className="astronaut2-dark" aria-hidden="true" />
-      {/* ② 空の右上がキラッと光る */}
-      <div className="astronaut2-sparkle" aria-hidden="true" />
-      {/* ③④ 宇宙人の接近・拡大・右退場（アニメは CSS） */}
-      <div className="astronaut2-stage">
-        <div className="astronaut2-sway">
-          <img
-            ref={imgRef}
-            src={`${publicUrl}/assets/ocean_image/collections/astronaut2.png`}
-            alt="astronaut2"
-            className="astronaut2-image"
-          />
-        </div>
-      </div>
-    </div>
-  );
-
-  if (!mounted) return null;
-
-  return createPortal(flow, document.body);
+    return createPortal(flow, document.body);
 }

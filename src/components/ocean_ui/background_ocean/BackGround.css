@@ -1,11 +1,10 @@
-.ocean-background-container {
-    position: fixed;
+﻿.ocean-background-container {
+    position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
-    background-image: var(--ocean-bg);
-    /* cover はアスペクト比で見切れ方が変わる。道路は ocean_bg の center bottom に合わせる */
+    background-image: url("../../../../public/assets/ocean_image/background_ocean/background_ocean.png");
     background-size: cover;
     background-position: center bottom;
     background-repeat: no-repeat;

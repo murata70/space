@@ -1,24 +1,44 @@
 .collection-wrap {
     display: flex;
+    flex-direction: row;
+    align-items: stretch;
     justify-content: center;
-    align-items: center;
+    gap: 0;
     min-height: 100vh;
     width: 100%;
+    max-width: min(1280px, 96%);
+    margin: 0 auto;
     position: relative;
-    overflow-x: hidden;
+    overflow: visible;
     box-sizing: border-box;
-    padding: 24px;
+    padding: 24px 0 24px 24px;
     background: black;
     color: white;
 }
 
 .collection-main {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
+    flex: 1 1 auto;
+    min-width: 0;
+    width: auto;
+    max-width: none;
+    margin: 0;
     text-align: center;
-    /* 重要：ボタンが押し出されないための余白確保 */
     padding-bottom: 80px;
+    padding-right: 12px;
+}
+
+.collection-wrap .slide-wrapper--inline {
+    flex: 0 0 auto;
+    align-self: stretch;
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    height: auto;
+    min-height: min(70vh, 640px);
+    margin-right: 0;
+    border-radius: 0 12px 12px 0;
+    overflow: visible;
 }
 
 .title {
@@ -37,52 +57,57 @@
 
 .card {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1.15;
     border-radius: 14px;
     background: rgba(255, 255, 255, 0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    align-items: stretch;
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.25);
     transition: transform 0.2s, border-color 0.2s;
 }
 
-    .card:hover {
-        transform: scale(1.06);
-        border-color: rgba(255, 255, 255, 0.6);
-    }
+.card:hover {
+    transform: scale(1.06);
+    border-color: rgba(255, 255, 255, 0.6);
+}
 
-    .card.locked {
-        opacity: 0.5;
-    }
+.card.locked {
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+}
 
 .collection-image {
     width: 100%;
     height: 100%;
+    min-height: 0;
     object-fit: contain;
     display: block;
+    padding: 10px 10px 4px;
+    box-sizing: border-box;
 }
 
 .collection-name {
-    position: absolute;
-    bottom: 4px;
-    left: 0;
-    right: 0;
+    position: static;
+    flex-shrink: 0;
+    padding: 4px 8px 10px;
+    margin: 0;
     font-size: clamp(10px, 1vw, 12px);
+    line-height: 1.35;
     text-align: center;
     text-shadow: 0 0 4px black;
+    background: rgba(0, 0, 0, 0.35);
 }
 
 .unknown {
     font-size: clamp(26px, 4vw, 34px);
     color: #888;
 }
-
-/* =========================
-   BACK BUTTON（修正済み）
-========================= */
 
 .back-btn {
     position: absolute;
@@ -98,19 +123,33 @@
     z-index: 10;
 }
 
-    .back-btn:hover {
-        background: #222;
-        border-color: #888;
-    }
-
-/* =========================
-   RESPONSIVE
-========================= */
+.back-btn:hover {
+    background: #222;
+    border-color: #888;
+}
 
 @media (max-width: 900px) {
     .grid {
         grid-template-columns: repeat(3, clamp(120px, 22vw, 160px));
         gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .collection-wrap {
+        flex-direction: column;
+        padding: 24px;
+    }
+
+    .collection-main {
+        padding-right: 0;
+    }
+
+    .collection-wrap .slide-wrapper--inline {
+        width: 100%;
+        min-height: auto;
+        margin-top: 16px;
+        border-radius: 12px;
     }
 }
 

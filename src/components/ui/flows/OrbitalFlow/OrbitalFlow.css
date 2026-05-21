@@ -13,7 +13,7 @@
 .orbital-flow-unit {
     position: absolute;
     /* topはJSX側のインラインスタイルで動的に適用 */
-    left: 100vw;
+    left: var(--space-vw);
     width: 550px;
     height: auto;
     will-change: transform;
@@ -51,7 +51,7 @@
 
     100% {
         /* 終点：左端の外側まで。画像サイズ(550px)＋画面幅分移動 */
-        transform: translateX(calc(-100vw - 600px)) translateY(0px) rotate(-5deg)
+        transform: translateX(calc(-var(--space-vw) - 600px)) translateY(0px) rotate(-5deg)
     }
 }
 

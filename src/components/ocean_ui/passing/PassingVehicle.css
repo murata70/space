@@ -1,5 +1,5 @@
-.passing-car {
-    position: fixed;
+ï»¿.passing-car {
+    position: absolute;
     right: -220px;
     top: 65%;
     width: var(--ocean-width-main-car);
@@ -15,11 +15,11 @@
     }
 
     to {
-        transform: translateX(calc(-100vw - 400px));
+        transform: translateX(calc(-1 * var(--ocean-vw) - 400px));
     }
 }
 
-/* ƒJƒNƒb‚Æ—h‚ê‚é */
+/* ?J?N?b??h??? */
 @keyframes passing-car-shake {
     0% {
         margin-top: 0px;

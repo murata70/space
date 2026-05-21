@@ -42,6 +42,101 @@
     height: 100%;
 }
 
+/* コレクションウィンドウ内：画面右端ではなくパネル右端に固定 */
+.collection-wrap .slide-wrapper--dock,
+.collection-wrap .slide-wrapper--inline {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    flex-shrink: 0;
+    height: auto;
+    align-self: stretch;
+    overflow: visible;
+    z-index: 30;
+}
+
+/* コレクション内 THEMES：ホバーで左（ウィンドウ内）へパネルが伸びる */
+.collection-wrap .slide-area {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: stretch;
+    width: var(--slide-tab-width);
+    min-height: min(70vh, 640px);
+    overflow: visible;
+    transition: width 0.25s ease;
+}
+
+.collection-wrap .slide-area--hover-expand.is-hovered,
+.collection-wrap .slide-area--hover-expand:hover {
+    width: calc(var(--slide-tab-width) + var(--slide-panel-width));
+}
+
+.collection-wrap .slide-tab {
+    flex: 0 0 var(--slide-tab-width);
+    width: var(--slide-tab-width);
+    height: auto;
+    align-self: stretch;
+    position: relative;
+    z-index: 2;
+}
+
+.collection-wrap .slide-panel {
+    position: relative;
+    top: auto;
+    right: auto;
+    flex: 0 0 0;
+    width: 0;
+    min-width: 0;
+    max-height: none;
+    height: auto;
+    align-self: stretch;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+    padding-left: 0;
+    padding-right: 0;
+    border-left: none;
+    transition:
+        width 0.25s ease,
+        flex-basis 0.25s ease,
+        opacity 0.2s ease,
+        padding 0.25s ease;
+}
+
+.collection-wrap .slide-area--hover-expand.is-hovered .slide-panel,
+.collection-wrap .slide-area--hover-expand:hover .slide-panel {
+    flex: 0 0 var(--slide-panel-width);
+    width: var(--slide-panel-width);
+    opacity: 1;
+    pointer-events: auto;
+    padding: var(--slide-padding-panel);
+    border-left: 1px solid #333;
+    overflow-y: auto;
+    box-shadow: -8px 0 16px rgba(0, 0, 0, 0.35);
+}
+
+/* ホバー解除で左パネルを閉じる */
+.collection-wrap .slide-area--hover-expand:not(.is-hovered) .slide-panel {
+    flex: 0 0 0;
+    width: 0;
+    min-width: 0;
+    opacity: 0;
+    pointer-events: none;
+    padding-left: 0;
+    padding-right: 0;
+    border-left: none;
+    box-shadow: none;
+    overflow: hidden;
+}
+
+@media (hover: hover) {
+    .collection-wrap .slide-area--hover-expand.is-hovered .slide-panel,
+    .collection-wrap .slide-area--hover-expand:hover .slide-panel {
+        right: auto;
+    }
+}
+
 /* タブ */
 .slide-tab {
     writing-mode: vertical-rl;
@@ -119,7 +214,7 @@
 
 /* ホバー対応端末：タブ／エリアに乗せたら開く（クリック併用） */
 @media (hover: hover) {
-    .slide-area:hover .slide-panel {
+    .slide-area:not(.slide-area--hover-expand):hover .slide-panel {
         right: var(--slide-tab-width);
         box-shadow: -10px 0 20px rgba(0, 0, 0, 0.4);
     }
@@ -127,6 +222,42 @@
 
 /* 狭い画面：下に配置・タブ横書き・パネル全幅 */
 @media (max-width: 768px) {
+    /* コレクションウィンドウ内は横方向のホバー展開を維持 */
+    .collection-wrap .slide-wrapper--inline {
+        width: auto;
+        margin-top: 0;
+        display: block;
+        justify-content: stretch;
+    }
+
+    .collection-wrap .slide-area {
+        flex-direction: row-reverse;
+        width: var(--slide-tab-width);
+        min-height: min(50vh, 480px);
+    }
+
+    .collection-wrap .slide-tab {
+        writing-mode: vertical-rl;
+        border-left: 1px solid #333;
+        border-top: none;
+        margin-left: 0;
+    }
+
+    .collection-wrap .slide-panel {
+        top: auto;
+        bottom: auto;
+        right: auto;
+        left: auto;
+        max-height: none;
+    }
+
+    .collection-wrap .slide-area--hover-expand.is-hovered .slide-panel,
+    .collection-wrap .slide-area--hover-expand:hover .slide-panel {
+        bottom: auto;
+        max-height: none;
+        border-left-width: 1px;
+    }
+
     .slide-wrapper--dock,
     .slide-wrapper--inline {
         position: relative;

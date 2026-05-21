@@ -1,4 +1,4 @@
-/* =========================
+﻿/* =========================
    Planet Layer
    ???X?|???V?u?????
 ========================= */
@@ -35,7 +35,7 @@
     }
 
     to {
-        transform: translateX( calc( -100vw - var(--planet-size, 200px) ) );
+        transform: translateX( calc( -var(--space-vw) - var(--planet-size, 200px) ) );
     }
 }
 

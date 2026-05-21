@@ -64,22 +64,12 @@ const Home = () => {
         }
 
         // 【修正】Electron(HashRouter)環境下での確実なルーティングのため、相対パス指定に変更
-        navigate("wallpaper");
+        navigate("/wallpaper");
 
         // 遷移完了後のタイミングでデスクトップ壁紙に動的設定
         setTimeout(() => {
-            if (
-                window.electron &&
-                typeof window.electron.attachWallpaper === "function"
-            ) {
+            if (window.electron?.attachWallpaper) {
                 window.electron.attachWallpaper();
-            }
-
-            if (
-                window.electron &&
-                typeof window.electron.setIgnoreMouse === "function"
-            ) {
-                window.electron.setIgnoreMouse(true);
             }
         }, 300);
     };

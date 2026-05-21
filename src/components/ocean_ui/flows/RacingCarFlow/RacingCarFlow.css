@@ -1,7 +1,7 @@
 ﻿/* RacingCarFlow.css */
 
 .racing-car-flow {
-    position: fixed;
+    position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
@@ -111,27 +111,20 @@
         transform: rotate(0.2deg) translateY(-1px);
     }
 
-    100% {
-        transform: rotate(-0.2deg);
-    }
-}
-
-/* =========================
-   スピードライン脈動
-========================= */
-
-@keyframes racingLinePulse {
-
-    from {
-        transform: scaleX(0.9);
-        opacity: 0.4;
+    18.75% {
+        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
+        top: var(--ocean-lane-racing-top);
     }
 
-    to {
-        transform: scaleX(1.05);
-        opacity: 0.85;
+    25% {
+        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
+        top: var(--ocean-lane-racing-parked-top);
     }
-}
+
+    87.5% {
+        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -0.5 - var(--ocean-width-sm) / 2));
+        top: var(--ocean-lane-racing-parked-top);
+    }
 
 /* =========================
    最初だけ線表示
@@ -147,15 +140,14 @@
         opacity: 1;
     }
 
-    20% {
+@keyframes racingCarEngineVibeA {
+    0%, 49.9% {
+        transform: translateY(clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px));
         opacity: 1;
     }
 
-    32% {
-        opacity: 0;
-    }
-
-    100% {
+    50%, 99.9% {
+        transform: translateY(clamp(1px, calc(var(--ocean-vh) * 0.1), 1px));
         opacity: 0;
     }
 }
@@ -171,24 +163,14 @@
     }
 }
 
-/* =========================
-   縦寄り画面
-========================= */
-
-@media (max-aspect-ratio: 4/3) {
-
-    .racing-car-body {
-        top: clamp(67%, 71vh, 77%);
+@keyframes racingCarEngineVibeB {
+    0%, 49.9% {
+        transform: translateY(clamp(1px, calc(var(--ocean-vh) * 0.1), 1px));
+        opacity: 0;
     }
-}
 
-/* =========================
-   低い画面
-========================= */
-
-@media (max-height: 600px) {
-
-    .racing-car-body {
-        top: clamp(65%, 67vh, 73%);
+    50%, 99.9% {
+        transform: translateY(clamp(-1px, calc(var(--ocean-vh) * -0.001), -1px));
+        opacity: 1;
     }
 }

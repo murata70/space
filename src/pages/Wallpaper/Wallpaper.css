@@ -4,8 +4,8 @@
 ======================================== */
 
 .wallpaper {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     min-height: 100dvh;
     overflow: hidden;
     position: relative;
@@ -13,32 +13,12 @@
     color: white;
     font-family: Arial, sans-serif;
     box-sizing: border-box;
-    /* ノッチ対策 */
     padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
-    /* ========================================
-       背景画像
-    ======================================== */
-    /* デフォルトは16:9 */
-    background-image: var(--bg-16x9);
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    /* iOSチラつき軽減 */
     transform: translateZ(0);
     backface-visibility: hidden;
 }
 
-/* ========================================
-   4:3寄り画面
-   タブレット・縦画面向け
-======================================== */
-
-@media (max-aspect-ratio: 4/3) {
-
-    .wallpaper {
-        background-image: var(--bg-4x3);
-    }
-}
+/* 背景画像は SpaceBackgroundStage 内の BackGround で描画（メインモニター内） */
 
 /* ========================================
    ロケット
@@ -60,9 +40,9 @@
 ======================================== */
 
 .top-ui {
-    position: fixed;
-    top: max(clamp(10px, 2vw, 20px), env(safe-area-inset-top));
-    right: clamp(10px, 2vw, 20px);
+    position: absolute;
+    top: max(clamp(10px, calc(var(--space-vw, 100vw) * 0.02), 20px), env(safe-area-inset-top));
+    right: clamp(10px, calc(var(--space-vw, 100vw) * 0.02), 20px);
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -73,7 +53,7 @@
     backdrop-filter: blur(6px);
     /* z-indexを10から9999へ引き上げ、他の要素に隠されないようにします */
     z-index: 9999;
-    max-width: calc(100vw - 20px);
+    max-width: calc(var(--space-vw, 100vw) - 20px);
     box-sizing: border-box;
     /* 確実にマウスイベントを通す設定 */
     pointer-events: auto;
@@ -84,16 +64,7 @@
 /* ========================================
    【追加】画面全体のUI操作用レイヤー
 ======================================== */
-.wallpaper-ui-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 10;
-    /* 最初は画面全体でマウスイベントを「完全に無視」させて背後のデスクトップを触らせる */
-    pointer-events: none;
-}
+/* .wallpaper-ui-layer は primary-monitor-ui.css で定義 */
 
 /* 右上の .top-ui 自体は常にマウスに反応できるようにしておく
    （これがないとMouseEnterイベント自体が起きなくなります）

@@ -162,10 +162,16 @@
     flex-direction: column;
     align-items: center;
     border-radius: 20px;
-    background: rgba(255,255,255,0.14);
-    background-size: 200% 200%;
-    animation: containerWave 12s ease-in-out infinite alternate;
-    backdrop-filter: blur(14px);
+    background: linear-gradient(
+        165deg,
+        #bde9ff 0%,
+        #58c7ef 48%,
+        #2ea6d7 72%,
+        #f3dfb2 100%
+    );
+    background-size: 100% 100%;
+    animation: none;
+    backdrop-filter: none;
     position: relative;
     overflow: hidden;
     z-index: 10;

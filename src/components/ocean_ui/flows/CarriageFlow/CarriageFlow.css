@@ -1,7 +1,7 @@
-/* レイアウトは本ファイルのみ（ocean_layout.css 非依存） */
+﻿/* レイアウトは本ファイルのみ（ocean_layout.css 非依存） */
 .carriage-flow {
-    position: fixed;
-    top: clamp(69%, 73vh, 79%);
+    position: absolute;
+    top: clamp(69%, calc(var(--ocean-vh) * 0.73), 79%);
     left: 100%;
     z-index: 3;
     pointer-events: none;
@@ -10,7 +10,7 @@
 }
 
 .carriage-image {
-    width: clamp(220px, 26vw, 330px);
+    width: clamp(220px, calc(var(--ocean-vw) * 0.26), 330px);
     height: auto;
     animation: carriageShake 0.2s steps(2, end) infinite;
 }
@@ -21,14 +21,14 @@
     }
 
     to {
-        transform: translateY(-50%) translateX(calc(-100vw - 100%));
+        transform: translateY(-50%) translateX(calc(var(--ocean-vw) * -1 - 100%));
     }
 }
 
 /* 0.1秒: 少し上 → 0.1秒: 通常位置（馬車の揺れ） */
 @keyframes carriageShake {
     0% {
-        transform: translateY(clamp(-4px, -0.6vh, -8px));
+        transform: translateY(clamp(-4px, calc(var(--ocean-vh) * -0.006), -8px));
     }
 
     50% {
@@ -38,18 +38,18 @@
 
 @media (min-aspect-ratio: 21/9) {
     .carriage-flow {
-        top: clamp(71%, 75vh, 81%);
+        top: clamp(71%, calc(var(--ocean-vh) * 0.75), 81%);
     }
 }
 
 @media (max-aspect-ratio: 4/3) {
     .carriage-flow {
-        top: clamp(67%, 71vh, 77%);
+        top: clamp(67%, calc(var(--ocean-vh) * 0.71), 77%);
     }
 }
 
 @media (max-height: 600px) {
     .carriage-flow {
-        top: clamp(65%, 67vh, 73%);
+        top: clamp(65%, calc(var(--ocean-vh) * 0.67), 73%);
     }
 }
