@@ -11,65 +11,28 @@
     z-index: 2;
 }
 
-/* ?f???{?? */
 .planet-object {
     position: absolute;
-    /* ???T?C?Y?????????????? */
-    width: clamp(60px, 10vw, 220px);
     height: auto;
+    max-width: none;
     opacity: 1;
     user-select: none;
     will-change: transform;
     animation-name: flowPlanet;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
-    /* JS?????? duration ??n??????? */
-    animation-duration: var(--planet-duration, 40s);
 }
 
-/* ???????? */
 @keyframes flowPlanet {
-
     from {
         transform: translateX(0);
     }
 
     to {
-        transform: translateX( calc( -var(--space-vw) - var(--planet-size, 200px) ) );
+        /* 0px - var(...) は calc(-var(...)) より互換性が高い */
+        transform: translateX(
+            calc(0px - var(--space-vw, 100vw) - var(--planet-size, 200px))
+        );
     }
 }
 
-/* =========================
-   ?^?u???b?g
-========================= */
-
-@media (max-width: 1024px) {
-
-    .planet-object {
-        width: clamp(50px, 14vw, 180px);
-    }
-}
-
-/* =========================
-   ?X?}?z
-========================= */
-
-@media (max-width: 768px) {
-
-    .planet-object {
-        /* ??????? */
-        width: clamp(40px, 18vw, 140px);
-        /* ?????y??? */
-    }
-}
-
-/* =========================
-   ?????^?X?}?z
-========================= */
-
-@media (max-width: 480px) {
-
-    .planet-object {
-        width: clamp(32px, 22vw, 100px);
-    }
-}

@@ -102,10 +102,10 @@ export default function Planets() {
                 style={{
                     top: `${planet.top}%`,
                     width: `${planet.size}px`,
-                    // 惑星の左端を画面右外へ置く
-                    left: "100%",
+                    // 右端外（FlagFlow と同じ --space-vw 基準）
+                    left: "var(--space-vw, 100vw)",
                     "--planet-size": `${planet.size}px`,
-                    animationDuration: `${FLOW_TIME}s`,
+                    animation: `flowPlanet ${FLOW_TIME}s linear forwards`,
                 }}
             />
         </div>

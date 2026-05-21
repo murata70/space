@@ -39,6 +39,26 @@ function getBuildIndexUrl() {
     });
 }
 
+/** build 未作成時に黒画面にならないよう案内ページを表示 */
+function getStartupErrorPage(message) {
+    const html = `<!DOCTYPE html>
+<html lang="ja">
+<head><meta charset="UTF-8"/>
+<style>
+  body{margin:0;padding:32px;font-family:Segoe UI,sans-serif;background:#050816;color:#dff4ff;}
+  h1{font-size:22px;letter-spacing:2px;}
+  p{line-height:1.6;color:#9eb8d8;}
+  code{background:rgba(255,255,255,.08);padding:2px 8px;border-radius:4px;}
+</style></head>
+<body>
+  <h1>PROJECT space</h1>
+  <p>${message}</p>
+  <p>ターミナルで <code>npm run build</code> のあと <code>npm run electron</code> を実行してください。<br>
+  または <code>npm run electron:start</code>（ビルド込み）を使ってください。</p>
+</body></html>`;
+    return `data:text/html;charset=utf-8,${encodeURIComponent(html)}`;
+}
+
 /** npm start 併用時のみ ELECTRON_DEV=1 で localhost:3000 を使う */
 function resolveStartUrl() {
     const buildUrl = getBuildIndexUrl();
@@ -46,7 +66,10 @@ function resolveStartUrl() {
         !app.isPackaged && process.env.ELECTRON_DEV === '1';
 
     if (app.isPackaged) {
-        return buildUrl;
+        if (!buildUrl) {
+            return getStartupErrorPage('build/index.html が見つかりません。');
+        }
+        return `${buildUrl}#/`;
     }
     if (useDevServer) {
         return 'http://localhost:3000';
@@ -54,10 +77,12 @@ function resolveStartUrl() {
     if (buildUrl) {
         return `${buildUrl}#/`;
     }
-    console.warn(
+    console.error(
         'build/index.html がありません。npm run build を実行してください。'
     );
-    return 'http://localhost:3000';
+    return getStartupErrorPage(
+        'build フォルダがありません。React 画面を読み込めません。'
+    );
 }
 
 const HOME_WINDOW = { width: 1000, height: 700 };
@@ -207,6 +232,9 @@ function getHashRoute() {
     if (route.includes('?')) {
         route = route.split('?')[0];
     }
+    // "#" のみや空文字はホーム扱い（HashRouter の "/" と揃える）
+    if (!route || route === '/') return '/';
+    if (!route.startsWith('/')) route = `/${route}`;
     return route;
 }
 
@@ -285,17 +313,24 @@ function createWindow() {
     win.webContents.on('did-fail-load', (_event, errorCode, errorDescription, validatedURL) => {
         if (loadFallbackAttempted) return;
         const fallback = getBuildIndexUrl();
-        if (
-            fallback &&
-            validatedURL &&
-            validatedURL.startsWith('http://localhost')
-        ) {
-            loadFallbackAttempted = true;
+        if (!validatedURL?.startsWith('http://localhost')) return;
+
+        loadFallbackAttempted = true;
+        if (fallback) {
             console.warn(
                 `開発サーバー接続失敗 (${errorDescription}, code=${errorCode})。build を読み込みます。`
             );
             win.loadURL(`${fallback}#/`);
+            return;
         }
+        console.error(
+            `開発サーバー接続失敗 (${errorDescription}, code=${errorCode})。build もありません。`
+        );
+        win.loadURL(
+            getStartupErrorPage(
+                '開発サーバー (localhost:3000) に接続できず、build も見つかりません。'
+            )
+        );
     });
 
     win.loadURL(startUrl);
@@ -303,8 +338,16 @@ function createWindow() {
     win.webContents.on('did-finish-load', () => syncWindowModeFromRoute());
     win.webContents.on('did-navigate-in-page', () => syncWindowModeFromRoute());
 
+    const forceShowTimeout = setTimeout(() => {
+        if (win && !win.isVisible()) {
+            console.warn('ready-to-show が発火しなかったため、強制表示します。');
+            ensureNormalAppWindow();
+        }
+    }, 1500);
+
     win.once('ready-to-show', () => {
-        win.show();
+        clearTimeout(forceShowTimeout);
+        syncWindowModeFromRoute();
     });
 
     win.on('closed', () => {
