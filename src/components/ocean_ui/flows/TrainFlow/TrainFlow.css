@@ -1,23 +1,11 @@
-﻿.train-flow {
-    position: absolute;
-    top: var(--ocean-lane-passing-top);
-    left: 100%;
-    pointer-events: none;
-    transform: translateY(-50%);
-    animation: trainMove 14s linear forwards;
-}
-
-.train-image {
-    width: var(--ocean-width-lg);
+﻿.train-img {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    /* ★これが「5倍」 */
+    width: 1000px;
     height: auto;
-}
-
-@keyframes trainMove {
-    from {
-        transform: translateY(-50%) translateX(0);
-    }
-
-    to {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
-    }
+    z-index: 9999999;
+    pointer-events: none;
+    transform-origin: bottom left;
 }

@@ -1,23 +1,17 @@
-﻿.shinkansen-flow {
-    position: absolute;
-    top: var(--ocean-lane-passing-top);
-    left: 100%;
+﻿.shinkansen-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 999999999;
     pointer-events: none;
-    transform: translateY(-50%);
-    animation: shinkansenMove 10s linear forwards;
+    overflow: hidden;
 }
 
-.shinkansen-image {
-    width: var(--ocean-width-xl);
+.shinkansen-img {
+    position: fixed;
+    bottom: -60px;
+    left: 0;
+    width: 200px;
     height: auto;
-}
-
-@keyframes shinkansenMove {
-    from {
-        transform: translateY(-50%) translateX(0);
-    }
-
-    to {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
-    }
+    transform-origin: center bottom;
+    will-change: transform;
 }
