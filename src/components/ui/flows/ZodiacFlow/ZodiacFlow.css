@@ -3,26 +3,27 @@
     inset: 0;
     overflow: hidden;
     pointer-events: none;
-    /* ”wŒi‚æ‚è‘OA˜f¯‚æ‚èŒã‚ë */
+    /* ï¿½wï¿½iï¿½ï¿½ï¿½Oï¿½Aï¿½fï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
     z-index: 2;
 }
 
-/* ƒx[ƒX */
+/* ï¿½xï¿½[ï¿½X */
 .zodiac-flow-image {
     position: absolute;
     transform: translate(-50%, -50%) scale(4);
+    opacity: 0;
+    transition: opacity 1.2s ease;
     will-change: opacity;
-    pointer-events: none;
 }
 
-    /* ‰æ‘œ–{‘Ì */
+    /* ï¿½æ‘œï¿½{ï¿½ï¿½ */
     .zodiac-flow-image img {
         width: 120px;
         height: auto;
         filter: drop-shadow(0 0 18px rgba(255, 220, 90, 0.9));
     }
 
-    /* ƒI[ƒ‰ */
+    /* ï¿½Iï¿½[ï¿½ï¿½ */
     .zodiac-flow-image::after {
         content: "";
         position: absolute;
@@ -31,25 +32,21 @@
         z-index: -1;
     }
 
-/* ƒtƒF[ƒhƒCƒ“ */
+/* ï¿½tï¿½Fï¿½[ï¿½hï¿½Cï¿½ï¿½ */
 .zodiac-flow-in {
-    opacity: 0;
-    animation: zodiacFadeIn 5s ease forwards;
+    animation: zodiacFadeIn 1.2s ease forwards;
 }
 
-/* ƒtƒF[ƒhƒAƒEƒg */
-.zodiac-flow-out {
-    opacity: 1;
-    animation: zodiacFadeOut 5s ease forwards;
-}
-
-/* ‘Øİ’† */
 .zodiac-flow-stay {
     opacity: 1;
     animation: zodiacBreathOpacity 6s ease-in-out infinite;
 }
 
-/* ƒAƒjƒ[ƒVƒ‡ƒ“ */
+.zodiac-flow-out {
+    animation: zodiacFadeOut 1.2s ease forwards;
+}
+
+/* ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ */
 @keyframes zodiacFadeIn {
     from {
         opacity: 0;
@@ -84,7 +81,7 @@
     }
 }
 
-/* ƒŒƒXƒ|ƒ“ƒVƒu */
+/* ï¿½ï¿½ï¿½Xï¿½|ï¿½ï¿½ï¿½Vï¿½u */
 @media (max-width: 768px) {
     .zodiac-flow-image img {
         width: 90px;

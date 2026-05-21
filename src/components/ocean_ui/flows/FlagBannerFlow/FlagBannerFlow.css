@@ -4,7 +4,7 @@
     left: 100%;
     z-index: 3;
     pointer-events: none;
-    transform: translateY(-50%);
+    transform: translateY(-52%);
     animation: flagBannerMove 15s linear forwards;
 }
 
@@ -15,10 +15,10 @@
 
 @keyframes flagBannerMove {
     from {
-        transform: translateY(-50%) translateX(0);
+        transform: translateY(-52%) translateX(0);
     }
 
     to {
-        transform: translateY(-50%) translateX(var(--ocean-scroll-exit));
+        transform: translateY(-52%) translateX(var(--ocean-scroll-exit));
     }
 }
