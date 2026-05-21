@@ -8,7 +8,7 @@ let eaw;
 let db = null;
 let wallpaperMousePassthrough = true;
 
-// better-sqlite3 の読み込みと変数代入を完全に安全化
+// better-sqlite3 の読み込みと変数代入を完全に安全化 修正中
 try {
     const Database = require('better-sqlite3');
     const userDataPath = app.getPath('userData');
