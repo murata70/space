@@ -3,7 +3,7 @@
     /*    top: var(--ocean-lane-passing-top);*/
     .ship-flow {
     position: absolute;
-    top: 20%;
+    top: 45%;
     left: -20%;
     pointer-events: none;
     transform: translateY(-50%);
@@ -20,7 +20,7 @@
 .ship-image {
     width: clamp(180px, 16vw, 260px);
     height: auto;
-    opacity: 0.92;
+    opacity: 1;
     will-change: transform;
     transform: scaleX(-1);
     animation: shipFloat 4.8s ease-in-out infinite;
@@ -38,12 +38,12 @@
     }
     /* 登場 */
     6% {
-        opacity: 0.92;
+        opacity: 1;
     }
     /* 航行 */
     85% {
         transform: translateY(-50%) translateX(calc(100vw + 60%));
-        opacity: 0.92;
+        opacity: 1;
     }
     /* フェードアウト */
     100% {

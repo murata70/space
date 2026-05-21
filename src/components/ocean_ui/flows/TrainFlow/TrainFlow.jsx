@@ -27,7 +27,7 @@ export default function TrainFlow({ onComplete = () => {} }) {
     const width = window.innerWidth;
 
     // 画面外スタート → 画面外終了
-    const startX = -2000;
+    const startX = -3000;
     const endX = width + 2000;
 
     let startTime = null;
