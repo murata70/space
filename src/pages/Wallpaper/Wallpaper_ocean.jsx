@@ -10,13 +10,17 @@ import OceanFlowController from "../../components/ocean_ui/flows/OceanFlowContro
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
 const OCEAN_PASSTHROUGH_SELECTORS = [".top-ui", ".main-car-position"];
+const OCEAN_UI_HOVER_SELECTORS = [".top-ui"];
 
 const WallpaperOcean = () => {
     const navigate = useNavigate();
     const wallpaperRef = useRef(null);
 
-    useWallpaperMousePassthrough(
-        { passthroughSelectors: OCEAN_PASSTHROUGH_SELECTORS },
+    const { isUiLayerHovered } = useWallpaperMousePassthrough(
+        {
+            passthroughSelectors: OCEAN_PASSTHROUGH_SELECTORS,
+            uiLayerHoveredSelectors: OCEAN_UI_HOVER_SELECTORS,
+        },
         wallpaperRef
     );
 
@@ -27,23 +31,27 @@ const WallpaperOcean = () => {
             </OceanBackgroundStage>
 
             <div className="primary-monitor-ui">
-                <div className="top-ui">
-                    <Clock />
+                <div
+                    className={`wallpaper-ui-layer ${isUiLayerHovered ? "hovered" : ""}`}
+                >
+                    <div className="top-ui">
+                        <Clock />
 
-                    <div className="top-ui-actions">
-                        <button
-                            className="icon-btn"
-                            onClick={() => navigate("/collection_ocean")}
-                        >
-                            📁
-                        </button>
+                        <div className="top-ui-actions">
+                            <button
+                                className="icon-btn"
+                                onClick={() => navigate("/collection_ocean")}
+                            >
+                                📁
+                            </button>
 
-                        <button
-                            className="icon-btn"
-                            onClick={() => navigate("/settings_ocean")}
-                        >
-                            ⚙️
-                        </button>
+                            <button
+                                className="icon-btn"
+                                onClick={() => navigate("/settings_ocean")}
+                            >
+                                ⚙️
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -49,12 +49,18 @@ function isOverInteractiveRegions(clientX, clientY, selectors, root) {
     return isOverInteractiveByElement(clientX, clientY, selectors, root);
 }
 
-/** 確認ダイアログ表示中は座標ずれで透過に戻さない */
+/** 確認ダイアログや設定画面などのオーバーレイ表示中は座標ずれで透過に戻さない */
 function hasBlockingOverlay(root) {
     const scope = root || document;
     return Boolean(
         scope.querySelector?.(".theme-confirm-overlay") ||
-        document.querySelector(".theme-confirm-overlay")
+        scope.querySelector?.(".settings-container") || // 宇宙設定画面のコンテナ
+        scope.querySelector?.(".settings-ocean-container") || // 海設定画面のコンテナ
+        scope.querySelector?.(".settings-window") || // 設定画面ウィンドウ自体
+        document.querySelector(".theme-confirm-overlay") ||
+        document.querySelector(".settings-container") ||
+        document.querySelector(".settings-ocean-container") ||
+        document.querySelector(".settings-window")
     );
 }
 
@@ -78,7 +84,18 @@ export function useWallpaperMousePassthrough(
     const uiHoveredRef = useRef(false);
     const interactiveRef = useRef(false);
 
-    const passthroughKey = passthroughSelectors.join("|");
+    // 設定・コレクション用共通インタラクティブセレクターを追加
+    const extendedSelectors = [
+        ...passthroughSelectors,
+        ".settings-window",
+        ".settings-container",
+        ".settings-ocean-container",
+        "button",
+        "input",
+        "select"
+    ];
+
+    const passthroughKey = extendedSelectors.join("|");
     const uiHoverKey = uiLayerHoveredSelectors.join("|");
 
     const setMouseInteractive = useCallback((interactive) => {
@@ -95,7 +112,7 @@ export function useWallpaperMousePassthrough(
             if (hasBlockingOverlay(root)) {
                 setInteractiveState(
                     interactiveRef,
-                    true,
+                    true, // オーバーレイがある場合は常にインタラクティブ（透過解除）
                     setMouseInteractive,
                     hasElectron
                 );
@@ -105,7 +122,7 @@ export function useWallpaperMousePassthrough(
             const interactive = isOverInteractiveRegions(
                 clientX,
                 clientY,
-                passthroughSelectors,
+                extendedSelectors,
                 root
             );
 
@@ -131,7 +148,7 @@ export function useWallpaperMousePassthrough(
         },
         [
             rootRef,
-            passthroughSelectors,
+            passthroughKey,
             uiLayerHoveredSelectors,
             setMouseInteractive,
         ]

@@ -9,11 +9,15 @@ import FlowController from "../../components/ui/flows/FlowController";
 import Rocket from "../../components/ui/Rocket/Rocket";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
+// マウスイベントを透過させずに、アプリ側でクリックを検知するセレクタのリスト
 const WALLPAPER_PASSTHROUGH_SELECTORS = [
     ".top-ui",
     ".rocket-position",
     ".rocket-wrapper",
+    ".icon-btn",         // 追加: フォルダやギアのボタン自体をクリック可能にする
+    ".top-ui-actions"    // 追加: ボタンの親要素エリアも安全にカバー
 ];
+
 const WALLPAPER_UI_HOVER_SELECTORS = [".top-ui"];
 
 const Wallpaper = () => {
@@ -34,7 +38,9 @@ const Wallpaper = () => {
             </SpaceBackgroundStage>
 
             <div className="primary-monitor-ui">
-                <Rocket />
+                <div className="rocket-position">
+                    <Rocket />
+                </div>
 
                 <div
                     className={`wallpaper-ui-layer ${isUiLayerHovered ? "hovered" : ""}`}

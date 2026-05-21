@@ -5,12 +5,10 @@ const fs = require('fs');
 
 let win;
 let eaw;
-let db = null; // 初期値を明示的にnullに設定
-let normalizedHitRegions = [];
-let hitTestTimer = null;
+let db = null;
 let wallpaperMousePassthrough = true;
 
-// 【修正】better-sqlite3 の読み込みと変数代入を完全に安全化
+// better-sqlite3 の読み込みと変数代入を完全に安全化
 try {
     const Database = require('better-sqlite3');
     const userDataPath = app.getPath('userData');
@@ -21,11 +19,10 @@ try {
     }
     db = new Database(dbPath);
 } catch (e) {
-    // クラッシュログを出力しつつ、アプリの起動は邪魔しない
     console.error("Database (better-sqlite3) load error:", e);
 }
 
-// 【修正】壁紙モジュールの読み込み安全化
+// 壁紙モジュールの読み込み安全化
 try {
     eaw = require('electron-as-wallpaper');
 } catch (e) {
@@ -140,10 +137,20 @@ function centerWindowOnPrimary(width, height) {
     };
 }
 
+function applyMousePassthrough(ignore) {
+    if (!win || win.isDestroyed()) return;
+    try {
+        // forward: true にすることで、レンダラー(React)にマウスイベントを流しつつ透過させる
+        win.setIgnoreMouseEvents(ignore, { forward: true });
+    } catch (e) {
+        // 特定環境でのチラつきやエラーをキャッチ
+        console.error("setIgnoreMouseEvents error:", e);
+    }
+}
+
 function ensureNormalAppWindow() {
     if (!win) return;
 
-    stopHitTest();
     applyMousePassthrough(false);
 
     if (eaw && win.wallpaperState?.isAttached) {
@@ -191,6 +198,18 @@ function attachAsWallpaper() {
     }
 }
 
+function getHashRoute() {
+    if (!win) return '/';
+    const currentUrl = win.webContents.getURL();
+    const hashIdx = currentUrl.indexOf('#');
+    if (hashIdx === -1) return '/';
+    let route = currentUrl.slice(hashIdx + 1);
+    if (route.includes('?')) {
+        route = route.split('?')[0];
+    }
+    return route;
+}
+
 function syncWindowModeFromRoute() {
     if (!win) return;
 
@@ -218,7 +237,6 @@ function syncWindowModeFromRoute() {
 }
 
 function initDatabase() {
-    // db が正常に初期化されていない場合はログを出して安全にスキップ
     if (!db) {
         console.warn("Database が初期化されていないため、テーブル作成をスキップします。");
         return;
@@ -244,13 +262,15 @@ function initDatabase() {
 }
 
 function createWindow() {
+    initDatabase();
+
     win = new BrowserWindow({
         width: 1000,
         height: 700,
         transparent: true,
         backgroundColor: '#050816',
         frame: false,
-        show: false, // ready-to-show で表示
+        show: false,
         resizable: false,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
@@ -283,189 +303,49 @@ function createWindow() {
     win.webContents.on('did-finish-load', () => syncWindowModeFromRoute());
     win.webContents.on('did-navigate-in-page', () => syncWindowModeFromRoute());
 
-    const forceShowTimeout = setTimeout(() => {
-        if (win && !win.isVisible()) {
-            console.warn('ready-to-show が発火しなかったため、強制表示します。');
-            win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
-            win.show();
-        }
-    }, 1500);
-
     win.once('ready-to-show', () => {
-        clearTimeout(forceShowTimeout);
-        win.setBounds(centerWindowOnPrimary(HOME_WINDOW.width, HOME_WINDOW.height));
         win.show();
-        syncWindowModeFromRoute();
+    });
+
+    win.on('closed', () => {
+        win = null;
     });
 }
 
-function applyMousePassthrough(ignore) {
-    if (!win) return;
-    if (ignore) {
-        win.setIgnoreMouseEvents(true, { forward: true });
-    } else {
-        win.setIgnoreMouseEvents(false);
-    }
-}
-
-function isCursorOverHitRegions() {
-    if (!win || normalizedHitRegions.length === 0) return false;
-
-    const point = screen.getCursorScreenPoint();
-    const bounds = win.getContentBounds();
-    if (bounds.width <= 0 || bounds.height <= 0) return false;
-
-    const relX = (point.x - bounds.x) / bounds.width;
-    const relY = (point.y - bounds.y) / bounds.height;
-
-    if (relX < 0 || relX > 1 || relY < 0 || relY > 1) {
-        return false;
-    }
-
-    return normalizedHitRegions.some(
-        (r) =>
-            relX >= r.left &&
-            relX <= r.right &&
-            relY >= r.top &&
-            relY <= r.bottom
-    );
-}
-
-function runHitTestTick() {
-    if (!win || !wallpaperMousePassthrough) return;
-    const interactive = isCursorOverHitRegions();
-    applyMousePassthrough(!interactive);
-}
-
-function startHitTest() {
-    if (hitTestTimer) return;
-    wallpaperMousePassthrough = true;
-    hitTestTimer = setInterval(runHitTestTick, 32);
-    runHitTestTick();
-}
-
-function stopHitTest() {
-    if (hitTestTimer) {
-        clearInterval(hitTestTimer);
-        hitTestTimer = null;
-    }
-    normalizedHitRegions = [];
-    wallpaperMousePassthrough = false;
-    applyMousePassthrough(false);
-}
-
-function getHashRoute() {
-    if (!win?.webContents) return '/';
-    try {
-        const hash = new URL(win.webContents.getURL()).hash || '#/';
-        let route = decodeURIComponent(hash.slice(1)) || '/';
-        if (!route.startsWith('/')) {
-            route = `/${route}`;
-        }
-        const trimmed = route.replace(/\/+$/, '');
-        return trimmed || '/';
-    } catch {
-        return '/';
-    }
-}
-
-// --- IPC通信 ---
-ipcMain.on('detach-wallpaper', () => {
-    ensureNormalAppWindow();
-});
-
-ipcMain.on('begin-rocket-interaction', () => {
-    applyMousePassthrough(false);
-});
-
-ipcMain.on('end-rocket-interaction', () => {
-    if (wallpaperMousePassthrough) {
-        applyMousePassthrough(true);
-    }
-});
-
-ipcMain.on('attach-wallpaper', () => {
-    attachAsWallpaper();
-});
-
-ipcMain.on('refresh-display-layout', () => {
-    broadcastDisplayLayout();
-});
-
-ipcMain.handle('get-display-layout', () => getPrimaryDisplayLayout());
-
-ipcMain.handle('get-cursor-client-point', () => {
-    if (!win) return { x: 0, y: 0, inWindow: false };
-
-    const point = screen.getCursorScreenPoint();
-    const bounds = win.getContentBounds();
-    const x = point.x - bounds.x;
-    const y = point.y - bounds.y;
-
-    return {
-        x,
-        y,
-        inWindow:
-            point.x >= bounds.x &&
-            point.x < bounds.x + bounds.width &&
-            point.y >= bounds.y &&
-            point.y < bounds.y + bounds.height,
-    };
-});
-
-ipcMain.on('update-hit-regions', (event, regions) => {
-    normalizedHitRegions = Array.isArray(regions) ? regions : [];
-    runHitTestTick();
-});
-
-ipcMain.on('start-hit-test', () => {
-    startHitTest();
-});
-
-ipcMain.on('stop-hit-test', () => {
-    stopHitTest();
-});
-
-ipcMain.on('set-ignore-mouse', (_event, ignore) => {
-    if (!wallpaperMousePassthrough) {
-        applyMousePassthrough(ignore);
-        return;
-    }
+// IPC 通信のハンドリング（React からの透過ON/OFF要求を処理）
+ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
+    wallpaperMousePassthrough = ignore;
     applyMousePassthrough(ignore);
 });
 
-ipcMain.handle('get-db-data', (event, query, params = []) => {
-    if (!db) return [];
-    try {
-        return db.prepare(query).all(params);
-    } catch (e) {
-        console.error("get-db-data error:", e);
-        return [];
-    }
+ipcMain.handle('get-display-layout', () => {
+    return getPrimaryDisplayLayout();
 });
 
-ipcMain.on('save-discovery', (event, itemId) => {
-    if (!db) return;
-    try {
-        db.prepare('INSERT INTO discovery_logs (item_id) VALUES (?)').run(itemId);
-    } catch (e) {
-        console.error("save-discovery error:", e);
-    }
+ipcMain.handle('get-cursor-client-point', () => {
+    if (!win) return { x: null, y: null, inWindow: false };
+    const cursorPoint = screen.getCursorScreenPoint();
+    const winBounds = win.getBounds();
+
+    const x = cursorPoint.x - winBounds.x;
+    const y = cursorPoint.y - winBounds.y;
+
+    const inWindow = (
+        cursorPoint.x >= winBounds.x &&
+        cursorPoint.x < winBounds.x + winBounds.width &&
+        cursorPoint.y >= winBounds.y &&
+        cursorPoint.y < winBounds.y + winBounds.height
+    );
+
+    return { x, y, inWindow };
 });
 
-ipcMain.on('quit-app', () => app.quit());
-
+// アプリケーションのライフサイクル
 app.whenReady().then(() => {
-    initDatabase();
     createWindow();
 
-    screen.on('display-metrics-changed', () => {
-        if (!win) return;
-        if (win.wallpaperState?.isAttached) {
-            win.setBounds(getVirtualDesktopBounds());
-        }
-        broadcastDisplayLayout();
-        syncWindowModeFromRoute();
+    app.on('activate', () => {
+        if (BrowserWindow.getAllWindows().length === 0) createWindow();
     });
 });
 
