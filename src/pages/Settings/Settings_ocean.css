@@ -157,7 +157,7 @@
     width: min(92vw, 520px);
     /* min-height: 100vh は外す — コンテンツ量に応じた高さにし、小画面で下が切れないようにする */
     margin: 0 auto;
-    padding: 24px;
+    padding: clamp(28px, 4vw, 36px);
     display: flex;
     flex-direction: column;
     align-items: center;

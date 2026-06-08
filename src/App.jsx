@@ -28,12 +28,8 @@ function AppContent() {
     useAppPrimaryDisplayLayout(pathname);
     useWallpaperRouteSync(pathname);
 
-    const showSpaceBackdrop =
-        SPACE_THEME_ROUTES.has(pathname) &&
-        pathname !== "/wallpaper";
-    const showOceanBackdrop =
-        OCEAN_THEME_ROUTES.has(pathname) &&
-        pathname !== "/wallpaper_ocean";
+    const showSpaceBackdrop = SPACE_THEME_ROUTES.has(pathname);
+    const showOceanBackdrop = OCEAN_THEME_ROUTES.has(pathname);
 
     return (
         <>

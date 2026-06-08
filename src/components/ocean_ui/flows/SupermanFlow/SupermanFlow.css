@@ -1,237 +1,65 @@
-﻿/*.superman-flow-wrapper {
-    position: absolute;
+﻿.superman-flow {
+    position: fixed;
     inset: 0;
-    overflow: hidden;
     pointer-events: none;
-    z-index: 5;
-}*/
+    overflow: hidden;
+    z-index: 100;
+}
 
-/* ★本体（動き担当） */
-/*.superman-image-wrap {
+.superman {
     position: absolute;
-    width: clamp(140px, calc(var(--ocean-vw) * 0.18), 320px);
+    /* レスポンシブ */
+    width: clamp(105px, 10.5vw, 250px);
     height: auto;
-    left: calc(var(--ocean-vw) * -0.3);
-    top: 50%;
-    will-change: left, top, transform;
-    animation: supermanFlowMove 85s linear forwards;
-}*/
-
-/* ★追加：反転専用レイヤー */
-/*.superman-flow-image {*/
-/* 反転はここでは禁止（上書きされるため） */
-/*}*/
-
-/* ★新規：画像だけ反転するラッパー */
-/*.superman-flow-image {
-    transform: none;
-}*/
-
-/* 実際の解決：疑似要素ではなく filter を使う */
-/*.superman-flow-image {
-    filter: none;
-}*/
-
-/* ✔ 最重要：ここで画像だけ反転 */
-/*.superman-flow-image {
-    -webkit-transform: scaleX(-1);
+    /* 左右反転 */
     transform: scaleX(-1);
-    animation: supermanFloat 2.5s ease-in-out infinite;
-}*/
+    /* アニメーション */
+    animation: supermanFlight 90s linear forwards;
+    will-change: transform, left, top;
+}
 
-/* メイン移動（変更なし） */
-/*@keyframes supermanFlowMove {
+@keyframes supermanFlight {
+    /* ==========================
+       左外 → 中央へ移動（15秒）
+       ========================== */
     0% {
-        left: calc(var(--ocean-vw) * -0.3);
-        top: 55%;
-       transform: scaleX(-1) translateY(0px);
-    }
-
-    10% {
-        left: calc(var(--ocean-vw) * 0.45);
+        left: -20vw;
         top: 50%;
-        transform: translateY(-50%) translateY(0px);
+        transform: translateY(-50%) scaleX(-1);
     }
 
-    15% {
-        left: calc(var(--ocean-vw) * 0.48);
+    16.6% {
+        left: 50%;
         top: 50%;
-        transform: translateY(-50%) translateY(-10px);
+        transform: translate(-50%, -50%) scaleX(-1);
     }
-
-    20% {
-        left: calc(var(--ocean-vw) * 0.45);
+    /* ==========================
+       中央で60秒停止
+       (15s → 75s)
+       ========================== */
+    83.3% {
+        left: 50%;
         top: 50%;
-        transform: translateY(-50%);
+        transform: translate(-50%, -50%) scaleX(-1);
     }
-
-    25% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(-8px);
-    }
-
-    30% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(8px);
-    }
-
-    35% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(-6px);
-    }
-
-    40% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(6px);
-    }
-
-    45% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(-5px);
-    }
-
-    50% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(5px);
-    }
-
-    55% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(-4px);
-    }
-
-    60% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(4px);
-    }
-
-    65% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(-3px);
-    }
-
-    70% {
-        left: calc(var(--ocean-vw) * 0.48);
-        top: 50%;
-        transform: translateY(-50%) translateY(3px);
-    }
-
-    75% {
-        left: calc(var(--ocean-vw) * 0.45);
-        top: 50%;
-        transform: translateY(-50%);
-    }
-
-    100% {
-        left: calc(var(--ocean-vw) * 1.2);
-        top: calc(var(--ocean-vh) * -0.2);
-        transform: translateY(-50%) translateY(0px);
-    }
-
-
-}*/
-
-.superman-flow-wrapper {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 5;
-}
-
-/* ★移動担当だけ */
-.superman-image-wrap {
-    position: absolute;
-    width: clamp(110px, calc(var(--ocean-vw) * 0.14), 240px);
-    left: calc(var(--ocean-vw) * -0.3);
-    top: 55%;
-    will-change: left, top;
-    animation: supermanFlowMove 85s linear forwards;
-}
-
-/* ★画像は反転のみ */
-.superman-flow-image {
-    width: 100%;
-    transform: scaleX(-1);
-    will-change: transform;
-    animation: supermanFlowMove 85s linear forwards;
-}
-
-/* ★メイン移動 */
-@keyframes supermanFlowMove {
-    0% {
-        left: calc(var(--ocean-vw) * -0.3);
+    /* ==========================
+       右上へ弧を描いて加速
+       ========================== */
+    88% {
+        left: 70%;
         top: 40%;
+        transform: translate(-50%, -50%) scaleX(-1);
     }
 
-    20% {
-        left: calc(var(--ocean-vw) * 0.1);
-        top: 40%;
-    }
-    /* ゆっくり漂う */
-    40% {
-        left: calc(var(--ocean-vw) * 0.14);
-        top: 39%;
-    }
-
-    60% {
-        left: calc(var(--ocean-vw) * 0.28);
-        top: 38%;
-    }
-    /* ★ここから一気に加速 */
-    68% {
-        left: calc(var(--ocean-vw) * 0.85);
-        top: 12%;
-    }
-    /*    85% {*/
-    /*        left: calc(var(--ocean-vw) * 1.05);
-        top: 0%;
-    }*/
-
-    100% {
-        left: calc(var(--ocean-vw) * 1.8);
-        top: calc(var(--ocean-vh) * -0.3);
-        /*        transform: scale(0.7)*/
-    }
-}
-
-/* ★上下ふわふわ */
-@keyframes supermanFloat {
-
-    0% {
-        transform: scaleX(-1) translateY(0px);
-    }
-
-    15% {
-        transform: scaleX(-1) translateY(-8px);
-    }
-
-    30% {
-        transform: scaleX(-1) translateY(6px);
-    }
-
-    45% {
-        transform: scaleX(-1) translateY(-10px);
-    }
-
-    60% {
-        transform: scaleX(-1) translateY(5px);
-    }
-
-    75% {
-        transform: scaleX(-1) translateY(-6px);
+    93% {
+        left: 90%;
+        top: 20%;
+        transform: translate(-50%, -50%) scaleX(-1);
     }
 
     100% {
-        transform: scaleX(-1) translateY(0px);
+        left: 120%;
+        top: -20%;
+        transform: translate(-50%, -50%) scaleX(-1);
     }
 }

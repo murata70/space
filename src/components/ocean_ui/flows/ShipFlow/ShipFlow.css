@@ -8,7 +8,7 @@
     pointer-events: none;
     transform: translateY(-50%);
     /* 少し長めでゆったり */
-    animation: shipMove 42s linear forwards;
+    animation: shipMove 60s linear forwards;
     z-index: 3;
     will-change: transform;
 }
@@ -41,14 +41,9 @@
         opacity: 1;
     }
     /* 航行 */
-    85% {
-        transform: translateY(-50%) translateX(calc(100vw + 60%));
-        opacity: 1;
-    }
-    /* フェードアウト */
     100% {
         transform: translateY(-50%) translateX(calc(100vw + 160%));
-        opacity: 0;
+        opacity: 1;
     }
 }
 

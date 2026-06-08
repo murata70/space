@@ -48,7 +48,7 @@ const Slide = ({
     useElectronCursorPoll(updateHover, hasCursorPoll, 32);
 
     useEffect(() => {
-        if (!expandOnHover || hasCursorPoll) return undefined;
+        if (!expandOnHover) return undefined;
 
         const onMouseMove = (e) => updateHover(e.clientX, e.clientY);
         const onPointerMove = (e) => updateHover(e.clientX, e.clientY);
@@ -61,16 +61,45 @@ const Slide = ({
             window.removeEventListener("pointermove", onPointerMove);
             setOpen(false);
         };
-    }, [expandOnHover, hasCursorPoll, updateHover]);
+    }, [expandOnHover, updateHover]);
+
+    const handleAreaMouseEnter = useCallback(() => {
+        if (!expandOnHover) return;
+        setOpen(true);
+        if (typeof window.electron?.setIgnoreMouse === "function") {
+            window.electron.setIgnoreMouse(false);
+        }
+    }, [expandOnHover]);
+
+    const handleAreaMouseLeave = useCallback(
+        (event) => {
+            if (!expandOnHover) return;
+            const root = areaRef.current;
+            if (!root) return;
+
+            const related = event.relatedTarget;
+            if (related instanceof Node && root.contains(related)) return;
+
+            setOpen(false);
+        },
+        [expandOnHover]
+    );
 
     return (
-        <div ref={areaRef} className={rootClass} style={style}>
+        <div
+            ref={areaRef}
+            className={rootClass}
+            style={style}
+            onMouseEnter={expandOnHover ? handleAreaMouseEnter : undefined}
+            onMouseLeave={expandOnHover ? handleAreaMouseLeave : undefined}
+        >
             <div
                 className="slide-tab"
                 role={expandOnHover ? "presentation" : "button"}
                 tabIndex={expandOnHover ? -1 : 0}
                 aria-expanded={open}
                 aria-label={title}
+                onMouseEnter={expandOnHover ? handleAreaMouseEnter : undefined}
                 onClick={
                     expandOnHover
                         ? undefined

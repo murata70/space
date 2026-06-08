@@ -9,7 +9,8 @@
     min-height: 100dvh;
     overflow: hidden;
     position: relative;
-    background-color: #050816;
+    background-color: transparent;
+    pointer-events: none;
     color: white;
     font-family: Arial, sans-serif;
     box-sizing: border-box;

@@ -39,11 +39,8 @@ export default function TrainFlow({ onComplete = () => {} }) {
 
       const x = startX + (endX - startX) * progress;
 
-      // 👇上下ゆれ（かなり緩やか）
-      const y = Math.sin(time / 180) * 10;
-
       el.style.transform = `
-        translate(${x}px, ${y}px)
+        translate(${x}px, 0px)
         scale(25)
       `;
 

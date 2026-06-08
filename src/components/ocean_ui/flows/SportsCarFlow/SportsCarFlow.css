@@ -17,7 +17,7 @@
 */
 .sports-car-body {
     position: absolute;
-    top: calc(var(--ocean-lane-passing-top) + 15.5%); /* 前回の+17%からほんのわずかに上へシフト */
+    top: calc(var(--ocean-lane-passing-top) + 16.5%);
     left: 100%;
     will-change: transform;
     transform: translateY(-50%);
@@ -67,12 +67,12 @@
 /* レスポンシブ対応：各画面解像度でも数ミリ上の微調整比率を綺麗に維持 */
 @media (max-width: 1024px) {
     .sports-car-body {
-        top: calc(var(--ocean-lane-passing-top) + 16.5%);
+        top: calc(var(--ocean-lane-passing-top) + 17.5%);
     }
 }
 
 @media (max-width: 768px) {
     .sports-car-body {
-        top: calc(var(--ocean-lane-passing-top) + 17.5%);
+        top: calc(var(--ocean-lane-passing-top) + 18.5%);
     }
 }

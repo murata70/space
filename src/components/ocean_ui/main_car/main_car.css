@@ -3,13 +3,13 @@
  * top は .ocean-background-primary の高さ（100%）× ratio（小さいほど上）。*/
  
 .ocean-background-primary {
-    --main-car-top-ratio: 0.68;
+    --main-car-top-ratio: 0.695;
 }
 
     .ocean-background-primary .main-car-position,
     .main-car-position {
         position: absolute;
-        top: calc(100% * var(--main-car-top-ratio, 0.68));
+        top: calc(100% * var(--main-car-top-ratio, 0.695));
         left: clamp(40px, calc(var(--ocean-vw, 100vw) * 0.2), 300px);
         transform: translateY(-50%);
         max-width: var(--ocean-vw, 100vw);
@@ -60,7 +60,7 @@
 }
 
 .main-car-image {
-    width: clamp(120px, calc(var(--ocean-vw, 100vw) * 0.16), 230px);
+    width: clamp(135px, calc(var(--ocean-vw, 100vw) * 0.18), 260px);
     height: auto;
     object-fit: contain;
     pointer-events: auto;

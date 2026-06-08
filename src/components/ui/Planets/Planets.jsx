@@ -57,19 +57,18 @@ export default function Planets() {
                 Math.floor(Math.random() * targetList.length)
                 ];
 
-            // サイズ
-            const size =
-                Math.random() * 400 + 800;
+            // サイズ（--space-vw 基準・レスポンシブ）
+            const sizeVw = Math.random() * 0.2 + 0.35;
+            const size = `clamp(320px, calc(var(--space-vw, 100vw) * ${sizeVw}), 1200px)`;
 
-            // 高さ
-            const top =
-                Math.random() * 80 - 80;
+            // 垂直位置: 惑星サイズに対する上方向のはみ出し率（35〜48% → 52%以上が画面内）
+            const peekHidden = Math.random() * 0.13 + 0.35;
 
             setPlanet({
                 id: Date.now(),
                 image: randomImage,
                 size,
-                top,
+                peekHidden,
             });
 
             // 履歴更新
@@ -100,11 +99,11 @@ export default function Planets() {
                 alt="planet"
                 className="planet-object"
                 style={{
-                    top: `${planet.top}%`,
-                    width: `${planet.size}px`,
+                    top: `calc(var(--planet-size) * -${planet.peekHidden})`,
+                    width: planet.size,
                     // 右端外（FlagFlow と同じ --space-vw 基準）
                     left: "var(--space-vw, 100vw)",
-                    "--planet-size": `${planet.size}px`,
+                    "--planet-size": planet.size,
                     animation: `flowPlanet ${FLOW_TIME}s linear forwards`,
                 }}
             />

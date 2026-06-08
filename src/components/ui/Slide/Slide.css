@@ -7,10 +7,10 @@
 .slide-area {
     --slide-tab-width: clamp(44px, 4.5vw, 60px);
     --slide-panel-width: clamp(180px, 28vw, 280px);
-    --slide-padding-tab: clamp(8px, 1.2vw, 12px);
-    --slide-padding-panel: clamp(12px, 2.5vw, 20px);
+    --slide-padding-tab: clamp(10px, 1.4vw, 14px);
+    --slide-padding-panel: clamp(16px, 3vw, 24px);
     --slide-title-size: clamp(15px, 2vw, 18px);
-    --slide-item-padding: clamp(10px, 1.5vw, 12px);
+    --slide-item-padding: clamp(12px, 1.8vw, 14px);
     --slide-letter-spacing: clamp(1px, 0.2vw, 2px);
 
     position: relative;
@@ -116,8 +116,8 @@
     box-shadow: -8px 0 16px rgba(0, 0, 0, 0.35);
 }
 
-/* ホバー解除で左パネルを閉じる */
-.collection-wrap .slide-area--hover-expand:not(.is-hovered) .slide-panel {
+/* ホバー解除で左パネルを閉じる（:hover 展開と競合しないよう両方除外） */
+.collection-wrap .slide-area--hover-expand:not(.is-hovered):not(:hover) .slide-panel {
     flex: 0 0 0;
     width: 0;
     min-width: 0;

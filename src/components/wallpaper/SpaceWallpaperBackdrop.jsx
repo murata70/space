@@ -2,7 +2,7 @@ import SpaceBackgroundStage from "../ui/background_space/SpaceBackgroundStage";
 import FlowController from "../ui/flows/FlowController";
 import PrimaryMonitorBackdrop from "../layout/PrimaryMonitorBackdrop";
 
-/** 宇宙テーマの壁紙背景（メインモニター内・設定・コレクションの背後用） */
+/** 宇宙テーマの壁紙背景（壁紙・設定・コレクションで共通・状態を維持） */
 export default function SpaceWallpaperBackdrop() {
     return (
         <PrimaryMonitorBackdrop>

@@ -23,6 +23,16 @@ export function measureSlidePanelWidth(slideAreaEl) {
     return width > 0 ? width : 220;
 }
 
+/** THEMES タブのみの当たり判定矩形 */
+export function getSlideTabHitRect(slideAreaEl) {
+    if (!slideAreaEl) return null;
+
+    const tab = slideAreaEl.querySelector(".slide-tab");
+    if (!tab) return slideAreaEl.getBoundingClientRect();
+
+    return tab.getBoundingClientRect();
+}
+
 /** THEMES タブ＋左に伸びるパネル全体の当たり判定矩形 */
 export function getSlideExpandedHitRect(slideAreaEl) {
     if (!slideAreaEl) return null;
@@ -41,8 +51,19 @@ export function getSlideExpandedHitRect(slideAreaEl) {
     };
 }
 
+/** 閉: THEMES タブ上 / 開: タブ＋展開パネル上でホバー継続 */
 export function isPointOverSlideHoverZone(slideAreaEl, clientX, clientY) {
     if (!slideAreaEl) return false;
-    const rect = getSlideExpandedHitRect(slideAreaEl);
-    return isPointInRect(clientX, clientY, rect);
+
+    const tabRect = getSlideTabHitRect(slideAreaEl);
+    if (tabRect && isPointInRect(clientX, clientY, tabRect)) {
+        return true;
+    }
+
+    if (slideAreaEl.classList.contains("is-hovered")) {
+        const expanded = getSlideExpandedHitRect(slideAreaEl);
+        return isPointInRect(clientX, clientY, expanded);
+    }
+
+    return false;
 }

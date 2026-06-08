@@ -10,7 +10,7 @@
 }
 
 .carriage-image {
-    width: clamp(220px, calc(var(--ocean-vw) * 0.26), 330px);
+    width: clamp(250px, calc(var(--ocean-vw) * 0.29), 370px);
     height: auto;
     animation: carriageShake 0.2s steps(2, end) infinite;
 }

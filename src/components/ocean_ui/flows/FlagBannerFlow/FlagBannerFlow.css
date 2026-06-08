@@ -4,21 +4,37 @@
     left: 100%;
     z-index: 3;
     pointer-events: none;
-    transform: translateY(-52%);
+    transform: translateY(-51%);
     animation: flagBannerMove 15s linear forwards;
 }
 
 .flag-banner-image {
     width: var(--ocean-width-flag-banner);
     height: auto;
+    animation: flagBannerBob 0.3s steps(3, end) infinite;
+}
+
+/* 0.1秒: 通常 → 0.1秒: ほんの少し上 → 0.1秒: 通常（旗の揺れ） */
+@keyframes flagBannerBob {
+    0% {
+        transform: translateY(0);
+    }
+
+    33.33% {
+        transform: translateY(clamp(-4px, calc(var(--ocean-vh) * -0.006), -8px));
+    }
+
+    66.66% {
+        transform: translateY(0);
+    }
 }
 
 @keyframes flagBannerMove {
     from {
-        transform: translateY(-52%) translateX(0);
+        transform: translateY(-51%) translateX(0);
     }
 
     to {
-        transform: translateY(-52%) translateX(var(--ocean-scroll-exit));
+        transform: translateY(-51%) translateX(var(--ocean-scroll-exit));
     }
 }

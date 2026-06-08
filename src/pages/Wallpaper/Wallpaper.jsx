@@ -4,8 +4,6 @@ import "./Wallpaper.css";
 import "../../styles/primary-monitor-ui.css";
 
 import Clock from "../../components/ui/Clock/Clock";
-import SpaceBackgroundStage from "../../components/ui/background_space/SpaceBackgroundStage";
-import FlowController from "../../components/ui/flows/FlowController";
 import Rocket from "../../components/ui/Rocket/Rocket";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
@@ -33,10 +31,6 @@ const Wallpaper = () => {
 
     return (
         <div className="wallpaper" ref={wallpaperRef}>
-            <SpaceBackgroundStage>
-                <FlowController />
-            </SpaceBackgroundStage>
-
             <div className="primary-monitor-ui">
                 <div className="rocket-position">
                     <Rocket />

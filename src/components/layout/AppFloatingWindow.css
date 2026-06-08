@@ -10,14 +10,23 @@
     position: absolute;
     inset: 0;
     display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: clamp(24px, 4vh, 64px) clamp(16px, 3vw, 32px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: clamp(32px, 5vh, 72px) clamp(24px, 4vw, 40px);
     box-sizing: border-box;
     pointer-events: auto;
     overflow: auto;
     background: transparent;
     cursor: default;
+}
+
+/* 設定・コレクションのメインパネルを画面中央に配置（高さが足りない場合はスクロール） */
+.app-floating-window > .settings-page-container.space-theme,
+.app-floating-window > .settings-page-wrapper.ocean-theme,
+.app-floating-window > .collection-wrap {
+    margin-block: auto;
+    flex-shrink: 0;
 }
 
 /* 壁紙の上: 設定・コレクションを不透明なウィンドウとして表示 */
@@ -68,12 +77,14 @@
     display: flex;
     flex-direction: row;
     align-items: stretch;
+    justify-content: center;
     min-height: auto;
     height: auto;
     max-width: min(1280px, 96%);
-    width: 100%;
+    width: fit-content;
     margin: 0 auto;
-    padding: 24px 0 24px 24px;
+    padding: clamp(28px, 3.5vw, 40px) clamp(20px, 2.5vw, 28px);
+    gap: clamp(12px, 1.5vw, 20px);
     overflow: visible;
     background: #0a0a12;
     border-radius: 16px;

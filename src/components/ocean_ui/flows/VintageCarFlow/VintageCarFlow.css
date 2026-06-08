@@ -23,16 +23,28 @@
     animation: vintageCarMove 18s linear forwards;
 }
 
-/* 
-  車体画像:
-  上下の動きを完全に止め、一切揺れない静かな水平移動に変更しました。
-*/
 .vintage-car-image {
-    width: var(--ocean-width-sm);
+    width: clamp(140px, calc(var(--ocean-vw) * 0.16), 210px);
     height: auto;
     display: block;
     user-select: none;
     -webkit-user-drag: none;
+    animation: vintageCarBob 0.3s steps(3, end) infinite;
+}
+
+/* 0.1秒: 通常 → 0.1秒: ほんの少し上 → 0.1秒: 通常（車体の揺れ） */
+@keyframes vintageCarBob {
+    0% {
+        transform: translateY(0);
+    }
+
+    33.33% {
+        transform: translateY(clamp(-4px, calc(var(--ocean-vh) * -0.006), -8px));
+    }
+
+    66.66% {
+        transform: translateY(0);
+    }
 }
 
 /* 横移動アニメーション（車よりのんびり、ゆったりと通り抜ける） */

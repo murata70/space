@@ -1,50 +1,65 @@
-.superman-flow-wrapper {
+.superman-flow {
     position: fixed;
     inset: 0;
-    overflow: hidden;
     pointer-events: none;
-    z-index: 30;
+    overflow: hidden;
+    z-index: 100;
 }
 
-/* 本体 */
-.superman-image-wrap {
-    position: fixed;
-    left: -20vw;
-    top: 58%;
-    width: 140px;
-    z-index: 30;
-    animation: supermanMove 18s linear forwards;
-}
-
-/* 画像 */
-.superman-flow-image {
-    display: block;
-    width: 100%;
+.superman {
+    position: absolute;
+    /* レスポンシブ */
+    width: clamp(120px, 12vw, 280px);
     height: auto;
+    /* 左右反転 */
     transform: scaleX(-1);
-    animation: supermanFloat 0.2s infinite alternate;
+    /* アニメーション */
+    animation: supermanFlight 90s linear forwards;
+    will-change: transform, left, top;
 }
 
-/* 横移動 */
-@keyframes supermanMove {
-
-    from {
-        left: -15vw;
+@keyframes supermanFlight {
+    /* ==========================
+       左外 → 中央へ移動（15秒）
+       ========================== */
+    0% {
+        left: -20vw;
+        top: 50%;
+        transform: translateY(-50%) scaleX(-1);
     }
 
-    to {
-        left: 110vw;
+    16.6% {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scaleX(-1);
     }
-}
-
-/* 揺れ */
-@keyframes supermanFloat {
-
-    from {
-        transform: scaleX(-1) translateY(0px);
+    /* ==========================
+       中央で60秒停止
+       (15s → 75s)
+       ========================== */
+    83.3% {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scaleX(-1);
+    }
+    /* ==========================
+       右上へ弧を描いて加速
+       ========================== */
+    88% {
+        left: 70%;
+        top: 40%;
+        transform: translate(-50%, -50%) scaleX(-1);
     }
 
-    to {
-        transform: scaleX(-1) translateY(-4px);
+    93% {
+        left: 90%;
+        top: 20%;
+        transform: translate(-50%, -50%) scaleX(-1);
+    }
+
+    100% {
+        left: 120%;
+        top: -20%;
+        transform: translate(-50%, -50%) scaleX(-1);
     }
 }

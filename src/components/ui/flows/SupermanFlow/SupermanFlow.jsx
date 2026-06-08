@@ -3,27 +3,14 @@ import "./SupermanFlow.css";
 
 const publicUrl = process.env.PUBLIC_URL || "";
 
-export default function SupermanFlow({ onComplete }) {
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            if (onComplete) {
-                onComplete();
-            }
-        }, 85000);
-
-        return () => clearTimeout(timer);
-    }, [onComplete]);
-
+export default function SupermanFlow() {
     return (
-        <div className="superman-flow-wrapper">
-            <div className="superman-image-wrap">
-                <img
-                    className="superman-flow-image"
-                    src={`${publicUrl}/assets/image/collections/superman.png`}
-                    alt="superman"
-                    draggable="false"
-                />
-            </div>
+        <div className="superman-flow">
+            <img
+                src={`${publicUrl}/assets/image/collections/superman.png`}
+                alt="Superman"
+                className="superman"
+            />
         </div>
     );
 }
