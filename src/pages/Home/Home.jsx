@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import StarField from "../../components/ui/StarField/StarField";
+import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
 
 /* 共通設定パーツ */
 import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
@@ -31,6 +32,7 @@ const Home = () => {
     const [sec, setSec] = useState(savedSettings?.sec ?? true);
     const [tz, setTz] = useState(savedSettings?.tz ?? "Asia/Tokyo");
     const [is24h, setIs24h] = useState(savedSettings?.is24h ?? true);
+    const [exitDialogOpen, setExitDialogOpen] = useState(false);
 
     /* 初期設定：起動時は壁紙化しない（通常の操作ウィンドウ） */
     useEffect(() => {
@@ -74,8 +76,24 @@ const Home = () => {
         }, 300);
     };
 
+    const handleQuit = () => {
+        if (typeof window.electron?.quitApp === "function") {
+            window.electron.quitApp();
+            return;
+        }
+        window.close();
+    };
+
     return (
         <div className="home-wrapper">
+            <button
+                type="button"
+                className="home-close-btn"
+                aria-label="アプリケーションを終了"
+                onClick={() => setExitDialogOpen(true)}
+            >
+                ×
+            </button>
 
             {/* 星空背景 */}
             <StarField />
@@ -111,6 +129,16 @@ const Home = () => {
                     OK
                 </button>
             </div>
+
+            <ThemeConfirmDialog
+                open={exitDialogOpen}
+                windowed
+                message="アプリケーションを終了しますか？"
+                confirmLabel="終了する"
+                cancelLabel="キャンセル"
+                onConfirm={handleQuit}
+                onCancel={() => setExitDialogOpen(false)}
+            />
         </div>
     );
 };

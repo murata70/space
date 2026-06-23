@@ -9,12 +9,14 @@ export default function ThemeConfirmDialog({
     confirmLabel = "OK",
     cancelLabel = "キャンセル",
     showCancel = true,
+    /** 通常ウィンドウ（ホーム等）では true。壁紙モードの全画面座標を使わない */
+    windowed = false,
     onConfirm,
     onCancel,
 }) {
     const bodyText =
         message ?? `この壁紙（${themeName}）に設定しますか？`;
-    const overlayLayoutRef = usePrimaryDisplayLayout();
+    const overlayLayoutRef = usePrimaryDisplayLayout({ enabled: !windowed });
     const actionLockRef = useRef(false);
 
     useEffect(() => {
@@ -61,7 +63,7 @@ export default function ThemeConfirmDialog({
     return (
         <div
             ref={overlayLayoutRef}
-            className="theme-confirm-overlay"
+            className={`theme-confirm-overlay${windowed ? " theme-confirm-overlay--windowed" : ""}`}
             role="presentation"
             onPointerDown={(e) => e.stopPropagation()}
             onMouseDown={(e) => {

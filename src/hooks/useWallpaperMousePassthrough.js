@@ -1,25 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useElectronCursorPoll } from "./useElectronCursorPoll";
-import {
-    getSlideExpandedHitRect,
-    getSlideTabHitRect,
-    isPointInRect,
-} from "../utils/slideHitTest";
+import { isPointInRect, isPointOverSlideZone } from "../utils/slideHitTest";
 
 function isPointOverSelectorRect(clientX, clientY, selector, scope) {
     const nodes = scope.querySelectorAll(selector);
     for (const node of nodes) {
         if (node.classList?.contains("slide-area--hover-expand")) {
-            const tabRect = getSlideTabHitRect(node);
-            if (tabRect && isPointInRect(clientX, clientY, tabRect)) {
+            const isOpen = node.classList.contains("is-hovered");
+            if (isPointOverSlideZone(node, clientX, clientY, isOpen)) {
                 return true;
-            }
-
-            if (node.classList.contains("is-hovered")) {
-                const expanded = getSlideExpandedHitRect(node);
-                if (isPointInRect(clientX, clientY, expanded)) {
-                    return true;
-                }
             }
 
             continue;

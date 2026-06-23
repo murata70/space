@@ -361,6 +361,10 @@ ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
     applyMousePassthrough(ignore);
 });
 
+ipcMain.on('quit-app', () => {
+    app.quit();
+});
+
 ipcMain.handle('get-display-layout', () => {
     return getPrimaryDisplayLayout();
 });

@@ -62,13 +62,15 @@
     flex-direction: row-reverse;
     align-items: stretch;
     width: var(--slide-tab-width);
-    min-height: min(70vh, 640px);
+    min-height: 0;
+    height: 100%;
     overflow: visible;
     transition: width 0.25s ease;
+    /* 開いたときの維持ゾーン: コレクション幅の右側（赤枠相当） */
+    --slide-hover-zone-ratio: 0.34;
 }
 
-.collection-wrap .slide-area--hover-expand.is-hovered,
-.collection-wrap .slide-area--hover-expand:hover {
+.collection-wrap .slide-area--hover-expand.is-hovered {
     width: calc(var(--slide-tab-width) + var(--slide-panel-width));
 }
 
@@ -104,8 +106,7 @@
         padding 0.25s ease;
 }
 
-.collection-wrap .slide-area--hover-expand.is-hovered .slide-panel,
-.collection-wrap .slide-area--hover-expand:hover .slide-panel {
+.collection-wrap .slide-area--hover-expand.is-hovered .slide-panel {
     flex: 0 0 var(--slide-panel-width);
     width: var(--slide-panel-width);
     opacity: 1;
@@ -116,8 +117,8 @@
     box-shadow: -8px 0 16px rgba(0, 0, 0, 0.35);
 }
 
-/* ホバー解除で左パネルを閉じる（:hover 展開と競合しないよう両方除外） */
-.collection-wrap .slide-area--hover-expand:not(.is-hovered):not(:hover) .slide-panel {
+/* ホバー解除で左パネルを閉じる */
+.collection-wrap .slide-area--hover-expand:not(.is-hovered) .slide-panel {
     flex: 0 0 0;
     width: 0;
     min-width: 0;
@@ -131,8 +132,7 @@
 }
 
 @media (hover: hover) {
-    .collection-wrap .slide-area--hover-expand.is-hovered .slide-panel,
-    .collection-wrap .slide-area--hover-expand:hover .slide-panel {
+    .collection-wrap .slide-area--hover-expand.is-hovered .slide-panel {
         right: auto;
     }
 }
@@ -233,7 +233,8 @@
     .collection-wrap .slide-area {
         flex-direction: row-reverse;
         width: var(--slide-tab-width);
-        min-height: min(50vh, 480px);
+        min-height: 0;
+        height: auto;
     }
 
     .collection-wrap .slide-tab {
@@ -251,8 +252,7 @@
         max-height: none;
     }
 
-    .collection-wrap .slide-area--hover-expand.is-hovered .slide-panel,
-    .collection-wrap .slide-area--hover-expand:hover .slide-panel {
+    .collection-wrap .slide-area--hover-expand.is-hovered .slide-panel {
         bottom: auto;
         max-height: none;
         border-left-width: 1px;

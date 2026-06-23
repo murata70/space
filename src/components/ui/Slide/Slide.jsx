@@ -1,7 +1,9 @@
 import "./Slide.css";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useElectronCursorPoll } from "../../../hooks/useElectronCursorPoll";
-import { isPointOverSlideHoverZone } from "../../../utils/slideHitTest";
+import { isPointOverSlideZone } from "../../../utils/slideHitTest";
+
+const CLOSE_DELAY_MS = 100;
 
 const Slide = ({
     title = "THEMES",
@@ -9,11 +11,16 @@ const Slide = ({
     onSelect,
     className = "",
     style,
-    /** コレクション用: ホバーで開き、ホバー解除で閉じる（クリックでは固定しない） */
+    /** コレクション用: THEMES タブで開き、維持ゾーンから離れたら閉じる */
     expandOnHover = false,
 }) => {
     const [open, setOpen] = useState(false);
     const areaRef = useRef(null);
+    const openRef = useRef(false);
+    const closeTimerRef = useRef(null);
+    const lastPointRef = useRef({ x: null, y: null });
+
+    openRef.current = open;
 
     const rootClass = [
         "slide-area",
@@ -24,34 +31,106 @@ const Slide = ({
         .filter(Boolean)
         .join(" ");
 
-    const updateHover = useCallback((clientX, clientY) => {
-        const root = areaRef.current;
-        if (!root) return;
-
-        if (clientX == null || clientY == null) {
-            setOpen(false);
-            return;
-        }
-
-        const over = isPointOverSlideHoverZone(root, clientX, clientY);
-        setOpen((prev) => (prev === over ? prev : over));
-
-        if (over && typeof window.electron?.setIgnoreMouse === "function") {
-            window.electron.setIgnoreMouse(false);
+    const clearCloseTimer = useCallback(() => {
+        if (closeTimerRef.current) {
+            clearTimeout(closeTimerRef.current);
+            closeTimerRef.current = null;
         }
     }, []);
+
+    const readCursorPoint = useCallback(async () => {
+        if (typeof window.electron?.getCursorClientPoint === "function") {
+            try {
+                const pt = await window.electron.getCursorClientPoint();
+                if (pt?.inWindow && pt.x != null && pt.y != null) {
+                    return { x: pt.x, y: pt.y };
+                }
+            } catch {
+                /* ignore */
+            }
+        }
+
+        const { x, y } = lastPointRef.current;
+        if (x != null && y != null) {
+            return { x, y };
+        }
+
+        return null;
+    }, []);
+
+    const scheduleClose = useCallback(() => {
+        if (closeTimerRef.current) return;
+
+        closeTimerRef.current = setTimeout(async () => {
+            closeTimerRef.current = null;
+            const root = areaRef.current;
+            if (!root || !openRef.current) return;
+
+            const point = await readCursorPoint();
+            if (point) {
+                const stillOver = isPointOverSlideZone(
+                    root,
+                    point.x,
+                    point.y,
+                    true
+                );
+                if (stillOver) return;
+            }
+
+            setOpen(false);
+        }, CLOSE_DELAY_MS);
+    }, [readCursorPoint]);
+
+    const syncOpenFromPoint = useCallback(
+        (clientX, clientY) => {
+            const root = areaRef.current;
+            if (!root) return;
+
+            if (clientX != null && clientY != null) {
+                lastPointRef.current = { x: clientX, y: clientY };
+            }
+
+            const isOpen = openRef.current;
+
+            if (!isOpen) {
+                if (clientX == null || clientY == null) return;
+
+                if (isPointOverSlideZone(root, clientX, clientY, false)) {
+                    clearCloseTimer();
+                    setOpen(true);
+                }
+                return;
+            }
+
+            if (clientX == null || clientY == null) {
+                scheduleClose();
+                return;
+            }
+
+            if (isPointOverSlideZone(root, clientX, clientY, true)) {
+                clearCloseTimer();
+                if (typeof window.electron?.setIgnoreMouse === "function") {
+                    window.electron.setIgnoreMouse(false);
+                }
+                return;
+            }
+
+            scheduleClose();
+        },
+        [clearCloseTimer, scheduleClose]
+    );
 
     const hasCursorPoll =
         expandOnHover &&
         typeof window.electron?.getCursorClientPoint === "function";
 
-    useElectronCursorPoll(updateHover, hasCursorPoll, 32);
+    useElectronCursorPoll(syncOpenFromPoint, hasCursorPoll, 24);
 
     useEffect(() => {
         if (!expandOnHover) return undefined;
 
-        const onMouseMove = (e) => updateHover(e.clientX, e.clientY);
-        const onPointerMove = (e) => updateHover(e.clientX, e.clientY);
+        const onMouseMove = (e) => syncOpenFromPoint(e.clientX, e.clientY);
+        const onPointerMove = (e) => syncOpenFromPoint(e.clientX, e.clientY);
 
         window.addEventListener("mousemove", onMouseMove, { passive: true });
         window.addEventListener("pointermove", onPointerMove, { passive: true });
@@ -59,47 +138,29 @@ const Slide = ({
         return () => {
             window.removeEventListener("mousemove", onMouseMove);
             window.removeEventListener("pointermove", onPointerMove);
+            clearCloseTimer();
             setOpen(false);
         };
-    }, [expandOnHover, updateHover]);
+    }, [expandOnHover, syncOpenFromPoint, clearCloseTimer]);
 
-    const handleAreaMouseEnter = useCallback(() => {
+    const handleTabMouseEnter = useCallback(() => {
         if (!expandOnHover) return;
+        clearCloseTimer();
         setOpen(true);
         if (typeof window.electron?.setIgnoreMouse === "function") {
             window.electron.setIgnoreMouse(false);
         }
-    }, [expandOnHover]);
-
-    const handleAreaMouseLeave = useCallback(
-        (event) => {
-            if (!expandOnHover) return;
-            const root = areaRef.current;
-            if (!root) return;
-
-            const related = event.relatedTarget;
-            if (related instanceof Node && root.contains(related)) return;
-
-            setOpen(false);
-        },
-        [expandOnHover]
-    );
+    }, [expandOnHover, clearCloseTimer]);
 
     return (
-        <div
-            ref={areaRef}
-            className={rootClass}
-            style={style}
-            onMouseEnter={expandOnHover ? handleAreaMouseEnter : undefined}
-            onMouseLeave={expandOnHover ? handleAreaMouseLeave : undefined}
-        >
+        <div ref={areaRef} className={rootClass} style={style}>
             <div
                 className="slide-tab"
                 role={expandOnHover ? "presentation" : "button"}
                 tabIndex={expandOnHover ? -1 : 0}
                 aria-expanded={open}
                 aria-label={title}
-                onMouseEnter={expandOnHover ? handleAreaMouseEnter : undefined}
+                onMouseEnter={expandOnHover ? handleTabMouseEnter : undefined}
                 onClick={
                     expandOnHover
                         ? undefined
@@ -119,7 +180,10 @@ const Slide = ({
                 {title}
             </div>
 
-            <div className={expandOnHover ? "slide-panel" : `slide-panel ${open ? "open" : ""}`} aria-hidden={!open}>
+            <div
+                className={expandOnHover ? "slide-panel" : `slide-panel ${open ? "open" : ""}`}
+                aria-hidden={!open}
+            >
                 <h2 className="slide-title">{title}</h2>
 
                 {items.map((item) => (

@@ -14,6 +14,19 @@
     pointer-events: auto;
 }
 
+/* ホーム画面など通常ウィンドウ: ビューポート全体に表示 */
+.theme-confirm-overlay--windowed {
+    inset: 0;
+    left: 0;
+    top: 0;
+    width: auto;
+    height: auto;
+}
+
+.theme-confirm-overlay--windowed .theme-confirm-dialog {
+    width: min(92vw, 420px);
+}
+
 .theme-confirm-dialog {
     width: min(calc(var(--primary-width, 100vw) * 0.92), 420px);
     background: #f5f5f5;

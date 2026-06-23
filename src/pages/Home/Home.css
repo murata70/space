@@ -20,6 +20,28 @@ html, body, #root {
     background: #050816;
 }
 
+.home-close-btn {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 4px;
+    background: #e81123;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s;
+}
+
+.home-close-btn:hover {
+    background: #c50f1f;
+}
+
 .home-bg {
     position: fixed;
     inset: 0;

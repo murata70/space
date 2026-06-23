@@ -1,29 +1,38 @@
 .collection-wrap {
+    --collection-avail-h: calc(var(--primary-height, 100dvh) - clamp(16px, 2.5vh, 32px));
+
     display: flex;
     flex-direction: row;
     align-items: stretch;
     justify-content: center;
-    gap: clamp(12px, 1.5vw, 20px);
-    min-height: auto;
+    gap: clamp(16px, 2vh, 24px);
+    min-height: 0;
     width: fit-content;
-    max-width: min(1280px, 96%);
+    max-width: min(1280px, 98%);
+    max-height: var(--collection-avail-h);
     margin: 0 auto;
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     box-sizing: border-box;
-    padding: clamp(28px, 3.5vw, 40px) clamp(20px, 2.5vw, 28px);
+    padding: clamp(20px, 2.8vh, 32px) clamp(22px, 2.5vw, 32px);
     background: black;
     color: white;
 }
 
 .collection-main {
-    flex: 0 1 auto;
+    flex: 1 1 auto;
     min-width: 0;
+    min-height: 0;
     width: auto;
     max-width: none;
     margin: 0;
     text-align: center;
-    padding-bottom: clamp(88px, 10vh, 100px);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: clamp(36px, 4.5vh, 44px);
     padding-right: 0;
 }
 
@@ -35,35 +44,57 @@
     top: auto;
     transform: none;
     height: auto;
-    min-height: min(70vh, 640px);
+    min-height: 0;
     margin-right: 0;
     border-radius: 0 12px 12px 0;
     overflow: visible;
 }
 
 .title {
-    font-size: clamp(20px, 2.5vw, 28px);
-    margin-bottom: clamp(22px, 3vw, 28px);
+    flex-shrink: 0;
+    font-size: clamp(16px, 2.2vh, 24px);
+    margin-bottom: clamp(10px, 1.6vh, 16px);
 }
 
 .complete-badge {
-    margin-top: clamp(-14px, -1.5vw, -10px);
-    margin-bottom: clamp(14px, 2vw, 20px);
+    flex-shrink: 0;
+    margin-top: clamp(-6px, -0.6vh, -2px);
+    margin-bottom: clamp(10px, 1.6vh, 14px);
+    font-size: clamp(11px, 1.4vh, 13px);
 }
 
 .grid {
+    --c-cols: 4;
+    --c-rows: 3;
+    --c-gap: clamp(12px, 1.8vh, 22px);
+    --c-header: clamp(32px, 5.5vh, 52px);
+    --c-extra: clamp(10px, 1.6vh, 18px);
+    --c-foot: clamp(28px, 3.5vh, 36px);
+    --c-max-w: calc(
+        (min(100%, 640px) - var(--c-gap) * (var(--c-cols) - 1)) / var(--c-cols)
+    );
+    --c-max-h: calc(
+        (
+            var(--collection-avail-h) - clamp(40px, 4vh, 56px) - var(--c-header) -
+                var(--c-extra) - var(--c-foot) - var(--c-gap) * (var(--c-rows) - 1)
+        ) / var(--c-rows) / 1.15
+    );
+    --c-size: min(140px, var(--c-max-w), var(--c-max-h));
+
     display: grid;
-    grid-template-columns: repeat(4, clamp(140px, 14vw, 180px));
-    gap: clamp(22px, 3vw, 32px);
+    grid-template-columns: repeat(4, var(--c-size));
+    gap: var(--c-gap);
     justify-content: center;
     align-content: center;
     margin: 0 auto;
+    flex-shrink: 1;
+    min-height: 0;
 }
 
 .card {
     width: 100%;
     aspect-ratio: 1 / 1.15;
-    border-radius: 14px;
+    border-radius: clamp(10px, 1.2vh, 14px);
     background: rgba(255, 255, 255, 0.05);
     display: grid;
     grid-template-rows: minmax(0, 1fr) auto;
@@ -75,7 +106,7 @@
 }
 
 .card:hover {
-    transform: scale(1.06);
+    transform: scale(1.04);
     border-color: rgba(255, 255, 255, 0.6);
 }
 
@@ -93,38 +124,38 @@
     min-height: 0;
     object-fit: contain;
     display: block;
-    padding: 10px 10px 4px;
+    padding: clamp(6px, 0.9vh, 10px) clamp(6px, 0.9vh, 10px) 4px;
     box-sizing: border-box;
 }
 
 .collection-name {
     position: static;
     flex-shrink: 0;
-    padding: 4px 8px 10px;
+    padding: 2px 6px clamp(4px, 0.6vh, 8px);
     margin: 0;
-    font-size: clamp(10px, 1vw, 12px);
-    line-height: 1.35;
+    font-size: clamp(9px, 1.1vh, 11px);
+    line-height: 1.25;
     text-align: center;
     text-shadow: 0 0 4px black;
     background: rgba(0, 0, 0, 0.35);
 }
 
 .unknown {
-    font-size: clamp(26px, 4vw, 34px);
+    font-size: clamp(18px, 2.5vh, 28px);
     color: #888;
 }
 
 .back-btn {
     position: absolute;
-    bottom: 24px;
+    bottom: clamp(6px, 1vh, 10px);
     left: 50%;
     transform: translateX(-50%);
-    padding: 10px 16px;
+    padding: clamp(6px, 0.9vh, 8px) clamp(10px, 1.2vw, 14px);
     background: #111;
     border: 1px solid #555;
     color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: clamp(11px, 1.3vh, 13px);
     z-index: 10;
 }
 
@@ -135,8 +166,10 @@
 
 @media (max-width: 900px) {
     .grid {
-        grid-template-columns: repeat(3, clamp(120px, 22vw, 160px));
-        gap: clamp(20px, 2.5vw, 24px);
+        --c-cols: 3;
+        --c-rows: 4;
+        --c-max-w: calc((min(100%, 480px) - var(--c-gap) * 2) / 3);
+        grid-template-columns: repeat(3, var(--c-size));
     }
 }
 
@@ -145,26 +178,34 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        padding: clamp(24px, 4vw, 32px);
-        gap: clamp(16px, 2.5vw, 24px);
+        padding: clamp(12px, 2vh, 18px);
+        gap: clamp(10px, 1.5vh, 14px);
     }
 
     .collection-main {
         padding-right: 0;
         width: 100%;
+        padding-bottom: clamp(32px, 4vh, 40px);
     }
 
     .collection-wrap .slide-wrapper--inline {
         width: 100%;
-        min-height: auto;
+        min-height: 0;
         margin-top: 0;
         border-radius: 12px;
+    }
+
+    .grid {
+        --c-rows: 4;
+        --c-cols: 3;
+        grid-template-columns: repeat(3, var(--c-size));
     }
 }
 
 @media (max-width: 600px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: clamp(18px, 3vw, 22px);
+        --c-cols: 2;
+        --c-rows: 6;
+        grid-template-columns: repeat(2, var(--c-size));
     }
 }
