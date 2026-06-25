@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 海テーマの参照ビューポート（Web版と同様に「1画面分」でスケール）
  * ツインモニター時はメインモニター幅・高さ（--primary-width/height）を使う
  */
@@ -44,5 +44,6 @@
     height: 100%;
     overflow: hidden;
     pointer-events: none;
-    z-index: 3;
+    /* background_road2 (z-index:4) より手前にコレクション演出を描画 */
+    z-index: 5;
 }

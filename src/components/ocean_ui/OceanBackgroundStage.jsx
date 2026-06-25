@@ -1,7 +1,8 @@
+import React, { useState } from "react";
 import { usePrimaryDisplayLayout } from "../../hooks/usePrimaryDisplayLayout";
 import BackGroundOcean from "./background_ocean/BackGround";
 import OceanBg from "./ocean_bg/ocean_bg";
-import "./ocean_viewport.css";
+import "./ocean_layout.css";
 
 /**
  * 海テーマ背景（空・道路）をメインモニター1画面分のビューポートに描画
@@ -12,6 +13,7 @@ export default function OceanBackgroundStage({
     showMainCar = false,
 }) {
     const stageLayoutRef = usePrimaryDisplayLayout();
+    const [passingMount, setPassingMount] = useState(null);
 
     const rootClass = ["ocean-background-primary", className]
         .filter(Boolean)
@@ -20,9 +22,13 @@ export default function OceanBackgroundStage({
     return (
         <div ref={stageLayoutRef} className={rootClass}>
             <BackGroundOcean />
-            <OceanBg showMainCar={showMainCar} />
+            <OceanBg showMainCar={showMainCar} passingMountRef={setPassingMount} />
             {children ? (
-                <div className="ocean-scene-layer">{children}</div>
+                <div className="ocean-scene-layer">
+                    {React.cloneElement(React.Children.only(children), {
+                        passingMount,
+                    })}
+                </div>
             ) : null}
         </div>
     );

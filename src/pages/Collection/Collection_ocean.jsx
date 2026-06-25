@@ -8,8 +8,11 @@ import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
 import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
 import {
     useCollectionThemeSelect,
-    COLLECTION_THEMES,
 } from "../../hooks/useCollectionThemeSelect";
+import {
+    useOceanThemeAccessGuard,
+    useOceanWallpaperDismissRoute,
+} from "../../hooks/useOceanThemeAccess";
 
 import { getOceanCollections } from "../../utils/collectionStorage_ocean";
 import collectionMaster_ocean from "../../data/collectionMaster_ocean";
@@ -31,7 +34,9 @@ const COLLECTION_PASSTHROUGH = [
 
 export default function CollectionOcean() {
     const navigate = useNavigate();
-    const { pendingTheme, requestTheme, confirmTheme, cancelTheme } =
+    useOceanThemeAccessGuard();
+    const dismissRoute = useOceanWallpaperDismissRoute();
+    const { themes, pendingTheme, requestTheme, confirmTheme, cancelTheme, refreshThemeUnlockState } =
         useCollectionThemeSelect();
 
     const [owned, setOwned] = useState([]);
@@ -43,14 +48,15 @@ export default function CollectionOcean() {
 
         setOwned(items);
         setCompleted(items.length >= collectionMaster_ocean.length);
-    }, []);
+        refreshThemeUnlockState();
+    }, [refreshThemeUnlockState]);
 
     const isOwned = (id) => owned.some((item) => item.id === id);
 
     return (
         <AppFloatingWindow
             passthroughSelectors={COLLECTION_PASSTHROUGH}
-            onDismiss={() => navigate("/wallpaper_ocean")}
+            onDismiss={() => navigate(dismissRoute)}
         >
             <div className="collection-wrap">
                 <div className="collection-main">
@@ -88,20 +94,12 @@ export default function CollectionOcean() {
                             );
                         })}
                     </div>
-
-                    <button
-                        type="button"
-                        className="back-btn"
-                        onClick={() => navigate("/wallpaper_ocean")}
-                    >
-                        ← WALLPAPER
-                    </button>
                 </div>
 
                 <div className="slide-wrapper--inline">
                     <Slide
                         title="THEMES"
-                        items={COLLECTION_THEMES}
+                        items={themes}
                         expandOnHover
                         onSelect={requestTheme}
                     />

@@ -1,0 +1,24 @@
+.zodiac-collection-image {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: clamp(6px, 0.9vh, 10px) clamp(6px, 0.9vh, 10px) 4px;
+    box-sizing: border-box;
+}
+
+.zodiac-collection-image__frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
+}
+
+.zodiac-collection-image__frame.is-active {
+    opacity: 1;
+}

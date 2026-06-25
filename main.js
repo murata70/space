@@ -355,14 +355,76 @@ function createWindow() {
     });
 }
 
+function getLaunchPrefPath() {
+    return path.join(app.getPath('userData'), 'launch-on-startup.json');
+}
+
+function readLaunchPrefFromDisk() {
+    try {
+        const data = JSON.parse(fs.readFileSync(getLaunchPrefPath(), 'utf8'));
+        if (typeof data.enabled === 'boolean') return data.enabled;
+    } catch (e) {
+        // 初回起動時は未作成
+    }
+    return true;
+}
+
+function writeLaunchPrefToDisk(enabled) {
+    const userDataPath = app.getPath('userData');
+    if (!fs.existsSync(userDataPath)) {
+        fs.mkdirSync(userDataPath, { recursive: true });
+    }
+    fs.writeFileSync(
+        getLaunchPrefPath(),
+        JSON.stringify({ enabled: Boolean(enabled) }),
+        'utf8'
+    );
+}
+
+function applyLaunchOnStartup(enabled) {
+    const value = Boolean(enabled);
+    writeLaunchPrefToDisk(value);
+
+    if (!app.isPackaged) {
+        return { enabled: value, applied: false };
+    }
+
+    app.setLoginItemSettings({
+        openAtLogin: value,
+        path: process.execPath,
+        args: [],
+    });
+
+    return { enabled: value, applied: true };
+}
+
 // IPC 通信のハンドリング（React からの透過ON/OFF要求を処理）
 ipcMain.on('set-ignore-mouse-events', (event, ignore) => {
     wallpaperMousePassthrough = ignore;
     applyMousePassthrough(ignore);
 });
 
+ipcMain.on('attach-wallpaper', () => {
+    syncWindowModeFromRoute();
+});
+
+ipcMain.on('refresh-display-layout', () => {
+    broadcastDisplayLayout();
+});
+
 ipcMain.on('quit-app', () => {
     app.quit();
+});
+
+ipcMain.handle('get-launch-on-startup', () => {
+    if (app.isPackaged) {
+        return app.getLoginItemSettings().openAtLogin;
+    }
+    return readLaunchPrefFromDisk();
+});
+
+ipcMain.handle('set-launch-on-startup', (_event, enabled) => {
+    return applyLaunchOnStartup(enabled);
 });
 
 ipcMain.handle('get-display-layout', () => {
@@ -389,6 +451,7 @@ ipcMain.handle('get-cursor-client-point', () => {
 
 // アプリケーションのライフサイクル
 app.whenReady().then(() => {
+    applyLaunchOnStartup(readLaunchPrefFromDisk());
     createWindow();
 
     app.on('activate', () => {

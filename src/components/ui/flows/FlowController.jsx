@@ -1,41 +1,29 @@
-import { useEffect, useState, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import collectionMaster from "../../../data/collectionMaster";
 import { saveCollection } from "../../../utils/collectionStorage";
+import { pickRandomCollectionItem } from "../../../utils/collectionSpawnSchedule";
+import { useCollectionSpawnSchedule } from "../../../hooks/useCollectionSpawnSchedule";
 
 export default function FlowController({ theme = "space" }) {
   const [currentFlow, setCurrentFlow] = useState(null);
 
-  const usedIndexRef = useRef(null);
   const currentItemRef = useRef(null);
+  const isRunningRef = useRef(false);
 
-  useEffect(() => {
-    spawnNext();
+  const attemptSpawn = useCallback(() => {
+    if (isRunningRef.current) return false;
+    if (!collectionMaster.length) return false;
+
+    const selected = pickRandomCollectionItem(collectionMaster);
+    if (!selected) return false;
+
+    isRunningRef.current = true;
+    currentItemRef.current = selected;
+    setCurrentFlow(() => selected.component);
+    return true;
   }, []);
 
-  const spawnNext = () => {
-    if (!collectionMaster.length) return;
-
-    let nextIndex = Math.floor(
-      Math.random() * collectionMaster.length
-    );
-
-    // ˜A‘±“¯‚¶–hŽ~
-    if (collectionMaster.length > 1) {
-      while (nextIndex === usedIndexRef.current) {
-        nextIndex = Math.floor(
-          Math.random() * collectionMaster.length
-        );
-      }
-    }
-
-    usedIndexRef.current = nextIndex;
-
-    const selected = collectionMaster[nextIndex];
-
-    currentItemRef.current = selected;
-
-    setCurrentFlow(() => selected.component);
-  };
+  const { retryPendingSpawn } = useCollectionSpawnSchedule(attemptSpawn);
 
   const handleComplete = () => {
     const item = currentItemRef.current;
@@ -51,11 +39,10 @@ export default function FlowController({ theme = "space" }) {
       );
     }
 
+    isRunningRef.current = false;
+    currentItemRef.current = null;
     setCurrentFlow(null);
-
-    setTimeout(() => {
-      spawnNext();
-    }, 1500);
+    retryPendingSpawn();
   };
 
   if (!currentFlow) return null;

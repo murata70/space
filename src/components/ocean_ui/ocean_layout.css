@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 海テーマ共通レイアウト（レスポンシブ）
  * vw/vh は仮想デスクトップ全体ではなく --ocean-vw / --ocean-vh（≒1画面）基準
  */
@@ -21,8 +21,17 @@
         calc(var(--ocean-vw) * 0.98),
         1680px
     );
-    --ocean-width-passing-wrap: clamp(260px, calc(var(--ocean-vw) * 0.3), 340px);
-    --ocean-width-passing-img: clamp(170px, calc(var(--ocean-vw) * 0.22), 240px);
+    --ocean-width-passing-wrap: clamp(320px, calc(var(--ocean-vw) * 0.38), 440px);
+    --ocean-width-passing-img: clamp(220px, calc(var(--ocean-vw) * 0.3), 320px);
+    --ocean-width-passing-img-sm: clamp(200px, calc(var(--ocean-vw) * 0.27), 290px);
+    --ocean-width-passing-img-md: clamp(238px, calc(var(--ocean-vw) * 0.32), 338px);
+    --ocean-width-passing-img-lg-xs: clamp(235px, calc(var(--ocean-vw) * 0.315), 345px);
+    --ocean-width-passing-img-lg-sm: clamp(248px, calc(var(--ocean-vw) * 0.33), 358px);
+    --ocean-width-passing-img-lg: clamp(255px, calc(var(--ocean-vw) * 0.35), 370px);
+    --ocean-width-passing-img-lg-xl: clamp(268px, calc(var(--ocean-vw) * 0.37), 385px);
+    --ocean-width-passing-img-lg-xl-sm: clamp(262px, calc(var(--ocean-vw) * 0.365), 378px);
+    --ocean-width-passing-img-xl: clamp(308px, calc(var(--ocean-vw) * 0.42), 440px);
+    --ocean-passing-offscreen-gap: clamp(16px, calc(var(--ocean-vw) * 0.015), 28px);
     --ocean-scroll-exit: calc(-1 * var(--ocean-vw) - 100%);
 }
 
@@ -71,7 +80,7 @@
 .ocean-flow-layer {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 1;
     pointer-events: none;
     overflow: hidden;
 }

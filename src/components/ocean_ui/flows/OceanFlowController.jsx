@@ -1,85 +1,104 @@
-﻿import { useEffect, useState, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import collectionMaster_ocean from "../../../data/collectionMaster_ocean";
 import { saveOceanCollection } from "../../../utils/collectionStorage_ocean";
+import { pickRandomCollectionItem } from "../../../utils/collectionSpawnSchedule";
+import { useCollectionSpawnSchedule } from "../../../hooks/useCollectionSpawnSchedule";
 import PassingVehicle from "../passing/PassingVehicle";
+import { PASSING_CAR_PROFILES } from "../passing/passingCarProfiles";
+import { rollPassingRoadSyncDelayMs } from "../passing/passingRoadSync";
+import { getPassingSpawnDelayMs } from "../passing/passingSpawnSchedule";
 
 const publicUrl = process.env.PUBLIC_URL || "";
+const PASSING_VEHICLE_COUNT = 13;
 
-export default function OceanFlowController() {
+function pickRandomPassingVehicle() {
+  const index = Math.floor(Math.random() * PASSING_VEHICLE_COUNT) + 1;
+  const profile = PASSING_CAR_PROFILES[index] ?? {
+    size: "default",
+    position: null,
+  };
+
+  return {
+    image: `${publicUrl}/assets/ocean_image/passing/passing_car${index}.png`,
+    size: profile.size,
+    position: profile.position,
+    roadSyncDelayMs: rollPassingRoadSyncDelayMs(),
+  };
+}
+
+export default function OceanFlowController({ passingMount = null }) {
   const [passingVehicles, setPassingVehicles] = useState([]);
   const [currentCollectionFlow, setCurrentCollectionFlow] = useState(null);
 
-  const usedCollectionIndexRef = useRef(null);
-  const sequentialCollectionIndexRef = useRef(0);
   const vehicleIdRef = useRef(0);
-  const lastSpawnTimeRef = useRef(0);
   const collectionRunningRef = useRef(false);
   const currentItemRef = useRef(null);
+  const passingVehiclesRef = useRef([]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      spawnPassingVehicle();
-    }, 2500);
+    passingVehiclesRef.current = passingVehicles;
+  }, [passingVehicles]);
 
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      spawnCollectionFlow();
-    }, 15000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const spawnPassingVehicle = () => {
+  const spawnPassingVehicle = useCallback(() => {
     if (collectionRunningRef.current) return;
-    if (passingVehicles.length >= 2) return;
-
-    const now = Date.now();
-    if (now - lastSpawnTimeRef.current < 4000) return;
-
-    lastSpawnTimeRef.current = now;
-
-    const randomIndex = Math.floor(
-      Math.random() * 10
-    );
 
     const id = vehicleIdRef.current++;
 
-    setPassingVehicles((prev) => [
-      ...prev,
-      { id, image: `${publicUrl}/assets/ocean_image/passing/passing_car${randomIndex + 1}.png` }
-    ]);
-  };
+    setPassingVehicles((prev) => {
+      const vehicle = pickRandomPassingVehicle();
+      const next = [...prev, { id, ...vehicle }];
+      passingVehiclesRef.current = next;
+      return next;
+    });
+  }, []);
 
-  const handleVehicleComplete = (id) => {
-    setPassingVehicles((prev) =>
-      prev.filter((v) => v.id !== id)
-    );
-  };
+  const spawnPassingVehicleRef = useRef(spawnPassingVehicle);
+  spawnPassingVehicleRef.current = spawnPassingVehicle;
 
-  const spawnCollectionFlow = () => {
-    if (collectionRunningRef.current) return;
-    if (passingVehicles.length > 0) return;
-    if (!collectionMaster_ocean?.length) return;
+  useEffect(() => {
+    let cancelled = false;
+    let timerId = null;
 
-    let nextIndex;
+    const scheduleNext = () => {
+      timerId = setTimeout(() => {
+        if (cancelled) return;
+        spawnPassingVehicleRef.current();
+        scheduleNext();
+      }, getPassingSpawnDelayMs());
+    };
 
-    nextIndex =
-      sequentialCollectionIndexRef.current %
-      collectionMaster_ocean.length;
+    scheduleNext();
 
-    sequentialCollectionIndexRef.current += 1;
+    return () => {
+      cancelled = true;
+      clearTimeout(timerId);
+    };
+  }, []);
 
-    const selected = collectionMaster_ocean[nextIndex];
+  const attemptCollectionSpawn = useCallback(() => {
+    if (collectionRunningRef.current) return false;
+    if (passingVehiclesRef.current.length > 0) return false;
+    if (!collectionMaster_ocean?.length) return false;
 
-    if (!selected) return;
+    const selected = pickRandomCollectionItem(collectionMaster_ocean);
+    if (!selected) return false;
 
     collectionRunningRef.current = true;
     currentItemRef.current = selected;
-
     setCurrentCollectionFlow(() => selected.component);
+    return true;
+  }, []);
+
+  const { retryPendingSpawn } = useCollectionSpawnSchedule(attemptCollectionSpawn);
+
+  const handleVehicleComplete = (id) => {
+    setPassingVehicles((prev) => {
+      const next = prev.filter((v) => v.id !== id);
+      passingVehiclesRef.current = next;
+      return next;
+    });
+    retryPendingSpawn();
   };
 
   const handleCollectionComplete = () => {
@@ -95,24 +114,39 @@ export default function OceanFlowController() {
       });
     }
 
+    currentItemRef.current = null;
     setCurrentCollectionFlow(null);
+    retryPendingSpawn();
   };
 
   const CollectionFlowComponent = currentCollectionFlow;
 
-  return (
-    <div className="ocean-flow-layer">
-      {passingVehicles.map((v) => (
-        <PassingVehicle
-          key={v.id}
-          image={v.image}
-          onComplete={() => handleVehicleComplete(v.id)}
-        />
-      ))}
+  const passingLayer =
+    passingMount &&
+    createPortal(
+      <>
+        {passingVehicles.map((v) => (
+          <PassingVehicle
+            key={v.id}
+            image={v.image}
+            size={v.size}
+            position={v.position}
+            roadSyncDelayMs={v.roadSyncDelayMs}
+            onComplete={() => handleVehicleComplete(v.id)}
+          />
+        ))}
+      </>,
+      passingMount
+    );
 
-      {CollectionFlowComponent && (
-        <CollectionFlowComponent onComplete={handleCollectionComplete} />
-      )}
-    </div>
+  return (
+    <>
+      {passingLayer}
+      <div className="ocean-flow-layer">
+        {CollectionFlowComponent && (
+          <CollectionFlowComponent onComplete={handleCollectionComplete} />
+        )}
+      </div>
+    </>
   );
 }

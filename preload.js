@@ -18,6 +18,8 @@ contextBridge.exposeInMainWorld('electron', {
     startHitTest: () => ipcRenderer.send('start-hit-test'),
     stopHitTest: () => ipcRenderer.send('stop-hit-test'),
     quitApp: () => ipcRenderer.send('quit-app'),
+    getLaunchOnStartup: () => ipcRenderer.invoke('get-launch-on-startup'),
+    setLaunchOnStartup: (enabled) => ipcRenderer.invoke('set-launch-on-startup', enabled),
     getDbData: (query, params) => ipcRenderer.invoke('get-db-data', query, params),
     saveDiscovery: (itemId) => ipcRenderer.send('save-discovery', itemId)
 });

@@ -1,4 +1,4 @@
-﻿.ocean-road-layer {
+.ocean-road-layer {
     position: absolute;
     inset: 0;
     width: 100%;
@@ -11,7 +11,7 @@
     z-index: 1;
 }
 
-/* background_road1 の直上（road2=4 / コレクション演出より下） */
+/* background_road1 の直上（road2=4 / passing=3 / コレクション演出より下） */
 .ocean-main-car-layer {
     position: absolute;
     inset: 0;
@@ -19,6 +19,17 @@
     height: 100%;
     z-index: 2;
     overflow: visible;
+    pointer-events: none;
+}
+
+/* background_road1 の直上・background_road2 の奥（passing 用） */
+.ocean-passing-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    overflow: hidden;
     pointer-events: none;
 }
 

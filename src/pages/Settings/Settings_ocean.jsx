@@ -7,6 +7,11 @@ import "../../components/ui/SettingsPart/SettingsPart_ocean.css";
 import SettingsPart_ocean from "../../components/ui/SettingsPart/SettingsPart_ocean";
 import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
 import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
+import {
+    applyLaunchOnStartup,
+    readLaunchOnStartupSetting,
+} from "../../utils/launchOnStartup";
+import { useOceanThemeAccessGuard } from "../../hooks/useOceanThemeAccess";
 
 const SETTINGS_PASSTHROUGH = [
     ".app-floating-window",
@@ -21,6 +26,7 @@ const SETTINGS_PASSTHROUGH = [
 
 const Settings_ocean = () => {
     const navigate = useNavigate();
+    useOceanThemeAccessGuard();
 
     let savedSettings = {};
     try {
@@ -33,29 +39,29 @@ const Settings_ocean = () => {
         savedSettings.tz = "Asia/Tokyo";
     }
 
-    const [muted, setMuted] = useState(savedSettings.muted ?? false);
     const [sec, setSec] = useState(savedSettings.sec ?? true);
     const [tz, setTz] = useState(savedSettings.tz ?? "Asia/Tokyo");
     const [is24h, setIs24h] = useState(savedSettings.is24h ?? true);
-    const [volume, setVolume] = useState(savedSettings.volume ?? 50);
+    const [launchOnStartup, setLaunchOnStartup] = useState(
+        readLaunchOnStartupSetting(savedSettings)
+    );
     const [isWarping, setIsWarping] = useState(false);
     const [saveDialogOpen, setSaveDialogOpen] = useState(false);
-    const [backDialogOpen, setBackDialogOpen] = useState(false);
     const [homeDialogOpen, setHomeDialogOpen] = useState(false);
 
-    const persistSettings = () => {
-        const settings = { muted, volume, sec, tz, is24h };
+    const persistSettings = async () => {
+        const settings = { sec, tz, is24h, launchOnStartup };
         localStorage.setItem("user_settings", JSON.stringify(settings));
+        await applyLaunchOnStartup(launchOnStartup);
     };
 
-    const handleSave = () => {
-        persistSettings();
+    const handleSave = async () => {
+        await persistSettings();
         setSaveDialogOpen(true);
     };
 
     const closeSettings = useCallback(() => {
         setSaveDialogOpen(false);
-        setBackDialogOpen(false);
         setHomeDialogOpen(false);
         navigate("/wallpaper_ocean", { replace: true });
         if (!window.location.hash.includes("/wallpaper_ocean")) {
@@ -67,21 +73,12 @@ const Settings_ocean = () => {
         closeSettings();
     };
 
-    const handleBack = () => {
-        setBackDialogOpen(true);
-    };
-
-    const handleBackConfirm = () => {
-        setBackDialogOpen(false);
-        navigate("/wallpaper_ocean", { replace: true });
-    };
-
     const handleGoHome = () => {
         setHomeDialogOpen(true);
     };
 
-    const handleHomeSaveAndGo = () => {
-        persistSettings();
+    const handleHomeSaveAndGo = async () => {
+        await persistSettings();
         setHomeDialogOpen(false);
         navigate("/");
     };
@@ -125,14 +122,12 @@ const Settings_ocean = () => {
                     </h2>
 
                     <SettingsPart_ocean
-                        muted={muted}
-                        setMuted={setMuted}
-                        volume={volume}
-                        setVolume={setVolume}
                         sec={sec}
                         setSec={setSec}
                         is24h={is24h}
                         setIs24h={setIs24h}
+                        launchOnStartup={launchOnStartup}
+                        setLaunchOnStartup={setLaunchOnStartup}
                         tz={tz}
                         setTz={setTz}
                     />
@@ -142,14 +137,7 @@ const Settings_ocean = () => {
                             className="settings-btn primaryBtn"
                             onClick={handleSave}
                         >
-                            登録（保存）
-                        </button>
-
-                        <button
-                            className="settings-btn backBtn"
-                            onClick={handleBack}
-                        >
-                            ← 壁紙へ戻る🌊
+                            保存
                         </button>
 
                         <button
@@ -168,15 +156,6 @@ const Settings_ocean = () => {
                 showCancel={false}
                 onConfirm={handleSaveDialogClose}
                 onCancel={handleSaveDialogClose}
-            />
-
-            <ThemeConfirmDialog
-                open={backDialogOpen}
-                message="保存せずに戻りますか？"
-                confirmLabel="戻る"
-                cancelLabel="キャンセル"
-                onConfirm={handleBackConfirm}
-                onCancel={() => setBackDialogOpen(false)}
             />
 
             <ThemeConfirmDialog

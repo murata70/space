@@ -76,7 +76,11 @@ function setInteractiveState(interactiveRef, interactive, setMouseInteractive, h
  * 壁紙モード: カーソル位置で操作領域を検出し setIgnoreMouse でクリック可能にする
  */
 export function useWallpaperMousePassthrough(
-    { passthroughSelectors, uiLayerHoveredSelectors = [] },
+    {
+        passthroughSelectors,
+        documentPassthroughSelectors = [],
+        uiLayerHoveredSelectors = [],
+    },
     rootRef = null
 ) {
     const [isUiLayerHovered, setIsUiLayerHovered] = useState(false);
@@ -95,6 +99,7 @@ export function useWallpaperMousePassthrough(
     ];
 
     const passthroughKey = extendedSelectors.join("|");
+    const documentPassthroughKey = documentPassthroughSelectors.join("|");
     const uiHoverKey = uiLayerHoveredSelectors.join("|");
 
     const setMouseInteractive = useCallback((interactive) => {
@@ -118,12 +123,19 @@ export function useWallpaperMousePassthrough(
                 return;
             }
 
-            const interactive = isOverInteractiveRegions(
-                clientX,
-                clientY,
-                extendedSelectors,
-                root
-            );
+            const interactive =
+                isOverInteractiveRegions(
+                    clientX,
+                    clientY,
+                    extendedSelectors,
+                    root
+                ) ||
+                isOverInteractiveRegions(
+                    clientX,
+                    clientY,
+                    documentPassthroughSelectors,
+                    document
+                );
 
             setInteractiveState(
                 interactiveRef,
@@ -148,6 +160,7 @@ export function useWallpaperMousePassthrough(
         [
             rootRef,
             passthroughKey,
+            documentPassthroughKey,
             uiLayerHoveredSelectors,
             setMouseInteractive,
         ]
@@ -175,7 +188,7 @@ export function useWallpaperMousePassthrough(
                 setMouseInteractive(false);
             }
         };
-    }, [passthroughKey, uiHoverKey, updateFromPoint, setMouseInteractive]);
+    }, [passthroughKey, documentPassthroughKey, uiHoverKey, updateFromPoint, setMouseInteractive]);
 
     useElectronCursorPoll(
         (x, y) => updateFromPoint(x, y),

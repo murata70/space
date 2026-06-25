@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 import StarField from "../../components/ui/StarField/StarField";
@@ -6,6 +6,10 @@ import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConf
 
 /* 共通設定パーツ */
 import SettingsPart from "../../components/ui/SettingsPart/SettingsPart";
+import {
+    applyLaunchOnStartup,
+    readLaunchOnStartupSetting,
+} from "../../utils/launchOnStartup";
 
 const Home = () => {
     const navigate = useNavigate();
@@ -27,11 +31,12 @@ const Home = () => {
     }
 
     /* state 初期値の安全なフォールバック */
-    const [muted, setMuted] = useState(savedSettings?.muted ?? false);
-    const [volume, setVolume] = useState(savedSettings?.volume ?? 50);
     const [sec, setSec] = useState(savedSettings?.sec ?? true);
     const [tz, setTz] = useState(savedSettings?.tz ?? "Asia/Tokyo");
     const [is24h, setIs24h] = useState(savedSettings?.is24h ?? true);
+    const [launchOnStartup, setLaunchOnStartup] = useState(
+        readLaunchOnStartupSetting(savedSettings)
+    );
     const [exitDialogOpen, setExitDialogOpen] = useState(false);
 
     /* 初期設定：起動時は壁紙化しない（通常の操作ウィンドウ） */
@@ -49,23 +54,22 @@ const Home = () => {
     }, []);
 
     /* Start */
-    const handleStart = () => {
+    const handleStart = async () => {
         /* 保存 */
         const settings = {
-            muted,
-            volume,
             sec,
             tz,
-            is24h
+            is24h,
+            launchOnStartup,
         };
 
         try {
             localStorage.setItem("user_settings", JSON.stringify(settings));
+            await applyLaunchOnStartup(launchOnStartup);
         } catch (e) {
             console.error("設定の保存に失敗しました", e);
         }
 
-        // 【修正】Electron(HashRouter)環境下での確実なルーティングのため、相対パス指定に変更
         navigate("/wallpaper");
 
         // 遷移完了後のタイミングでデスクトップ壁紙に動的設定
@@ -108,14 +112,12 @@ const Home = () => {
                 {/* 設定パーツ */}
                 <div className="settings-box">
                     <SettingsPart
-                        muted={muted}
-                        setMuted={setMuted}
-                        volume={volume}
-                        setVolume={setVolume}
                         sec={sec}
                         setSec={setSec}
                         is24h={is24h}
                         setIs24h={setIs24h}
+                        launchOnStartup={launchOnStartup}
+                        setLaunchOnStartup={setLaunchOnStartup}
                         tz={tz}
                         setTz={setTz}
                     />

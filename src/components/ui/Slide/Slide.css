@@ -1,4 +1,4 @@
-﻿/**
+/**
  * テーマ切替スライド（レスポンシブ）
  *
  * 幅・余白は clamp / vw で可変。親は .slide-wrapper で配置を制御する。
@@ -195,12 +195,17 @@
 }
 
 .slide-item {
+    position: relative;
     padding: var(--slide-item-padding);
     border-bottom: 1px solid #333;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background 0.15s, color 0.15s;
     font-size: clamp(13px, 1.6vw, 15px);
     font-family: inherit;
+}
+
+.slide-item__label {
+    display: block;
 }
 
 .slide-item:hover {
@@ -208,8 +213,42 @@
 }
 
 .slide-item.locked {
-    opacity: 0.4;
+    color: #8a8a8a;
+    opacity: 0.65;
     cursor: default;
+}
+
+.slide-item.locked:hover {
+    background: #151515;
+}
+
+.slide-item__lock-tooltip {
+    position: absolute;
+    right: calc(100% + 10px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: max-content;
+    max-width: min(240px, 70vw);
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: rgba(24, 24, 24, 0.96);
+    border: 1px solid #444;
+    color: #e8e8e8;
+    font-size: clamp(11px, 1.4vw, 13px);
+    line-height: 1.45;
+    letter-spacing: 0;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+    z-index: 20;
+}
+
+.slide-item.locked:hover .slide-item__lock-tooltip,
+.slide-item.locked:focus-within .slide-item__lock-tooltip {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* ホバー対応端末：タブ／エリアに乗せたら開く（クリック併用） */

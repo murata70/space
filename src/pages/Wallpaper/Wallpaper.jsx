@@ -1,19 +1,21 @@
-﻿import React, { useRef } from "react";
+import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Wallpaper.css";
 import "../../styles/primary-monitor-ui.css";
 
 import Clock from "../../components/ui/Clock/Clock";
-import Rocket from "../../components/ui/Rocket/Rocket";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
 // マウスイベントを透過させずに、アプリ側でクリックを検知するセレクタのリスト
 const WALLPAPER_PASSTHROUGH_SELECTORS = [
     ".top-ui",
-    ".rocket-position",
-    ".rocket-wrapper",
     ".icon-btn",         // 追加: フォルダやギアのボタン自体をクリック可能にする
     ".top-ui-actions"    // 追加: ボタンの親要素エリアも安全にカバー
+];
+
+const WALLPAPER_DOCUMENT_PASSTHROUGH_SELECTORS = [
+    ".rocket-position",
+    ".rocket-wrapper",
 ];
 
 const WALLPAPER_UI_HOVER_SELECTORS = [".top-ui"];
@@ -24,6 +26,7 @@ const Wallpaper = () => {
     const { isUiLayerHovered } = useWallpaperMousePassthrough(
         {
             passthroughSelectors: WALLPAPER_PASSTHROUGH_SELECTORS,
+            documentPassthroughSelectors: WALLPAPER_DOCUMENT_PASSTHROUGH_SELECTORS,
             uiLayerHoveredSelectors: WALLPAPER_UI_HOVER_SELECTORS,
         },
         wallpaperRef
@@ -32,10 +35,6 @@ const Wallpaper = () => {
     return (
         <div className="wallpaper" ref={wallpaperRef}>
             <div className="primary-monitor-ui">
-                <div className="rocket-position">
-                    <Rocket />
-                </div>
-
                 <div
                     className={`wallpaper-ui-layer ${isUiLayerHovered ? "hovered" : ""}`}
                 >

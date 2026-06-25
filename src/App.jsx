@@ -20,6 +20,7 @@ import {
     useAppPrimaryDisplayLayout,
     useWallpaperRouteSync,
 } from "./hooks/usePrimaryDisplayLayout";
+import { useLaunchOnStartupSync } from "./hooks/useLaunchOnStartupSync";
 
 function AppContent() {
     const baseUrl = window.location.origin || "";
@@ -27,6 +28,7 @@ function AppContent() {
 
     useAppPrimaryDisplayLayout(pathname);
     useWallpaperRouteSync(pathname);
+    useLaunchOnStartupSync();
 
     const showSpaceBackdrop = SPACE_THEME_ROUTES.has(pathname);
     const showOceanBackdrop = OCEAN_THEME_ROUTES.has(pathname);

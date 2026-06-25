@@ -1,12 +1,74 @@
-﻿.passing-car {
+.passing-car {
     position: absolute;
-    right: -220px;
-    top: 65%;
-    width: var(--ocean-width-main-car);
+    --passing-car-width: var(--ocean-width-passing-img, clamp(220px, 30vw, 320px));
+    width: var(--passing-car-width);
+    right: calc(-1 * var(--passing-car-width) - var(--ocean-passing-offscreen-gap, 24px));
+    top: var(--ocean-lane-passing-top, 55%);
     height: auto;
-    z-index: 50;
+    z-index: 1;
     pointer-events: none;
     animation: passing-car-move 12s linear forwards, passing-car-shake 0.2s steps(1) infinite;
+}
+
+.passing-car.passing-car--road-sync {
+    z-index: 10;
+    animation: none;
+}
+
+.passing-car--sm {
+    --passing-car-width: var(--ocean-width-passing-img-sm, clamp(200px, 27vw, 290px));
+}
+
+.passing-car--md {
+    --passing-car-width: var(--ocean-width-passing-img-md, clamp(238px, 32vw, 338px));
+}
+
+.passing-car--large-xs {
+    --passing-car-width: var(--ocean-width-passing-img-lg-xs, clamp(235px, 31.5vw, 345px));
+}
+
+.passing-car--large-sm {
+    --passing-car-width: var(--ocean-width-passing-img-lg-sm, clamp(248px, 33vw, 358px));
+}
+
+.passing-car--large {
+    --passing-car-width: var(--ocean-width-passing-img-lg, clamp(255px, 35vw, 370px));
+}
+
+.passing-car--large-lg {
+    --passing-car-width: var(--ocean-width-passing-img-lg-xl, clamp(268px, 37vw, 385px));
+}
+
+.passing-car--large-lg-sm {
+    --passing-car-width: var(--ocean-width-passing-img-lg-xl-sm, clamp(262px, 36.5vw, 378px));
+}
+
+.passing-car--large-xl {
+    --passing-car-width: var(--ocean-width-passing-img-xl, clamp(308px, 42vw, 440px));
+}
+
+.passing-car--lower {
+    top: calc(var(--ocean-lane-passing-top, 55%) + 3%);
+}
+
+.passing-car--lower-slight {
+    top: calc(var(--ocean-lane-passing-top, 55%) + 4%);
+}
+
+.passing-car--lower-more {
+    top: calc(var(--ocean-lane-passing-top, 55%) + 5%);
+}
+
+.passing-car--higher {
+    top: calc(var(--ocean-lane-passing-top, 55%) - 1%);
+}
+
+.passing-car--higher-more {
+    top: calc(var(--ocean-lane-passing-top, 55%) - 2.5%);
+}
+
+.passing-car--higher-most {
+    top: calc(var(--ocean-lane-passing-top, 55%) - 4%);
 }
 
 @keyframes passing-car-move {
@@ -15,11 +77,15 @@
     }
 
     to {
-        transform: translateX(calc(-1 * var(--ocean-vw) - 400px));
+        transform: translateX(
+            calc(
+                -1 * var(--ocean-vw, 100vw) - var(--passing-car-width, 320px) -
+                    var(--ocean-passing-offscreen-gap, 24px)
+            )
+        );
     }
 }
 
-/* ?J?N?b??h??? */
 @keyframes passing-car-shake {
     0% {
         margin-top: 0px;

@@ -1,25 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import "./ZodiacFlow.css";
-
-const publicUrl = process.env.PUBLIC_URL || "";
+import { getZodiacImageUrl, pickRandomZodiacSign } from "../../../../data/zodiacCatalog";
+import { recordZodiacObservation } from "../../../../utils/zodiacObservationStorage";
 
 export default function ZodiacFlow({ onComplete }) {
-    const zodiacImages = [
-        `${publicUrl}/assets/image/collections/aquarius.png`,
-        `${publicUrl}/assets/image/collections/aries.png`,
-        `${publicUrl}/assets/image/collections/cancer.png`,
-        `${publicUrl}/assets/image/collections/capricorn.png`,
-        `${publicUrl}/assets/image/collections/gemini.png`,
-        `${publicUrl}/assets/image/collections/leo.png`,
-        `${publicUrl}/assets/image/collections/libra.png`,
-        `${publicUrl}/assets/image/collections/pisces.png`,
-        `${publicUrl}/assets/image/collections/scorpio.png`,
-        `${publicUrl}/assets/image/collections/taurus.png`,
-        `${publicUrl}/assets/image/collections/virgo.png`,
-        `${publicUrl}/assets/image/collections/sagittarius.png`,
-    ];
-
-    const imgRef = useRef(null);
+    const signRef = useRef(null);
     const posRef = useRef(null);
 
     const [img, setImg] = useState(null);
@@ -27,9 +12,10 @@ export default function ZodiacFlow({ onComplete }) {
     const [phase, setPhase] = useState("in");
 
     useEffect(() => {
-        if (!imgRef.current) {
-            imgRef.current =
-                zodiacImages[Math.floor(Math.random() * zodiacImages.length)];
+        if (!signRef.current) {
+            const sign = pickRandomZodiacSign();
+            signRef.current = sign;
+            recordZodiacObservation(sign.id);
 
             const margin = 180;
 
@@ -39,7 +25,7 @@ export default function ZodiacFlow({ onComplete }) {
             };
         }
 
-        setImg(imgRef.current);
+        setImg(getZodiacImageUrl(signRef.current));
         setPos(posRef.current);
 
         const timers = [];
@@ -48,7 +34,7 @@ export default function ZodiacFlow({ onComplete }) {
         timers.push(setTimeout(() => onComplete?.(), 35000));
 
         return () => timers.forEach(clearTimeout);
-    }, []); // ← 絶対これだけ
+    }, []);
 
     if (!img) return null;
 

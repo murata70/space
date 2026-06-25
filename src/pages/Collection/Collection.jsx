@@ -8,11 +8,12 @@ import AppFloatingWindow from "../../components/layout/AppFloatingWindow";
 import ThemeConfirmDialog from "../../components/ui/ThemeConfirmDialog/ThemeConfirmDialog";
 import {
     useCollectionThemeSelect,
-    COLLECTION_THEMES,
 } from "../../hooks/useCollectionThemeSelect";
 
 import { getCollections } from "../../utils/collectionStorage";
+import { hasObservedZodiacSigns } from "../../utils/zodiacObservationStorage";
 import collectionMaster from "../../data/collectionMaster";
+import ZodiacCollectionImage from "../../components/ui/ZodiacCollectionImage/ZodiacCollectionImage";
 
 const COLLECTION_PASSTHROUGH = [
     ".app-floating-window",
@@ -31,7 +32,7 @@ const COLLECTION_PASSTHROUGH = [
 
 export default function Collection() {
     const navigate = useNavigate();
-    const { pendingTheme, requestTheme, confirmTheme, cancelTheme } =
+    const { themes, pendingTheme, requestTheme, confirmTheme, cancelTheme, refreshThemeUnlockState } =
         useCollectionThemeSelect();
 
     const [owned, setOwned] = useState([]);
@@ -43,9 +44,15 @@ export default function Collection() {
 
         setOwned(items);
         setCompleted(items.length >= collectionMaster.length);
-    }, []);
+        refreshThemeUnlockState();
+    }, [refreshThemeUnlockState]);
 
     const isOwned = (id) => owned.some((item) => item.id === id);
+
+    const isCardUnlocked = (item) => {
+        if (item.id !== "zodiac") return isOwned(item.id);
+        return isOwned(item.id) && hasObservedZodiacSigns();
+    };
 
     return (
         <AppFloatingWindow
@@ -62,7 +69,7 @@ export default function Collection() {
 
                     <div className="grid">
                         {collectionMaster.map((item) => {
-                            const unlocked = isOwned(item.id);
+                            const unlocked = isCardUnlocked(item);
 
                             return (
                                 <div
@@ -71,12 +78,16 @@ export default function Collection() {
                                 >
                                     {unlocked ? (
                                         <>
-                                            <img
-                                                src={item.images?.[0]}
-                                                alt={item.name}
-                                                className="collection-image"
-                                                draggable="false"
-                                            />
+                                            {item.id === "zodiac" ? (
+                                                <ZodiacCollectionImage alt={item.name} />
+                                            ) : (
+                                                <img
+                                                    src={item.images?.[0]}
+                                                    alt={item.name}
+                                                    className="collection-image"
+                                                    draggable="false"
+                                                />
+                                            )}
                                             <div className="collection-name">
                                                 {item.name}
                                             </div>
@@ -88,20 +99,12 @@ export default function Collection() {
                             );
                         })}
                     </div>
-
-                    <button
-                        type="button"
-                        className="back-btn"
-                        onClick={() => navigate("/wallpaper")}
-                    >
-                        ← WALLPAPER
-                    </button>
                 </div>
 
                 <div className="slide-wrapper--inline">
                     <Slide
                         title="THEMES"
-                        items={COLLECTION_THEMES}
+                        items={themes}
                         expandOnHover
                         onSelect={requestTheme}
                     />

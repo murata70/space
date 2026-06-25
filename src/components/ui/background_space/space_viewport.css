@@ -43,6 +43,20 @@
     z-index: 3;
 }
 
+.space-rocket-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.space-rocket-layer .rocket-position {
+    pointer-events: auto;
+}
+
 /* 全画面 fixed をステージ内 absolute に収める */
 .space-background-primary .background-container,
 .space-background-primary .stars,

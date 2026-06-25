@@ -29,6 +29,15 @@
         color: #2b3a42; /* 海の深いグレー */
     }
 
+    .settings-page-container.ocean-theme .settings-row-label--long {
+        flex: 1;
+        min-width: 0;
+        font-size: 15px;
+        line-height: 1.35;
+        font-weight: 700;
+        color: #2b3a42;
+    }
+
 /* ===== range ===== */
 .settings-page-container.ocean-theme input[type="range"] {
     width: 100%;

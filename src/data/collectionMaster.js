@@ -1,4 +1,4 @@
-﻿const publicUrl = process.env.PUBLIC_URL || "";
+const publicUrl = process.env.PUBLIC_URL || "";
 
 import UFOFlow from "../components/ui/flows/UFOFlow/UFOFlow";
 import MeteorFlow from "../components/ui/flows/MeteorFlow/MeteorFlow";
@@ -77,7 +77,7 @@ const collectionMaster = [
     id: "zodiac",
     name: "星座",
     component: ZodiacFlow,
-    images: [`${publicUrl}/assets/image/collections/Aries.png`],
+    images: [],
   },
 ];
 

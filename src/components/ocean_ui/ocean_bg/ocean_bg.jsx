@@ -7,7 +7,7 @@ const publicUrl = process.env.PUBLIC_URL || "";
 const road1Url = `${publicUrl}/assets/ocean_image/background_ocean/background_road1.png`;
 const road2Url = `${publicUrl}/assets/ocean_image/background_ocean/background_road2.png`;
 
-const OceanBg = ({ showMainCar = false }) => {
+const OceanBg = ({ showMainCar = false, passingMountRef = null }) => {
     return (
         <>
             <div className="ocean-road-layer ocean-road1">
@@ -32,6 +32,8 @@ const OceanBg = ({ showMainCar = false }) => {
                     <MainCar />
                 </div>
             ) : null}
+
+            <div className="ocean-passing-layer" ref={passingMountRef} />
 
             <div className="ocean-road-layer ocean-road2">
                 <div className="road-layer road2">

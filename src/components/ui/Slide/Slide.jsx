@@ -192,7 +192,12 @@ const Slide = ({
                         className={`slide-item ${item.locked ? "locked" : ""}`}
                         onClick={() => !item.locked && onSelect?.(item.id)}
                     >
-                        {item.name}
+                        <span className="slide-item__label">{item.name}</span>
+                        {item.locked && item.lockedMessage ? (
+                            <span className="slide-item__lock-tooltip" role="tooltip">
+                                {item.lockedMessage}
+                            </span>
+                        ) : null}
                     </div>
                 ))}
             </div>

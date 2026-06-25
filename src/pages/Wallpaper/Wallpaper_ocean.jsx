@@ -5,6 +5,7 @@ import "./Wallpaper_ocean.css";
 import "../../styles/primary-monitor-ui.css";
 
 import Clock from "../../components/ui/Clock/Clock";
+import { useOceanThemeAccessGuard } from "../../hooks/useOceanThemeAccess";
 import { useWallpaperMousePassthrough } from "../../hooks/useWallpaperMousePassthrough";
 
 const OCEAN_PASSTHROUGH_SELECTORS = [".top-ui", ".main-car-position"];
@@ -12,6 +13,7 @@ const OCEAN_UI_HOVER_SELECTORS = [".top-ui"];
 
 const WallpaperOcean = () => {
     const navigate = useNavigate();
+    useOceanThemeAccessGuard();
     const wallpaperRef = useRef(null);
 
     const { isUiLayerHovered } = useWallpaperMousePassthrough(

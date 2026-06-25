@@ -2,49 +2,17 @@ import React from "react";
 import "./SettingsPart_ocean.css";
 
 const SettingsPart_ocean = ({
-    muted,
-    setMuted,
-    volume,
-    setVolume,
     sec,
     setSec,
     is24h,
     setIs24h,
+    launchOnStartup,
+    setLaunchOnStartup,
     tz,
     setTz
 }) => {
     return (
         <>
-            {/* 音量 */}
-            <div className="settings-row">
-                <button
-                    className="muteBtn"
-                    onClick={() => {
-                        if (muted || volume === 0) {
-                            setMuted(false);
-                            setVolume(50);
-                        } else {
-                            setMuted(true);
-                            setVolume(0);
-                        }
-                    }}
-                >
-                    {muted || volume === 0 ? "🔇" : "🔊"}
-                </button>
-
-                <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={volume}
-                    onChange={(e) => {
-                        const v = Number(e.target.value);
-                        setVolume(v);
-                        setMuted(v === 0);
-                    }}
-                />
-            </div>
-
             {/* Sec */}
             <div className="settings-row">
                 <span>Sec</span>
@@ -77,6 +45,27 @@ const SettingsPart_ocean = ({
                     <button
                         className={!is24h ? "text-btn active" : "text-btn"}
                         onClick={() => setIs24h(false)}
+                    >
+                        OFF
+                    </button>
+                </div>
+            </div>
+
+            {/* PC起動時に自動起動 */}
+            <div className="settings-row">
+                <span className="settings-row-label--long">
+                    PCの起動時にspaceを自動的に開く
+                </span>
+                <div className="text-toggle">
+                    <button
+                        className={launchOnStartup ? "text-btn active" : "text-btn"}
+                        onClick={() => setLaunchOnStartup(true)}
+                    >
+                        ON
+                    </button>
+                    <button
+                        className={!launchOnStartup ? "text-btn active" : "text-btn"}
+                        onClick={() => setLaunchOnStartup(false)}
                     >
                         OFF
                     </button>

@@ -5,58 +5,18 @@ import React from "react";
 import "./SettingsPart.css";
 
 const SettingsPart = ({
-    muted,
-    setMuted,
-    volume,
-    setVolume,
     sec,
     setSec,
     is24h,
     setIs24h,
+    launchOnStartup,
+    setLaunchOnStartup,
     tz,
     setTz
 }) => {
 
     return (
         <>
-            {/* 各行設定 */}
-            {/* 音量 */}
-            <div className="settings-row">
-                <button
-                    className="muteBtn"
-                    onClick={() => {
-
-                        if (muted || volume === 0) {
-                            setMuted(false);
-                            setVolume(50);
-                        } else {
-                            setMuted(true);
-                            setVolume(0);
-                        }
-                    }}
-                >
-                    {muted || volume === 0 ? "🔇" : "🔊"}
-                </button>
-                <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={volume}
-                    onChange={(e) => {
-
-                        const newVolume = Number(e.target.value);
-
-                        setVolume(newVolume);
-
-                        if (newVolume === 0) {
-                            setMuted(true);
-                        } else {
-                            setMuted(false);
-                        }
-                    }}
-                />
-            </div>
-
             {/* sec */}
             <div className="settings-row">
                 <span>Sec</span>
@@ -99,6 +59,29 @@ const SettingsPart = ({
                     </button>
                 </div>
 
+            </div>
+
+            {/* PC起動時に自動起動 */}
+            <div className="settings-row">
+                <span className="settings-row-label--long">
+                    PCの起動時にspaceを自動的に開く
+                </span>
+
+                <div className="text-toggle">
+                    <button
+                        className={launchOnStartup ? "text-btn active" : "text-btn"}
+                        onClick={() => setLaunchOnStartup(true)}
+                    >
+                        ON
+                    </button>
+
+                    <button
+                        className={!launchOnStartup ? "text-btn active" : "text-btn"}
+                        onClick={() => setLaunchOnStartup(false)}
+                    >
+                        OFF
+                    </button>
+                </div>
             </div>
 
             {/* タイムゾーン */}
